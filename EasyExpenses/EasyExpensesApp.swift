@@ -12,7 +12,7 @@ import SwiftData
 struct EasyExpensesApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Transaction.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,8 +25,9 @@ struct EasyExpensesApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            
+            RootView(componentFactory: EasyExpensesFactory(modelContainer: sharedModelContainer))
         }
-        .modelContainer(sharedModelContainer)
+        //.modelContainer(sharedModelContainer)
     }
 }

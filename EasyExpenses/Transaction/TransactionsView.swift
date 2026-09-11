@@ -9,14 +9,14 @@ import SwiftUI
 import SwiftData
 import Combine
 
-struct TransactionsView: View {
-    @StateObject private var viewModel: TransactionsViewModel
+struct TransactionsView<VM: TransactionsViewModelProtocol>: View {
+    @StateObject private var viewModel: VM
 
     @State private var showDeleteConfirmation = false
     @State private var pendingDeleteOffsets: IndexSet = []
 
-    init(transactionsViewModel: TransactionsViewModel) {
-        _viewModel = StateObject(wrappedValue: transactionsViewModel)
+    init(viewModel: VM) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -64,14 +64,18 @@ struct TransactionsView: View {
                 TransactionFormView(transaction: viewModel.editingTransaction) { result in
                     switch result {
                     case .created(let date, let category, let detail, let type, let account, let amount):
-                        viewModel.add(fields: [
-                            "date": date,
-                            "category": category,
-                            "detail": detail,
-                            "type": type,
-                            "account": account,
-                            "amount": amount
-                        ])
+                        let builder = TransactionBuilder()
+                            .setting(date: date)
+                            .setting(category: category)
+                            .setting(account: account)
+                            .setting(amount: amount)
+                            .setting(detail: detail)
+                        switch type {
+                        case .debit:
+                            viewModel.addDebit(using: builder)
+                        case .credit:
+                            viewModel.addCredit(using: builder)
+                        }
                     case .updated(let tx):
                         viewModel.update(tx)
                     case .cancelled:
@@ -93,5 +97,7 @@ struct TransactionsView: View {
 #Preview {
     let container = try! ModelContainer(for: Transaction.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     let context = ModelContext(container)
-    return TransactionsListView(context: context)
+    let repo = SwiftDataTransactionRepository(context: context)
+    let vm = TransactionsViewModel(repo: repo)
+    return TransactionsView<TransactionsViewModel>(viewModel: vm)
 }

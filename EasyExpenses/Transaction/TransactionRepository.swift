@@ -13,6 +13,7 @@ protocol TransactionRepository {
     func add(_ transaction: Transaction) throws
     func delete(_ transaction: Transaction) throws
     func delete(at offsets: IndexSet, from transactions: [Transaction]) throws
+    func update() throws
 }
 
 struct SwiftDataTransactionRepository: TransactionRepository {
@@ -34,6 +35,10 @@ struct SwiftDataTransactionRepository: TransactionRepository {
 
     func delete(_ transaction: Transaction) throws {
         context.delete(transaction)
+        try context.save()
+    }
+    
+    func update() throws {
         try context.save()
     }
 

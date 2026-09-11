@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct RootView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    //@StateObject private var viewModel: TransactionsViewModel
+    
+    let componentFactory: ComponentFactory
+    
+    init(componentFactory: ComponentFactory) {
+        //_viewModel = StateObject(wrappedValue: di.makeTransactionsViewModel())
+        self.componentFactory = componentFactory
     }
-}
-
-#Preview {
-    RootView()
+    
+    var body: some View {
+        NavigationStack {
+            TransactionsView<TransactionsViewModel>(viewModel: componentFactory.createTransactionsViewModel())
+        }
+    }
 }
