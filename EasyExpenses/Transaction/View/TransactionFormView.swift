@@ -8,12 +8,24 @@
 import SwiftUI
 
 enum TransactionFormResult {
-    case created(date: Date, category: String, detail: String, type: TransactionType, account: String, amount: Decimal)
+    case created(date: Date,
+                 category: String,
+                 detail: String,
+                 type: TransactionType,
+                 account: String,
+                 amount: Decimal)
     case updated(Transaction)
     case cancelled
 }
 
+enum CRUDOperation {
+    case create
+    case update
+    case delete
+}
+
 struct TransactionFormView: View {
+    var crudOperation: CRUDOperation
     var transaction: Transaction?
     var onComplete: (TransactionFormResult) -> Void
 
@@ -26,7 +38,10 @@ struct TransactionFormView: View {
     @State private var account: String = ""
     @State private var amountText: String = ""
 
-    init(transaction: Transaction? = nil, onComplete: @escaping (TransactionFormResult) -> Void) {
+    init(crudOperation: CRUDOperation = .update,
+         transaction: Transaction? = nil,
+         onComplete: @escaping (TransactionFormResult) -> Void) {
+        self.crudOperation = transaction == nil ? .create : crudOperation
         self.transaction = transaction
         self.onComplete = onComplete
     }
@@ -56,9 +71,9 @@ struct TransactionFormView: View {
                     Button("Cancel") { dismissAndSend(.cancelled) }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(transaction == nil ? "Add" : "Save") {
-                        if let tx = transaction {
-                            tx.date = date
+                    Button(crudOperation == .update ? "Add" : "Save") {
+                        if crudOperation == .update, var tx = transaction {
+                            tx.date = date.timeIntervalSince1970
                             tx.category = category
                             tx.detail = detail
                             tx.transactionType = type
@@ -83,9 +98,9 @@ struct TransactionFormView: View {
 
     private func populateFromTransactionIfNeeded() {
         guard let tx = transaction else { return }
-        date = tx.date
+        date = Date(timeIntervalSince1970: tx.date)
         category = tx.category
-        detail = tx.detail
+        detail = tx.detail ?? ""
         type = tx.transactionType
         account = tx.account
         amountText = NSDecimalNumber(decimal: tx.amount).stringValue

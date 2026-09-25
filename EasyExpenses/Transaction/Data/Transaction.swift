@@ -6,44 +6,41 @@
 //
 
 import Foundation
-import SwiftData
 
-enum TransactionType: String, Codable, CaseIterable {
-    case debit = "d"
-    case credit = "c"
+struct TransactionDefaults: Sendable {
+    let date: TimeInterval
+    let category: String
+    let account: String
+    
+    init(date: TimeInterval = Date().timeIntervalSince1970,
+         category: String = "other",
+         account: String = "other") {
+        self.date = date
+        self.category = category
+        self.account = account
+    }
 }
 
-@Model
-final class Transaction {
-    var date: Date
+enum TransactionType: String, Codable, CaseIterable {
+    case debit = "debit"
+    case credit = "credit"
+}
+
+struct Transaction: Sendable, Identifiable {
+    
+    var id: String
+    var date: TimeInterval
     var category: String
-    var detail: String
+    var detail: String?
     var transactionType: TransactionType
     var account: String
     var amount: Decimal
-
-    // Make the initializer private to force usage of builder/factories
-    init(date: Date,
-                 category: String,
-                 detail: String,
-                 transactionType: TransactionType,
-                 account: String,
-                 amount: Decimal) {
-        self.date = date
-        self.category = category
-        self.detail = detail
-        self.transactionType = transactionType
-        self.account = account
-        self.amount = amount
-    }
-
-    var isDebit: Bool { transactionType == .debit }
 }
 
 // MARK: - Builder
-
 struct TransactionBuilder {
-    var date: Date? = nil
+    var id: String = UUID().uuidString
+    var date: TimeInterval? = nil
     var category: String? = nil
     var detail: String? = nil // optional/empty allowed
     var type: TransactionType? = nil
@@ -68,20 +65,22 @@ struct TransactionBuilder {
         }
     }
 
-    func setting(date: Date) -> Self { var c = self; c.date = date; return c }
-    func setting(category: String) -> Self { var c = self; c.category = category; return c }
-    func setting(detail: String?) -> Self { var c = self; c.detail = detail; return c }
-    func setting(type: TransactionType) -> Self { var c = self; c.type = type; return c }
-    func setting(account: String) -> Self { var c = self; c.account = account; return c }
-    func setting(amount: Decimal) -> Self { var c = self; c.amount = amount; return c }
+    nonisolated func setting(id: String) -> Self { var c = self; c.id = id; return c }
+    nonisolated func setting(date: TimeInterval) -> Self { var c = self; c.date = date; return c }
+    nonisolated func setting(category: String) -> Self { var c = self; c.category = category; return c }
+    nonisolated func setting(detail: String?) -> Self { var c = self; c.detail = detail; return c }
+    nonisolated func setting(type: TransactionType) -> Self { var c = self; c.type = type; return c }
+    nonisolated func setting(account: String) -> Self { var c = self; c.account = account; return c }
+    nonisolated func setting(amount: Decimal) -> Self { var c = self; c.amount = amount; return c }
 
-    func build() throws -> Transaction {
+    nonisolated func build() throws -> Transaction {
         guard let date else { throw BuildError.missingDate }
         guard let category, !category.isEmpty else { throw BuildError.missingCategory }
         guard let type else { throw BuildError.missingType }
         guard let account, !account.isEmpty else { throw BuildError.missingAccount }
         guard let amount else { throw BuildError.missingAmount }
         return Transaction(
+            id: id,
             date: date,
             category: category,
             detail: detail ?? "",
@@ -95,7 +94,12 @@ struct TransactionBuilder {
 // MARK: - Factory helpers
 
 extension Transaction {
-    static func debit(date: Date, category: String, account: String, amount: Decimal, detail: String? = nil) throws -> Transaction {
+    
+    var isDebit: Bool {
+        return transactionType == .debit ? true : false
+    }
+    
+    static func debit(date: TimeInterval, category: String, account: String, amount: Decimal, detail: String? = nil) throws -> Transaction {
         try TransactionBuilder()
             .setting(date: date)
             .setting(category: category)
@@ -106,7 +110,7 @@ extension Transaction {
             .build()
     }
 
-    static func credit(date: Date, category: String, account: String, amount: Decimal, detail: String? = nil) throws -> Transaction {
+    static func credit(date: TimeInterval, category: String, account: String, amount: Decimal, detail: String? = nil) throws -> Transaction {
         try TransactionBuilder()
             .setting(date: date)
             .setting(category: category)
