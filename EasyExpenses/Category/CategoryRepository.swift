@@ -44,7 +44,7 @@ actor SwiftDataCategoryRepository: CategoryRepository {
     func save() async throws { try modelContext.save() }
 
     @discardableResult
-    func deleteBy(id: UUID) async throws -> CategoryModel? {
+    func deleteBy(id: String) async throws -> CategoryModel? {
         let obj = try getBy(id: id)
         guard let obj else { return nil }
         modelContext.delete(obj)
@@ -52,7 +52,7 @@ actor SwiftDataCategoryRepository: CategoryRepository {
         return obj
     }
 
-    private func getBy(id: UUID) throws -> CategoryModel? {
+    private func getBy(id: String) throws -> CategoryModel? {
         let predicate = #Predicate<CategoryModel> { model in model.id == id }
         let objs = try modelContext.fetch(FetchDescriptor<CategoryModel>(predicate: predicate))
         return objs.first

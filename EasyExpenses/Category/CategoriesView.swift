@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CategoriesView<VM: CategoriesViewModel>: View {
     @ObservedObject var viewModel: VM
-    @State private var editingName: [UUID: String] = [:]
+    @State private var editingName: [String: String] = [:]
 
     var body: some View {
         List {

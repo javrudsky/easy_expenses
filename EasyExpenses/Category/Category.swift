@@ -8,6 +8,6 @@
 import Foundation
 
 struct Category: Identifiable, Hashable, Codable {
-    var id: UUID = UUID()
+    var id: String = UUID().uuidString
     var name: String
 }

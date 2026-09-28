@@ -10,10 +10,10 @@ import SwiftData
 
 @Model
 final class AccountModel {
-    @Attribute(.unique) var id: UUID
+    @Attribute(.unique) var id: String
     var name: String
 
-    init(id: UUID = UUID(), name: String) {
+    init(id: String = UUID().uuidString, name: String) {
         self.id = id
         self.name = name
     }
