@@ -31,13 +31,13 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                     } label: {
                         HStack {
                             VStack(alignment: .leading) {
-                                Text(tx.category).font(.headline)
+                                Text(tx.category.name).font(.headline)
                                 Text(tx.detail ?? "").font(.subheadline).foregroundStyle(.secondary)
                             }
                             Spacer()
                             VStack(alignment: .trailing) {
                                 Text(Date(timeIntervalSince1970: tx.date), style: .date).font(.footnote).foregroundStyle(.secondary)
-                                Text(amountString(for: tx)).font(.body).foregroundStyle(tx.isDebit ? .red : .green)
+                                Text(amountString(for: tx)).font(.body).foregroundStyle(tx.isExpense ? .red : .green)
                             }
                         }
                     }
@@ -78,7 +78,15 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                 Text(errorMessage)
             })
             .sheet(isPresented: $viewModel.showingForm) {
-                TransactionFormView(transaction: viewModel.editingTransaction) { result in
+                let tran = viewModel.editingTransaction
+                let config = TransactionFormConfig(transaction: tran,
+                                                   crudOperation: (tran == nil ? .create : .update),
+                                                   allCategories: viewModel.categories,
+                                                   gridCategories: viewModel.gridCategories(categories: viewModel.categories,
+                                                                                            selected: tran?.category),
+                                                   accounts: viewModel.accounts)
+
+                TransactionFormView(config: config) { result in
                     switch result {
                     case .created(let date, let category, let detail, let type, let account, let amount):
                         let builder = TransactionBuilder()
@@ -90,10 +98,10 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                         Task {
                             do {
                                 switch type {
-                                case .debit:
-                                    try await viewModel.addDebit(using: builder)
-                                case .credit:
-                                    try await viewModel.addCredit(using: builder)
+                                case .expense:
+                                    try await viewModel.addExpense(using: builder)
+                                case .income:
+                                    try await viewModel.addIncome(using: builder)
                                 }
                             } catch {
                                 errorMessage = error.localizedDescription
@@ -136,6 +144,8 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
-    let vm = cf.createTransactionsViewModel(repo: cf.createTransactionRepository()) as! DefaultTransactionsViewModel
+    let fs = cf.createTransactionFormViewService(dataStore: cf.dataStore()) as! DefaultTransactionFormViewService
+    let vm = cf.createTransactionsViewModel(formService: fs,
+                                            dataStore: cf.dataStore()) as! DefaultTransactionsViewModel
     TransactionsView<DefaultTransactionsViewModel>(viewModel: vm)
 }

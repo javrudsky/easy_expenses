@@ -8,5 +8,8 @@
 import Foundation
 
 protocol InputParser {
-    func buildTransactionFrom(text: String, defaults: TransactionDefaults) async throws -> Transaction
+    func buildTransactionFrom(text: String,
+                              categories: [Category],
+                              accounts: [Account],
+                              defaults: TransactionDefaults) async throws -> Transaction
 }

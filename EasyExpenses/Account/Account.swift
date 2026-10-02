@@ -3,6 +3,7 @@ import Foundation
 
 
 struct Account: Identifiable, Hashable, Codable {
-    var id: String = UUID().uuidString
+    var id: UUID = UUID()
     var name: String
 }
+

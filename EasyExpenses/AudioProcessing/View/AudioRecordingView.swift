@@ -92,7 +92,14 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
         }
         .padding()
         .sheet(isPresented: $viewModel.showTransactionForm) {
-            TransactionFormView(crudOperation: .create, transaction: viewModel.pendingTransaction) { result in
+            let tran = viewModel.pendingTransaction
+            let config = TransactionFormConfig(transaction: tran,
+                                               crudOperation: .create,
+                                               allCategories: viewModel.categories,
+                                               gridCategories: viewModel.gridCategories(categories: viewModel.categories,
+                                                                                        selected: tran?.category),
+                                               accounts: viewModel.accounts)
+            TransactionFormView(config: config) { result in
                 // Handle form result if needed; could call into another VM method
                 switch result {
                 case .created(let date, let category, let detail, let type, let account, let amount):
@@ -105,7 +112,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                         .setting(detail: detail)
                     Task {
                         do {
-                        try await viewModel.insertTransaction(builder: builder)
+                            try await viewModel.insertTransaction(builder: builder)
                         } catch {
                             errorMessage = error.localizedDescription
                             showingError = true
@@ -127,8 +134,10 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
+    let fs = cf.createTransactionFormViewService(dataStore: cf.dataStore())
     let vm = DefaultAudioRecordingViewModel(analyzer: cf.createAudioTranscriber(),
-                                     inputParser: cf.createInputParser(),
-                                     transactionRepo: cf.createTransactionRepository())
+                                            inputParser: cf.createInputParser(),
+                                            formService: fs,
+                                            dataStore: cf.dataStore())
     AudioRecordingView<DefaultAudioRecordingViewModel>(viewModel: vm)
 }

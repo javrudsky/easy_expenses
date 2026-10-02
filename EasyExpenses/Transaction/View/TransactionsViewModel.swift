@@ -9,28 +9,41 @@ import Foundation
 import SwiftData
 import Combine
 
-protocol TransactionsViewModel: AnyObject, ObservableObject {
+@MainActor
+protocol TransactionsViewModel: ObservableObject {
     var transactions: [Transaction] { get }
+    var categories: [Category] { get }
+    var accounts: [Account] { get }
     var showingForm: Bool { get set }
     var editingTransaction: Transaction? { get set }
 
     func reload() async throws
-    func addDebit(using builder: TransactionBuilder) async throws
-    func addCredit(using builder: TransactionBuilder) async throws
+    func addExpense(using builder: TransactionBuilder) async throws
+    func addIncome(using builder: TransactionBuilder) async throws
     func update(_ transaction: Transaction) async throws
+    
     func delete(at offsets: IndexSet) async throws
+    func reloadCategories() async
+    func reloadAccounts() async
+    func gridCategories(categories: [Category], selected: Category?) -> [Category]
 }
 
 @MainActor
 final class DefaultTransactionsViewModel: TransactionsViewModel {
     @Published var transactions: [Transaction] = []
+    @Published var categories: [Category] = []
+    @Published var accounts: [Account] = []
+    
     @Published var showingForm = false
     @Published var editingTransaction: Transaction? = nil
 
     private let transactionRepo: TransactionRepository
+    private let formService: TransactionFormViewService
 
-    init(repo: TransactionRepository) {
-        self.transactionRepo = repo
+    init(formService: TransactionFormViewService,
+         dataStore: DataStore) {
+        self.formService = formService
+        self.transactionRepo = dataStore.transactionRepo
     }
 
     func reload() async throws {
@@ -40,14 +53,14 @@ final class DefaultTransactionsViewModel: TransactionsViewModel {
         }
     }
 
-    func addDebit(using builder: TransactionBuilder) async throws {
-        let tx = try builder.setting(type: .debit).build()
+    func addExpense(using builder: TransactionBuilder) async throws {
+        let tx = try builder.setting(type: .expense).build()
         try await transactionRepo.insertOrUpdate(tx)
         try await reload()
     }
 
-    func addCredit(using builder: TransactionBuilder) async throws {
-        let tx = try builder.setting(type: .credit).build()
+    func addIncome(using builder: TransactionBuilder) async throws {
+        let tx = try builder.setting(type: .income).build()
         try await transactionRepo.insertOrUpdate(tx)
         try await reload()
     }
@@ -59,10 +72,28 @@ final class DefaultTransactionsViewModel: TransactionsViewModel {
 
     func delete(at offsets: IndexSet) async throws {
         for index in offsets {
-            let tx = await transactions[index]
+            let tx = transactions[index]
             try await transactionRepo.delete(tx)
         }
         try await reload()
+    }
+    
+    func reloadCategories() async {
+            let items = await formService.getCategories()
+            await MainActor.run {
+                self.categories = items
+            }
+    }
+    
+    func reloadAccounts() async {
+        let items = await formService.getAccounts()
+        await MainActor.run {
+            self.accounts = items
+        }
+    }
+    
+    func gridCategories(categories: [Category], selected: Category?) -> [Category] {
+        formService.gridCategories(categories: categories, selected: selected)
     }
 }
 

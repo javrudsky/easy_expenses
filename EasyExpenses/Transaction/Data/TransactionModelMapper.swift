@@ -1,34 +1,34 @@
 import Foundation
 
-
 protocol TransactionMapper: Sendable {
-    func toModel(_ domain: Transaction) -> TransactionModel
+    func toModel(_ domain: Transaction, categoryModel: CategoryModel, accountModel: AccountModel) -> TransactionModel
     func toDomain(_ model: TransactionModel) -> Transaction
 }
 
 struct DefaultTransactionMapper: TransactionMapper {
-
-    func toModel(_ domain: Transaction) -> TransactionModel {
+    func toModel(_ domain: Transaction, categoryModel: CategoryModel, accountModel: AccountModel) -> TransactionModel {
         return TransactionModel(
             id: domain.id,
             date: domain.date,
-            category: domain.category,
             detail: domain.detail,
             transactionType: domain.transactionType.rawValue,
-            account: domain.account,
-            amount: domain.amount
+            amount: domain.amount,
+            category: categoryModel,
+            account: accountModel
         )
     }
 
     func toDomain(_ model: TransactionModel) -> Transaction {
-        let type = TransactionType(rawValue: model.transactionType) ?? .debit
+        let type = TransactionType(rawValue: model.transactionType) ?? .expense
+        let category = Category(id: model.category.id, name: model.category.name, transactionType: type)
+                                    let account = Account(id: model.account.id, name: model.account.name)
         return Transaction(
             id: model.id,
             date: model.date,
-            category: model.category,
+            category: category,
             detail: model.detail,
             transactionType: type,
-            account: model.account,
+            account: account,
             amount: model.amount
         )
     }

@@ -36,13 +36,17 @@ nonisolated struct InputWordSet {
 struct DummyInputParser: InputParser {
     // Rudimentary function to recognize transaction
     // TODO: Replace by AI
-    func buildTransactionFrom(text: String, defaults: TransactionDefaults) async throws -> Transaction {
+    func buildTransactionFrom(text: String,
+                              categories: [Category],
+                              accounts: [Account],
+                              defaults: TransactionDefaults) async throws -> Transaction {
+        
         let lowText = text.lowercased().split(separator: " ")
         var detail = text
         var hasCredit = false
         var hasDebit = false
         var amount: Decimal = 0.0
-        var category: String = defaults.category
+        var category: String = defaults.incomeCategory.name
         
         for word in lowText {
             let w = String(word)
@@ -61,12 +65,12 @@ struct DummyInputParser: InputParser {
             }
             
             if hasCredit {
-                if category == defaults.category && InputWordSet.creditCategoryWords.contains(w) {
+                if category == defaults.incomeCategory.name && InputWordSet.creditCategoryWords.contains(w) {
                     category = w
                     detail.replace(word, with: "")
                 }
             } else if hasDebit {
-                if category == defaults.category && InputWordSet.debitCategoryWords.contains(w) {
+                if category == defaults.expenseCategory.name && InputWordSet.debitCategoryWords.contains(w) {
                     category = w
                     detail.replace(word, with: "")
                 }
@@ -77,7 +81,7 @@ struct DummyInputParser: InputParser {
             throw ParserError.onParsing("Could not recognize transaction type")
         }
         
-        let type: TransactionType = hasDebit ? .debit : .credit
+        let type: TransactionType = hasDebit ? .expense : .income
         
         let builder = TransactionBuilder()
         return try builder
@@ -86,7 +90,16 @@ struct DummyInputParser: InputParser {
             .setting(date: defaults.date)
             .setting(type: type)
             .setting(account: defaults.account)
-            .setting(category: category)
+            .setting(category: getCategory(categories: categories,
+                                           name: category,
+                                           defaultValue: (type == .expense ? defaults.expenseCategory : defaults.incomeCategory)))
             .build()
+    }
+    
+    private func getCategory(categories: [Category], name: String, defaultValue: Category) -> Category {
+        if let c = categories.first(where: { $0.name == name }) {
+            return c
+        }
+        return defaultValue
     }
 }

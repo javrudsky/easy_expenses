@@ -13,7 +13,7 @@ typealias OnGridButtonSelect = (String) -> Void
 struct CategoryGridView: View {
     private let items: [Category]
     private var buttons: [String: ButtonGrid] = [:]
-    @State var selectedId: String
+    @State var selectedId: UUID
     @State var value: Category
 
     init(items: [Category],

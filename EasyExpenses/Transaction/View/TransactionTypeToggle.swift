@@ -16,36 +16,36 @@ struct TransactionTypeToggle: View {
     var body: some View {
         HStack(spacing: 0) {
             Button {
-                type = .debit
+                type = .expense
             } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "arrow.down.circle.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, type == .debit ? .red : inactiveCircleGray)
-                    Text("Debit")
+                        .foregroundStyle(.white, type == .expense ? .red : inactiveCircleGray)
+                    Text("Expense")
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .background(type == .debit ? Color.red.opacity(0.15) : Color.clear)
-                .foregroundStyle(type == .debit ? .red : .secondary)
+                .background(type == .expense ? Color.red.opacity(0.15) : Color.clear)
+                .foregroundStyle(type == .expense ? .red : .secondary)
             }
             .buttonStyle(.plain)
 
             Button {
-                type = .credit
+                type = .income
             } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "arrow.up.circle.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, type == .credit ? .green : inactiveCircleGray)
-                    Text("Credit")
+                        .foregroundStyle(.white, type == .income ? .green : inactiveCircleGray)
+                    Text("Income")
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .background(type == .credit ? Color.green.opacity(0.15) : Color.clear)
-                .foregroundStyle(type == .credit ? .green : .secondary)
+                .background(type == .income ? Color.green.opacity(0.15) : Color.clear)
+                .foregroundStyle(type == .income ? .green : .secondary)
             }
             .buttonStyle(.plain)
         }
@@ -58,12 +58,12 @@ struct TransactionTypeToggle: View {
         .animation(.easeInOut(duration: 0.15), value: type)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Transaction type")
-        .accessibilityValue(type == .debit ? "Debit" : "Credit")
+        .accessibilityValue(type == .expense ? "Expense" : "Income")
     }
 }
 
 #Preview("TransactionTypeToggle") {
-    @Previewable @State var type: TransactionType = .debit
+    @Previewable @State var type: TransactionType = .expense
     return VStack {
         TransactionTypeToggle(type: $type)
             .padding()

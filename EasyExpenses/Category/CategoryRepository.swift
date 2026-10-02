@@ -4,6 +4,7 @@ import SwiftData
 protocol CategoryRepository: ModelActor {
     func fetchAll() async throws -> [Category]
     func insertOrUpdate(_ category: Category) async throws
+    func insert(_ categories: [Category]) async
     func delete(_ category: Category) async throws
 }
 
@@ -14,7 +15,8 @@ actor SwiftDataCategoryRepository: CategoryRepository {
 
     private let modelContext: ModelContext
 
-    init(modelContainer: ModelContainer, mapper: CategoryMapper = DefaultCategoryMapper()) {
+    init(modelContainer: ModelContainer,
+         mapper: CategoryMapper = DefaultCategoryMapper()) {
         self.modelContainer = modelContainer
         self.mapper = mapper
         let c = ModelContext(modelContainer)
@@ -35,6 +37,16 @@ actor SwiftDataCategoryRepository: CategoryRepository {
             try insert(mapper.toModel(category))
         }
     }
+    
+    func insert(_ categories: [Category]) async {
+        for c in categories {
+            do {
+                try insert(mapper.toModel(c))
+            } catch {
+               print("This should not happen. Doing nothing for now")
+            }
+        }
+    }
 
     func delete(_ category: Category) async throws {
         _ = try await deleteBy(id: category.id)
@@ -44,7 +56,7 @@ actor SwiftDataCategoryRepository: CategoryRepository {
     func save() async throws { try modelContext.save() }
 
     @discardableResult
-    func deleteBy(id: String) async throws -> CategoryModel? {
+    func deleteBy(id: UUID) async throws -> CategoryModel? {
         let obj = try getBy(id: id)
         guard let obj else { return nil }
         modelContext.delete(obj)
@@ -52,7 +64,7 @@ actor SwiftDataCategoryRepository: CategoryRepository {
         return obj
     }
 
-    private func getBy(id: String) throws -> CategoryModel? {
+    private func getBy(id: UUID) throws -> CategoryModel? {
         let predicate = #Predicate<CategoryModel> { model in model.id == id }
         let objs = try modelContext.fetch(FetchDescriptor<CategoryModel>(predicate: predicate))
         return objs.first
@@ -67,3 +79,4 @@ actor SwiftDataCategoryRepository: CategoryRepository {
         try modelContext.save()
     }
 }
+

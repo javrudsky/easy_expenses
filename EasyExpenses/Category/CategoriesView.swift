@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CategoriesView<VM: CategoriesViewModel>: View {
     @ObservedObject var viewModel: VM
-    @State private var editingName: [String: String] = [:]
+    @State private var editingName: [UUID: String] = [:]
 
     var body: some View {
         List {
@@ -20,7 +20,11 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
                         get: { editingName[category.id] ?? category.name },
                         set: { editingName[category.id] = $0 }
                     ), onCommit: {
-                        let updated = Category(id: category.id, name: editingName[category.id] ?? category.name)
+                        let tType = viewModel.transactionType
+                        let updated = Category(id: category.id,
+                                               name: editingName[category.id] ?? category.name,
+//                                               transactionType: viewModel.transactionType)
+                                               transactionType: tType)
                         Task { await viewModel.save(updated) }
                     })
                     .textFieldStyle(.roundedBorder)
@@ -43,7 +47,7 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
 
 #Preview {
     let repo = SwiftDataCategoryRepository(modelContainer: try! DefaultAppFactory.createModelContainer(inMemory: true))
-    let vm = DefaultCategoriesViewModel(repo: repo)
+    let vm = DefaultCategoriesViewModel(transactionType: .expense, repo: repo)
     CategoriesView(viewModel: vm)
 }
 

@@ -9,11 +9,19 @@ import Foundation
 
 @Model
 final class CategoryModel {
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) var id: UUID
     var name: String
+    var transactionType: String
 
-    init(id: String = UUID().uuidString, name: String) {
+    @Relationship(deleteRule: .deny, inverse: \TransactionModel.category)
+    var transactions: [TransactionModel] = []
+
+    init(id: UUID = UUID(),
+         name: String,
+         transactionType: String) {
         self.id = id
         self.name = name
+        self.transactionType = transactionType
     }
 }
+

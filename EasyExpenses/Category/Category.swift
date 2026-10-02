@@ -8,6 +8,7 @@
 import Foundation
 
 struct Category: Identifiable, Hashable, Codable {
-    var id: String = UUID().uuidString
+    var id: UUID = UUID()
     var name: String
+    var transactionType: TransactionType
 }

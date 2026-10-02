@@ -19,13 +19,12 @@ struct LLMTransactionSchema {
             properties: [
                 DynamicGenerationSchema.Property(
                     name: "category",
-                    description: "The category that best describes the transaction.",
+                    description: "The category that best describes the transaction. Return the value 'Other' if you can't find a correct value.",
                     schema: DynamicGenerationSchema(
                         name: "category",
                         anyOf: categories
                     )
                 ),
-                
                 DynamicGenerationSchema.Property(
                     name: "detail",
                     description: "A short description of the purpose of the transaction, such as groceries, dinner, fuel, or a doctor's appointment.",
@@ -34,21 +33,21 @@ struct LLMTransactionSchema {
                 
                 DynamicGenerationSchema.Property(
                     name: "transactionType",
-                    description: "The transaction type. Use 'debit' when money was spent or paid, and 'credit' when money was received.",
+                    description: "The transaction type. Use 'expense' when money was spent or paid, and 'income' when money was received.",
                     schema: DynamicGenerationSchema(
                         name: "transactionType",
-                        anyOf: ["debit", "credit"]
+                        anyOf: ["expense", "income"]
                     )
                 ),
                 
-                DynamicGenerationSchema.Property(
-                    name: "account",
-                    description: "The account or payment method used for the transaction.",
-                    schema: DynamicGenerationSchema(
-                        name: "account",
-                        anyOf: accounts
-                    )
-                ),
+//                DynamicGenerationSchema.Property(
+//                    name: "account",
+//                    description: "The account or payment method used for the transaction.",
+//                    schema: DynamicGenerationSchema(
+//                        name: "account",
+//                        anyOf: accounts
+//                    )
+//                ),
                 
                 DynamicGenerationSchema.Property(
                     name: "amount",

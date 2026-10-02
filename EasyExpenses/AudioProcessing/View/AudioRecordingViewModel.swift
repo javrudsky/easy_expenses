@@ -9,10 +9,16 @@ protocol AudioRecordingViewModel: ObservableObject {
     var isFinal: Bool { get }
     var pendingTransaction: Transaction? { get }
     var showTransactionForm: Bool { get set }
+    var categories: [Category] { get }
+    var accounts: [Account] { get }
+    
     func startRecording()
     func stopRecording()
     func cancelRecording()
     func insertTransaction(builder: TransactionBuilder) async throws
+    func reloadCategories() async
+    func reloadAccounts() async
+    func gridCategories(categories: [Category], selected: Category?) -> [Category]
 }
 
 @MainActor
@@ -23,21 +29,28 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
     @Published private(set) var isFinal: Bool = false
     @Published private(set) var pendingTransaction: Transaction? = nil
     @Published var showTransactionForm: Bool = false
-
     
+    @Published private(set) var categories: [Category] = []
+    @Published private(set) var accounts: [Account] = []
+
     private let transcriber: AudioTranscriber
     private let inputParser: InputParser
     private let transactionRepo: TransactionRepository
-
+    private let formService: TransactionFormViewService
     private var task: Task<Void, Never>?
-
 
     init(analyzer: AudioTranscriber,
          inputParser: InputParser,
-         transactionRepo: TransactionRepository) {
+         formService: TransactionFormViewService,
+         dataStore: DataStore) {
         self.transcriber = analyzer
         self.inputParser = inputParser
-        self.transactionRepo = transactionRepo
+        self.transactionRepo = dataStore.transactionRepo
+        self.formService = formService
+        Task {
+            await reloadCategories()
+            await reloadCategories()
+        }
     }
     
     func startRecording() {
@@ -58,6 +71,8 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
                     throw AudioError.unexpected("No parsed text")
                 }
                 let tx = try await self.inputParser.buildTransactionFrom(text: latestText,
+                                                                         categories: categories,
+                                                                         accounts: accounts,
                                                                          defaults: TransactionDefaults())
                 self.pendingTransaction = tx
                 self.showTransactionForm = true
@@ -91,10 +106,27 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
             task?.cancel()
             task = nil
         }
-
     }
     
     func insertTransaction(builder: TransactionBuilder) async throws {
         try await transactionRepo.insertOrUpdate(builder.build())
+    }
+    
+    func reloadCategories() async {
+            let items = await formService.getCategories()
+            await MainActor.run {
+                self.categories = items
+            }
+    }
+    
+    func reloadAccounts() async {
+        let items = await formService.getAccounts()
+        await MainActor.run {
+            self.accounts = items
+        }
+    }
+    
+    func gridCategories(categories: [Category], selected: Category?) -> [Category] {
+        formService.gridCategories(categories: categories, selected: selected)
     }
 }

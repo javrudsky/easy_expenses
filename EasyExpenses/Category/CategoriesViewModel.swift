@@ -10,6 +10,8 @@ import Combine
 
 @MainActor
 protocol CategoriesViewModel: AnyObject, ObservableObject {
+    
+    var transactionType: TransactionType { get }
     var categories: [Category] { get }
     func load() async
     func add()
@@ -20,21 +22,24 @@ protocol CategoriesViewModel: AnyObject, ObservableObject {
 @MainActor
 final class DefaultCategoriesViewModel: CategoriesViewModel {
     @Published var categories: [Category] = []
+    let transactionType: TransactionType
     private let repository: CategoryRepository
 
-    init(repo: CategoryRepository) {
+    init(transactionType: TransactionType,
+         repo: CategoryRepository) {
         self.repository = repo
+        self.transactionType = transactionType
         Task { await load() }
     }
 
     func load() async {
         if let list = try? await repository.fetchAll() {
-            categories = list
+            categories = list.filter { $0.transactionType == transactionType }
         }
     }
 
     func add() {
-        categories.append(Category(name: "New Category"))
+        categories.append(Category(name: "New Category", transactionType: transactionType))
     }
 
     func save(_ category: Category) async {

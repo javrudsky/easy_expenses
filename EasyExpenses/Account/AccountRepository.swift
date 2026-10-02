@@ -41,7 +41,7 @@ actor SwiftDataAccountRepository: AccountRepository {
     func save() async throws { try modelContext.save() }
 
     @discardableResult
-    func deleteBy(id: String) async throws -> AccountModel? {
+    func deleteBy(id: UUID) async throws -> AccountModel? {
         let obj = try getBy(id: id)
         guard let obj else { return nil }
         modelContext.delete(obj)
@@ -49,7 +49,7 @@ actor SwiftDataAccountRepository: AccountRepository {
         return obj
     }
 
-    private func getBy(id: String) throws -> AccountModel? {
+    private func getBy(id: UUID) throws -> AccountModel? {
         let predicate = #Predicate<AccountModel> { model in model.id == id }
         let objs = try modelContext.fetch(FetchDescriptor<AccountModel>(predicate: predicate))
         return objs.first

@@ -9,10 +9,10 @@ import SwiftUI
 
 enum TransactionFormResult {
     case created(date: Date,
-                 category: String,
+                 category: Category,
                  detail: String,
                  type: TransactionType,
-                 account: String,
+                 account: Account,
                  amount: Decimal)
     case updated(Transaction)
     case cancelled
@@ -24,30 +24,43 @@ enum CRUDOperation {
     case delete
 }
 
-struct TransactionFormView: View {
-    var crudOperation: CRUDOperation
+struct TransactionFormConfig {
     var transaction: Transaction?
-    var useAccounts: Bool = false
+    var crudOperation: CRUDOperation
+    var allCategories: [Category]
+    var gridCategories: [Category]
+    var accounts: [Account]
+    
+    init(transaction: Transaction? = nil,
+         crudOperation: CRUDOperation = .create,
+         allCategories: [Category],
+         gridCategories: [Category],
+         accounts: [Account]) {
+        self.transaction = transaction
+        self.crudOperation = crudOperation
+        self.allCategories = allCategories
+        self.gridCategories = gridCategories
+        self.accounts = accounts
+    }
+}
+
+struct TransactionFormView: View {
     var onComplete: (TransactionFormResult) -> Void
+    private let cfg: TransactionFormConfig
 
     @Environment(\.dismiss) private var dismiss
 
     @State private var date: Date = .now
-    @State private var category: Category
+    @State private var category: Category = Category(id: UUID(), name: "", transactionType: .expense)
     @State private var detail: String = ""
-    @State private var type: TransactionType = .debit
-    @State private var account: String = ""
+    @State private var type: TransactionType = .expense
+    @State private var account: Account = Account(id: UUID(), name: "")
     @State private var amountText: String = ""
-    private var categories: [Category]
 
-    init(crudOperation: CRUDOperation = .update,
-         transaction: Transaction? = nil,
+    init(config: TransactionFormConfig,
          onComplete: @escaping (TransactionFormResult) -> Void) {
-        self.crudOperation = transaction == nil ? .create : crudOperation
-        self.transaction = transaction
+        self.cfg = config
         self.onComplete = onComplete
-        self.categories = InputWordSet.debitCategoryWords[..<9].map { Category(name: $0)}
-        self.category = self.categories[0]
     }
 
     var body: some View {
@@ -56,22 +69,17 @@ struct TransactionFormView: View {
                 Section("") {
                     TransactionTypeToggle(type: $type)
                     DatePicker("Date", selection: $date, displayedComponents: [.date])
-                    //TextField("Category", text: $category)
-                    CategoryGridView(items: categories , value: category)
-                    if useAccounts {
-                        TextField("Account", text: $account)
-                    }
+                    CategoryGridView(items: cfg.gridCategories, value: category)
                     Spacer()
                     HStack {
                         Text("Amount")
                         TextField("0.00", text: $amountText)
-                        .keyboardType(.decimalPad)
-                       
+                            .keyboardType(.decimalPad)
                     }
                     TextField("Description", text: $detail)
                 }
             }
-            .navigationTitle(transaction == nil ? "New Transaction" : "Edit Transaction")
+            .navigationTitle(cfg.transaction == nil ? "New Transaction" : "Edit Transaction")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button{ dismissAndSend(.cancelled) }
@@ -81,18 +89,22 @@ struct TransactionFormView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        if crudOperation == .update, var tx = transaction {
+                        if cfg.crudOperation == .update, var tx = cfg.transaction {
                             tx.date = date.timeIntervalSince1970
-                            tx.category = category.name
+                            tx.category = category
                             tx.detail = detail
                             tx.transactionType = type
-//                            tx.account = account
-                            tx.account = "other"
+                            tx.account = account
                             if let amount = Decimal(string: amountText) { tx.amount = amount }
                             dismissAndSend(.updated(tx))
                         } else {
                             guard let amount = Decimal(string: amountText) else { return }
-                            dismissAndSend(.created(date: date, category: category.name, detail: detail, type: type, account: account, amount: amount))
+                            dismissAndSend(.created(date: date,
+                                                    category: category,
+                                                    detail: detail,
+                                                    type: type,
+                                                    account: account,
+                                                    amount: amount))
                         }
                     } label: {
                         Image(systemName: "checkmark")
@@ -105,26 +117,21 @@ struct TransactionFormView: View {
     }
 
     private var isValid: Bool {
-        !account.isEmpty && Decimal(string: amountText) != nil
+        Decimal(string: amountText) != nil
     }
 
     private func populateFromTransactionIfNeeded() {
-        guard let tx = transaction else { return }
-        date = Date(timeIntervalSince1970: tx.date)
-        //category = tx.category
-        if let c = categories.first(where: { $0.name == tx.category }) {
-            print("found cat")
-            category = c
+        if let tx = cfg.transaction {
+            date = Date(timeIntervalSince1970: tx.date)
+            category = cfg.allCategories.first(where: { $0.id == tx.category.id }) ?? cfg.allCategories.first ?? category
+            detail = tx.detail ?? ""
+            type = tx.transactionType
+            account = tx.account
+            amountText = NSDecimalNumber(decimal: tx.amount).stringValue
         } else {
-            print(" to 0")
-            category = categories[0]
+            category = cfg.allCategories.first ?? category
+            account = cfg.accounts.first ?? account
         }
-        detail = tx.detail ?? ""
-        type = tx.transactionType
-        account = tx.account
-        account = "other"
-        amountText = NSDecimalNumber(decimal: tx.amount).stringValue
-        
     }
 
     private func dismissAndSend(_ result: TransactionFormResult) {
@@ -134,6 +141,8 @@ struct TransactionFormView: View {
 }
 
 #Preview {
-    TransactionFormView { _ in }
+    let cf = try! DefaultAppFactory(inMemory: true)
+    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income), Category(name: "Fuel", transactionType: .income)]
+    let cfg = TransactionFormConfig(allCategories: [AppDefaults.incomeCategory], gridCategories: cat, accounts: [])
+    TransactionFormView(config: cfg, onComplete: { _ in })
 }
-
