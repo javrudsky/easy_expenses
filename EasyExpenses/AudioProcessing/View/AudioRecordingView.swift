@@ -134,10 +134,11 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
-    let fs = cf.createTransactionFormViewService(dataStore: cf.dataStore())
+    let fs = cf.transactionFormService(dataStore: cf.dataStore())
     let vm = DefaultAudioRecordingViewModel(analyzer: cf.createAudioTranscriber(),
                                             inputParser: cf.createInputParser(),
                                             formService: fs,
-                                            dataStore: cf.dataStore())
+                                            dataStore: cf.dataStore(),
+                                            appValues: cf.appValues())
     AudioRecordingView<DefaultAudioRecordingViewModel>(viewModel: vm)
 }

@@ -18,14 +18,21 @@ protocol AppFactory {
     func createAudioTranscriber() -> AudioTranscriber
     func createInputParser() -> InputParser
     
+    
+    func dataStore() -> DataStore
+    func appValues() -> AppValues
+    
     // MARK: - Main actor declarations
-    @MainActor func createAudioRecordingViewModel(repo: TransactionRepository) -> any AudioRecordingViewModel
-    @MainActor func createTransactionsViewModel(repo: TransactionRepository) -> any TransactionsViewModel
-    @MainActor func createCategoriesViewModel() -> any CategoriesViewModel
-    @MainActor func createAccountsViewModel() -> any AccountsViewModel
+    @MainActor func audioRecordingViewModel(dataStore: DataStore) -> any AudioRecordingViewModel
+    @MainActor func transactionsViewModel(dataStore: DataStore) -> any TransactionsViewModel
+    @MainActor func categoriesViewModel(transactionType: TransactionType,
+                                        dataStore: DataStore) -> any CategoriesViewModel
+    @MainActor func accountsViewModel(dataStore: DataStore) -> any AccountsViewModel
+    @MainActor func transactionFormService(dataStore: DataStore) -> TransactionFormViewService
 }
 
 struct DefaultAppFactory: AppFactory {
+    
     
     let modelContainer: ModelContainer
     init(modelContainer: ModelContainer? = nil,
@@ -66,6 +73,14 @@ struct DefaultAppFactory: AppFactory {
     func createAccountRepository() -> AccountRepository {
         return SwiftDataAccountRepository(modelContainer: modelContainer)
     }
+    
+    func dataStore() -> DataStore {
+        DataStore(
+            transactionRepo: createTransactionRepository(),
+            categoryRepo: createCategoryRepository(),
+            accountRepo: createAccountRepository()
+        )
+    }
         
     func createAudioTranscriber() -> AudioTranscriber {
         return DictationSpeechTranscriber()
@@ -76,26 +91,39 @@ struct DefaultAppFactory: AppFactory {
         return LLMParser()
     }
     
+    func appValues() -> AppValues {
+        return DefaultAppValues(valueStore: DefaultValueStore())
+    }
+    
     // MARK: - Main Actor definitions
     @MainActor
-    func createTransactionsViewModel(repo: TransactionRepository) -> any TransactionsViewModel {
-        return DefaultTransactionsViewModel(repo: repo)
+    func transactionsViewModel(dataStore: DataStore) -> any TransactionsViewModel {
+        return DefaultTransactionsViewModel(formService: DefaultTransactionFormViewService(dataStore: dataStore),
+                                            dataStore: dataStore)
     }
     
-    @MainActor func createAudioRecordingViewModel(repo: TransactionRepository) -> any AudioRecordingViewModel {
+    @MainActor func audioRecordingViewModel(dataStore: DataStore) -> any AudioRecordingViewModel {
         return DefaultAudioRecordingViewModel(analyzer: createAudioTranscriber(),
                                               inputParser: createInputParser(),
-                                              transactionRepo: repo)
+                                              formService: DefaultTransactionFormViewService(dataStore: dataStore),
+                                              dataStore: dataStore,
+                                              appValues: appValues())
     }
     
     @MainActor
-    func createCategoriesViewModel() -> any CategoriesViewModel {
-        return DefaultCategoriesViewModel(repo: createCategoryRepository())
+    func categoriesViewModel(transactionType: TransactionType,
+                                   dataStore: DataStore) -> any CategoriesViewModel {
+        return DefaultCategoriesViewModel(transactionType: transactionType,
+                                          repo: dataStore.categoryRepo)
     }
     
     @MainActor
-    func createAccountsViewModel() -> any AccountsViewModel {
-        return DefaultAccountsViewModel(repo: createAccountRepository())
+    func accountsViewModel(dataStore: DataStore) -> any AccountsViewModel {
+        return DefaultAccountsViewModel(repo: dataStore.accountRepo)
+    }
+    
+    @MainActor
+    func transactionFormService(dataStore: DataStore) -> TransactionFormViewService {
+        return DefaultTransactionFormViewService(dataStore: dataStore)
     }
 }
-

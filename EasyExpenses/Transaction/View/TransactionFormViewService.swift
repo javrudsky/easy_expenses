@@ -18,7 +18,7 @@ final class DefaultTransactionFormViewService: TransactionFormViewService {
     // Initializers
     init(dataStore: DataStore) {
         self.categoryRepo = dataStore.categoryRepo
-        self.accountRepo = dataStore.accountRepo        
+        self.accountRepo = dataStore.accountRepo
     }
     
     func getCategories() async -> [Category] {
@@ -29,7 +29,9 @@ final class DefaultTransactionFormViewService: TransactionFormViewService {
         let cSel = selected ?? categories[0]
         var gc = [cSel]
         let max = min(categories.count - 1, 8)
-        gc.append(contentsOf: categories.filter {$0.id != cSel.id}[..<max])
+        if max > 0 {
+            gc.append(contentsOf: categories.filter {$0.id != cSel.id}[..<max])
+        }
         return gc
     }
     

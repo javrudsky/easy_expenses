@@ -38,15 +38,18 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
     private let transactionRepo: TransactionRepository
     private let formService: TransactionFormViewService
     private var task: Task<Void, Never>?
+    private let appValues: AppValues
 
     init(analyzer: AudioTranscriber,
          inputParser: InputParser,
          formService: TransactionFormViewService,
-         dataStore: DataStore) {
+         dataStore: DataStore,
+         appValues: AppValues) {
         self.transcriber = analyzer
         self.inputParser = inputParser
         self.transactionRepo = dataStore.transactionRepo
         self.formService = formService
+        self.appValues = appValues
         Task {
             await reloadCategories()
             await reloadCategories()
@@ -73,7 +76,7 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
                 let tx = try await self.inputParser.buildTransactionFrom(text: latestText,
                                                                          categories: categories,
                                                                          accounts: accounts,
-                                                                         defaults: TransactionDefaults())
+                                                                         defaults: appValues.transactionDefaults())
                 self.pendingTransaction = tx
                 self.showTransactionForm = true
                 self.isError = false

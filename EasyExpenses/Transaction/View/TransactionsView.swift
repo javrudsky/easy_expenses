@@ -19,6 +19,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
 
     init(viewModel: VM) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        reloadData()
     }
 
     var body: some View {
@@ -140,12 +141,18 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
         formatter.numberStyle = .currency
         return formatter.string(from: tx.amount as NSDecimalNumber) ?? "\(tx.amount)"
     }
+    
+    private func reloadData() {
+        // TODO: Implement enable / disable logic after loading
+        Task {
+            await viewModel.reloadCategories()
+            await viewModel.reloadAccounts()
+        }
+    }
 }
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
-    let fs = cf.createTransactionFormViewService(dataStore: cf.dataStore()) as! DefaultTransactionFormViewService
-    let vm = cf.createTransactionsViewModel(formService: fs,
-                                            dataStore: cf.dataStore()) as! DefaultTransactionsViewModel
+    let vm = cf.transactionsViewModel(dataStore: cf.dataStore()) as! DefaultTransactionsViewModel
     TransactionsView<DefaultTransactionsViewModel>(viewModel: vm)
 }

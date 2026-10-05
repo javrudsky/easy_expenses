@@ -23,6 +23,13 @@ struct Transaction: Sendable, Identifiable {
     var amount: Decimal
 }
 
+struct TransactionDefaults {
+    var date: TimeInterval
+    var incomeCategory: Category
+    var expenseCategory: Category
+    var account: Account
+}
+
 // MARK: - Builder
 struct TransactionBuilder {
     var id: UUID = UUID()
