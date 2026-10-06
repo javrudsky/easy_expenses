@@ -9,8 +9,11 @@ final class TransactionModel {
     var transactionType: String
     var amount: Decimal
 
-    @Relationship var category: CategoryModel
-    @Relationship var account: AccountModel
+    @Relationship
+    var category: CategoryModel
+    
+    @Relationship
+    var account: AccountModel
 
     init(id: UUID = UUID(),
          date: TimeInterval,

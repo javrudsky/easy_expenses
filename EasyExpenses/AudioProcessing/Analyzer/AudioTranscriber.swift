@@ -23,6 +23,6 @@ struct AudioTranscriberResult {
 }
 protocol AudioTranscriber {
     
-    func start() async throws -> AsyncStream<AudioTranscriberResult>
+    func start() async throws -> AsyncStream<AudioTranscriberResult>?
     func stop() async
 }

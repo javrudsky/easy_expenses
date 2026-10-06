@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct AccountsView<VM: AccountsViewModel>: View {
+    @State private var showingError: Bool = false
     @ObservedObject var viewModel: VM
     @State private var editingName: [UUID: String] = [:]
 
@@ -22,9 +23,14 @@ struct AccountsView<VM: AccountsViewModel>: View {
                 }
             }
             .onDelete { offsets in
-                Task { await viewModel.delete(at: offsets) }
+                delete(offsets: offsets)
             }
         }
+        .alert("Message", isPresented: $showingError, actions: {
+                Button("OK", role: .cancel) { }
+            }, message: {
+                Text("Couldn't delete because in transactions")
+            })
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button(action: { viewModel.add() }) {
@@ -33,6 +39,16 @@ struct AccountsView<VM: AccountsViewModel>: View {
             }
         }
         .navigationTitle("Accounts")
+    }
+
+    private func delete(offsets: IndexSet) {
+        Task {
+            do {
+                try await viewModel.delete(at: offsets)
+            } catch {
+                showingError = true
+            }
+        }
     }
 }
 

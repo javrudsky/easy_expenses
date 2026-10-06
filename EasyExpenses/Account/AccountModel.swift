@@ -12,9 +12,9 @@ import SwiftData
 final class AccountModel {
     @Attribute(.unique) var id: UUID
     var name: String
-
+    
     @Relationship(deleteRule: .deny, inverse: \TransactionModel.account)
-    var transactions: [TransactionModel] = []
+    var transactions: [TransactionModel]?
 
     init(id: UUID = UUID(), name: String) {
         self.id = id

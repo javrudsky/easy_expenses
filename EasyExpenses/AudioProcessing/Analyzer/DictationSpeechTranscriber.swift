@@ -11,12 +11,15 @@ final class DictationSpeechTranscriber: AudioTranscriber {
     private enum State { case idle, running, stopping }
     private var state: State = .idle
     
-    func start() async throws -> AsyncStream<AudioTranscriberResult> {
+    func start() async throws -> AsyncStream<AudioTranscriberResult>? {
         guard state == .idle else { throw AudioError.alreadyRunning }   // add this case
         state = .running
         
         do {
-            try await requestPermissions()
+            if try await requestPermissions() {
+                state = .idle
+                return nil
+            }
             
             guard let locale = await DictationTranscriber.supportedLocale(equivalentTo: Locale.current) else {
                 throw AudioError.unavailableTargetFormat
@@ -288,13 +291,15 @@ private final class BufferConverter {
 // MARK: -- Private
    
     /// Requests both speech and microphone permissions if needed.
-    private func requestPermissions() async throws {
+    private func requestPermissions() async throws -> Bool {
+        var shouldCancelRecord = false
         // 1) Speech recognition
         let speechAuth = SFSpeechRecognizer.authorizationStatus()
         if speechAuth != .authorized {
             let newStatus = await withCheckedContinuation { (continuation: CheckedContinuation<SFSpeechRecognizerAuthorizationStatus, Never>) in
                 SFSpeechRecognizer.requestAuthorization { status in
                     continuation.resume(returning: status)
+                    shouldCancelRecord = true
                 }
             }
             guard newStatus == .authorized else {
@@ -303,10 +308,15 @@ private final class BufferConverter {
         }
         
         // 2) Microphone (record permission)
+        let prevMicStatus = AVAudioApplication.shared.recordPermission
+        if prevMicStatus == .denied || prevMicStatus == .undetermined {
+            shouldCancelRecord = true
+        }
         let micGranted = await AVAudioApplication.requestRecordPermission()
         guard micGranted else {
             throw AppAuthError.audioRecordingNotGranted
         }
+        return shouldCancelRecord
     }
 //
 //    // High-performance live format converter wrapper

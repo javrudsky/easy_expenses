@@ -61,7 +61,10 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
         isRecording = true
         task = Task {
             do {
-                let stream = try await transcriber.start()
+                guard let stream = try await transcriber.start() else {
+                    isRecording = false
+                    return
+                }
                 var latestText = ""
                 for await result in stream {
                     latestText = result.text

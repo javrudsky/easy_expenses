@@ -12,9 +12,9 @@ final class CategoryModel {
     @Attribute(.unique) var id: UUID
     var name: String
     var transactionType: String
-
+    
     @Relationship(deleteRule: .deny, inverse: \TransactionModel.category)
-    var transactions: [TransactionModel] = []
+    var transactions: [TransactionModel]?
 
     init(id: UUID = UUID(),
          name: String,

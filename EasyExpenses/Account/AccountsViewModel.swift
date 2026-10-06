@@ -7,7 +7,7 @@ protocol AccountsViewModel: ObservableObject {
     func load() async
     func add()
     func save(_ account: Account) async
-    func delete(at offsets: IndexSet) async
+    func delete(at offsets: IndexSet) async throws
 }
 
 @MainActor
@@ -35,8 +35,8 @@ final class DefaultAccountsViewModel: AccountsViewModel {
         await load()
     }
 
-    func delete(at offsets: IndexSet) async {
-        for index in offsets { try? await repository.delete(accounts[index]) }
+    func delete(at offsets: IndexSet) async throws {
+        for index in offsets { try await repository.delete(accounts[index]) }
         await load()
     }
 }

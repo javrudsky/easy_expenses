@@ -9,6 +9,7 @@ import SwiftUI
 struct CategoriesView<VM: CategoriesViewModel>: View {
     @ObservedObject var viewModel: VM
     @State private var editingName: [UUID: String] = [:]
+    @State private var showingError: Bool = false
 
     var body: some View {
         List {
@@ -33,6 +34,12 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
             .onDelete { offsets in
                 Task { await viewModel.delete(at: offsets) }
             }
+            .alert("Warning", isPresented: $showingError, actions: {
+                Button("OK", role: .cancel) { }
+            }, message: {
+                Text("Couldn't delete category")
+            })
+
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
