@@ -27,10 +27,10 @@ actor SwiftDataAccountRepository: AccountRepository {
     func insertOrUpdate(_ account: Account) async throws {
         if let obj: AccountModel = try getBy(id: account.id) {
             obj.name = account.name
-            try await save()
         } else {
-            try insert(mapper.toModel(account))
+            insert(mapper.toModel(account))
         }
+        try save()
     }
 
     func delete(_ account: Account) async throws {
@@ -38,14 +38,22 @@ actor SwiftDataAccountRepository: AccountRepository {
     }
 
     // MARK: - Private helpers
-    func save() async throws { try modelContext.save() }
+    private func save() throws {
+        do {
+            try modelContext.save()
+        } catch {
+            print("An error has occurred in \(String(describing: type(of: self))): \(error)")
+            modelContext.rollback()
+            throw error
+        }
+    }
 
     @discardableResult
     func deleteBy(id: UUID) async throws -> AccountModel? {
         let obj = try getBy(id: id)
         guard let obj else { return nil }
         modelContext.delete(obj)
-        try modelContext.save()
+        try save()
         return obj
     }
 
@@ -59,8 +67,7 @@ actor SwiftDataAccountRepository: AccountRepository {
         return try modelContext.fetch(FetchDescriptor<AccountModel>())
     }
 
-    private func insert(_ item: AccountModel) throws {
+    private func insert(_ item: AccountModel) {
         modelContext.insert(item)
-        try modelContext.save()
     }
 }

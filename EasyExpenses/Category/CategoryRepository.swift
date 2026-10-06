@@ -32,35 +32,47 @@ actor SwiftDataCategoryRepository: CategoryRepository {
     func insertOrUpdate(_ category: Category) async throws {
         if let obj: CategoryModel = try getBy(id: category.id) {
             obj.name = category.name
-            try await save()
         } else {
-            try insert(mapper.toModel(category))
+            insert(mapper.toModel(category))
         }
+        try save()
     }
     
     func insert(_ categories: [Category]) async {
         for c in categories {
             do {
-                try insert(mapper.toModel(c))
+                insert(mapper.toModel(c))
+                try save()
             } catch {
-               print("This should not happen. Doing nothing for now")
+                // Do nothing for now. Only used on to save initial categories
+                print("Inserting categories")
             }
         }
     }
 
     func delete(_ category: Category) async throws {
+        
         _ = try await deleteBy(id: category.id)
     }
 
     // MARK: - Private helpers
-    func save() async throws { try modelContext.save() }
+    private func save() throws {
+        do {
+            try modelContext.save()
+        } catch {
+            print("An error has occurred in \(String(describing: type(of: self))): \(error)")
+            modelContext.rollback()
+            throw error
+        }
+    }
+
 
     @discardableResult
     func deleteBy(id: UUID) async throws -> CategoryModel? {
         let obj = try getBy(id: id)
         guard let obj else { return nil }
         modelContext.delete(obj)
-        try modelContext.save()
+        try save()
         return obj
     }
 
@@ -74,9 +86,8 @@ actor SwiftDataCategoryRepository: CategoryRepository {
         return try modelContext.fetch(FetchDescriptor<CategoryModel>())
     }
 
-    private func insert(_ item: CategoryModel) throws {
+    private func insert(_ item: CategoryModel) {
         modelContext.insert(item)
-        try modelContext.save()
     }
 }
 
