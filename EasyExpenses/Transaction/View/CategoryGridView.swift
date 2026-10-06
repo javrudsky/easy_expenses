@@ -14,13 +14,13 @@ struct CategoryGridView: View {
     private let items: [Category]
     private var buttons: [String: ButtonGrid] = [:]
     @State var selectedId: UUID
-    @State var value: Category
+    @Binding var value: Category
 
     init(items: [Category],
-         value: Category) {
+         value: Binding<Category>) {
         self.items = items
-        self.value = value
         self._selectedId = State(initialValue: value.id)
+        self._value = value
     }
     
     var body: some View {

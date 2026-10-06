@@ -1,6 +1,6 @@
 //
 //  AppValues.swift
-//  EasyExpenses
+//  ArgiMoney
 //
 //  Created by Javier Avrudsky on 02/10/2026.
 //

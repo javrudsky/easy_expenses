@@ -1,6 +1,6 @@
 //
 //  TransactionsListView.swift
-//  EasyExpenses
+//  ArgiMoney
 //
 //  Created by Javier Avrudsky on 10/09/2026.
 //
@@ -19,7 +19,6 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
 
     init(viewModel: VM) {
         _viewModel = StateObject(wrappedValue: viewModel)
-        reloadData()
     }
 
     var body: some View {
@@ -86,62 +85,71 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                                                    gridCategories: viewModel.gridCategories(categories: viewModel.categories,
                                                                                             selected: tran?.category),
                                                    accounts: viewModel.accounts)
-
-                TransactionFormView(config: config) { result in
-                    switch result {
-                    case .created(let date, let category, let detail, let type, let account, let amount):
-                        let builder = TransactionBuilder()
-                            .setting(date: date.timeIntervalSince1970)
-                            .setting(category: category)
-                            .setting(account: account)
-                            .setting(amount: amount)
-                            .setting(detail: detail)
-                        Task {
-                            do {
-                                switch type {
-                                case .expense:
-                                    try await viewModel.addExpense(using: builder)
-                                case .income:
-                                    try await viewModel.addIncome(using: builder)
-                                }
-                            } catch {
-                                errorMessage = error.localizedDescription
-                                showingError = true
-                            }
-                        }
-                    case .updated(let tx):
-                        Task {
-                            do {
-                                try await viewModel.update(tx)
-                            } catch {
-                                errorMessage = error.localizedDescription
-                                showingError = true
-                            }
-                        }
-                    case .cancelled:
-                        break
-                    }
-                }
+                
+                TransactionFormView(config: config) { handleResult(result: $0) }
             }
             .onAppear {
-                Task {
-                    do {
-                        try await viewModel.reload()
-                    } catch {
-                        errorMessage = error.localizedDescription
-                        showingError = true
-                    }
-                }
+                reloadViewModel()
+                reloadData()
+            }
+        }
+        
+    }
+    
+    // MARK: -- Private functions
+    func reloadViewModel() {
+        Task {
+            do {
+                try await viewModel.reload()
+            } catch {
+                errorMessage = error.localizedDescription
+                showingError = true
             }
         }
     }
-
+    
     private func amountString(for tx: Transaction) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         return formatter.string(from: tx.amount as NSDecimalNumber) ?? "\(tx.amount)"
     }
     
+    private func handleResult(result: TransactionFormResult) {
+        switch result {
+        case .created(let date, let category, let detail, let type, let account, let amount):
+            let builder = TransactionBuilder()
+                .setting(date: date.timeIntervalSince1970)
+                .setting(category: category)
+                .setting(account: account)
+                .setting(amount: amount)
+                .setting(detail: detail)
+            Task {
+                do {
+                    switch type {
+                    case .expense:
+                        try await viewModel.addExpense(using: builder)
+                    case .income:
+                        try await viewModel.addIncome(using: builder)
+                    }
+                } catch {
+                    errorMessage = error.localizedDescription
+                    showingError = true
+                }
+            }
+        case .updated(let tx):
+            Task {
+                do {
+                    try await viewModel.update(tx)
+                } catch {
+                    errorMessage = error.localizedDescription
+                    showingError = true
+                }
+            }
+        case .cancelled:
+            break
+        }
+    }
+
     private func reloadData() {
         // TODO: Implement enable / disable logic after loading
         Task {
@@ -156,3 +164,4 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
     let vm = cf.transactionsViewModel(dataStore: cf.dataStore()) as! DefaultTransactionsViewModel
     TransactionsView<DefaultTransactionsViewModel>(viewModel: vm)
 }
+

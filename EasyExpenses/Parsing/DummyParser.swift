@@ -1,6 +1,6 @@
 //
 //  InputRecognition.swift
-//  EasyExpenses
+//  ArgiMoney
 //
 //  Created by Javier Avrudsky on 14/09/2026.
 //
@@ -103,3 +103,4 @@ struct DummyInputParser: InputParser {
         return defaultValue
     }
 }
+

@@ -2,9 +2,10 @@ import SwiftUI
 import SwiftData
 
 struct AccountsView<VM: AccountsViewModel>: View {
-    @State private var showingError: Bool = false
     @ObservedObject var viewModel: VM
     @State private var editingName: [UUID: String] = [:]
+    @State private var showingError: Bool = false
+    @State private var errorMessage: String = ""
 
     var body: some View {
         List {
@@ -16,8 +17,7 @@ struct AccountsView<VM: AccountsViewModel>: View {
                         get: { editingName[account.id] ?? account.name },
                         set: { editingName[account.id] = $0 }
                     ), onCommit: {
-                        let updated = Account(id: account.id, name: editingName[account.id] ?? account.name)
-                        Task { await viewModel.save(updated) }
+                        save(account)
                     })
                     .textFieldStyle(.roundedBorder)
                 }
@@ -26,10 +26,10 @@ struct AccountsView<VM: AccountsViewModel>: View {
                 delete(offsets: offsets)
             }
         }
-        .alert("Message", isPresented: $showingError, actions: {
+        .alert("Unable to complete", isPresented: $showingError, actions: {
                 Button("OK", role: .cancel) { }
             }, message: {
-                Text("Couldn't delete because in transactions")
+                Text(errorMessage)
             })
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -46,10 +46,25 @@ struct AccountsView<VM: AccountsViewModel>: View {
             do {
                 try await viewModel.delete(at: offsets)
             } catch {
+                errorMessage = "You can’t delete this account while it has associated transactions. Remove or move those transactions first."
                 showingError = true
             }
         }
     }
+    
+    private func save(_ account: Account) {
+        let updated = Account(id: account.id, name: editingName[account.id] ?? account.name)
+        Task {
+            do {
+                try await viewModel.save(updated)
+            } catch {
+                errorMessage = "We couldn’t save your changes. Please try again."
+                showingError = true
+            }
+        }
+        
+    }
+
 }
 
 #Preview {

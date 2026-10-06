@@ -69,7 +69,7 @@ struct TransactionFormView: View {
                 Section("") {
                     TransactionTypeToggle(type: $type)
                     DatePicker("Date", selection: $date, displayedComponents: [.date])
-                    CategoryGridView(items: cfg.gridCategories, value: category)
+                    CategoryGridView(items: cfg.gridCategories, value: $category)
                     Spacer()
                     HStack {
                         Text("Amount")

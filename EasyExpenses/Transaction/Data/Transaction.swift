@@ -1,6 +1,6 @@
 //
 //  Transaction.swift
-//  EasyExpenses
+//  ArgiMoney
 //
 //  Created by Javier Avrudsky on 10/09/2026.
 //
@@ -122,3 +122,4 @@ extension Transaction {
             .build()
     }
 }
+

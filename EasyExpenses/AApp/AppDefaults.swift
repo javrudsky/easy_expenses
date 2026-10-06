@@ -1,6 +1,6 @@
 //
 //  AppDefaults.swift
-//  EasyExpenses
+//  ArgiMoney
 //
 //  Created by Javier Avrudsky on 28/09/2026.
 //
@@ -49,3 +49,4 @@ struct AppDefaults {
         Self.incomeCategory
     ]
 }
+

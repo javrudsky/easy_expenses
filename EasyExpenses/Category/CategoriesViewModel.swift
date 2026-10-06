@@ -15,8 +15,8 @@ protocol CategoriesViewModel: AnyObject, ObservableObject {
     var categories: [Category] { get }
     func load() async
     func add()
-    func save(_ category: Category) async
-    func delete(at offsets: IndexSet) async
+    func save(_ category: Category) async throws
+    func delete(at offsets: IndexSet) async throws
 }
 
 @MainActor
@@ -42,13 +42,15 @@ final class DefaultCategoriesViewModel: CategoriesViewModel {
         categories.append(Category(name: "New Category", transactionType: transactionType))
     }
 
-    func save(_ category: Category) async {
-        try? await repository.insertOrUpdate(category)
+    func save(_ category: Category) async throws {
+        try await repository.insertOrUpdate(category)
         await load()
     }
 
-    func delete(at offsets: IndexSet) async {
-        for index in offsets { try? await repository.delete(categories[index]) }
+    func delete(at offsets: IndexSet) async throws {
+        for index in offsets {
+            try await repository.delete(categories[index])
+        }
         await load()
     }
 }

@@ -1,6 +1,6 @@
 //
 //  TransactionTypeToggle.swift
-//  EasyExpenses
+//  ArgiMoney
 //
 //  Created by Javier Avrudsky on 25/09/2026.
 //
@@ -69,3 +69,4 @@ struct TransactionTypeToggle: View {
             .padding()
     }
 }
+

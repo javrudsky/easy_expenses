@@ -10,6 +10,7 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
     @ObservedObject var viewModel: VM
     @State private var editingName: [UUID: String] = [:]
     @State private var showingError: Bool = false
+    @State private var errorMessage: String = ""
 
     var body: some View {
         List {
@@ -21,23 +22,18 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
                         get: { editingName[category.id] ?? category.name },
                         set: { editingName[category.id] = $0 }
                     ), onCommit: {
-                        let tType = viewModel.transactionType
-                        let updated = Category(id: category.id,
-                                               name: editingName[category.id] ?? category.name,
-//                                               transactionType: viewModel.transactionType)
-                                               transactionType: tType)
-                        Task { await viewModel.save(updated) }
+                        save(category)
                     })
                     .textFieldStyle(.roundedBorder)
                 }
             }
             .onDelete { offsets in
-                Task { await viewModel.delete(at: offsets) }
+                delete(offsets: offsets)
             }
-            .alert("Warning", isPresented: $showingError, actions: {
+            .alert("Unable to complete", isPresented: $showingError, actions: {
                 Button("OK", role: .cancel) { }
             }, message: {
-                Text("Couldn't delete category")
+                Text(errorMessage)
             })
 
         }
@@ -50,6 +46,35 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
         }
         .navigationTitle("Categories")
     }
+        
+    private func delete(offsets: IndexSet) {
+        Task {
+            do {
+                try await viewModel.delete(at: offsets)
+            } catch {
+                errorMessage = "You can’t delete this category while it has associated transactions. Remove or move those transactions first."
+                showingError = true
+            }
+        }
+    }
+    
+    private func save(_ category: Category) {
+        let tType = viewModel.transactionType
+        let updated = Category(id: category.id,
+                               name: editingName[category.id] ?? category.name,
+                               transactionType: tType)
+        
+        Task {
+            do {
+                try await viewModel.save(updated)
+            } catch {
+                errorMessage = "We couldn’t save your changes. Please try again."
+                showingError = true
+            }
+        }
+       
+    }
+
 }
 
 #Preview {

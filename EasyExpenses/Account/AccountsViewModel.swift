@@ -6,7 +6,7 @@ protocol AccountsViewModel: ObservableObject {
     var accounts: [Account] { get }
     func load() async
     func add()
-    func save(_ account: Account) async
+    func save(_ account: Account) async throws
     func delete(at offsets: IndexSet) async throws
 }
 
@@ -30,8 +30,8 @@ final class DefaultAccountsViewModel: AccountsViewModel {
         accounts.append(Account(name: "New Account"))
     }
 
-    func save(_ account: Account) async {
-        try? await repository.insertOrUpdate(account)
+    func save(_ account: Account) async throws {
+        try await repository.insertOrUpdate(account)
         await load()
     }
 
