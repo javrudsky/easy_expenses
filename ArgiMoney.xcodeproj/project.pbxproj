@@ -28,26 +28,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DC8D18573053257B00AF5582 /* EasyExpenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyExpenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC8D18663053257E00AF5582 /* EasyExpensesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyExpensesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC8D18703053257E00AF5582 /* EasyExpensesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyExpensesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC8D18573053257B00AF5582 /* ArgiMoney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArgiMoney.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC8D18663053257E00AF5582 /* ArgiMoneyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArgiMoneyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC8D18703053257E00AF5582 /* ArgiMoneyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArgiMoneyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8D18F130583C9800AF5582 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		DC8D18593053257B00AF5582 /* EasyExpenses */ = {
+		DC8D18593053257B00AF5582 /* ArgiMoney */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EasyExpenses;
+			path = ArgiMoney;
 			sourceTree = "<group>";
 		};
-		DC8D18693053257E00AF5582 /* EasyExpensesTests */ = {
+		DC8D18693053257E00AF5582 /* ArgiMoneyTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EasyExpensesTests;
+			path = ArgiMoneyTests;
 			sourceTree = "<group>";
 		};
-		DC8D18733053257E00AF5582 /* EasyExpensesUITests */ = {
+		DC8D18733053257E00AF5582 /* ArgiMoneyUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EasyExpensesUITests;
+			path = ArgiMoneyUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -81,9 +81,9 @@
 		DC8D184E3053257B00AF5582 = {
 			isa = PBXGroup;
 			children = (
-				DC8D18593053257B00AF5582 /* EasyExpenses */,
-				DC8D18693053257E00AF5582 /* EasyExpensesTests */,
-				DC8D18733053257E00AF5582 /* EasyExpensesUITests */,
+				DC8D18593053257B00AF5582 /* ArgiMoney */,
+				DC8D18693053257E00AF5582 /* ArgiMoneyTests */,
+				DC8D18733053257E00AF5582 /* ArgiMoneyUITests */,
 				DC8D18F030583C9800AF5582 /* Frameworks */,
 				DC8D18583053257B00AF5582 /* Products */,
 			);
@@ -92,9 +92,9 @@
 		DC8D18583053257B00AF5582 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DC8D18573053257B00AF5582 /* EasyExpenses.app */,
-				DC8D18663053257E00AF5582 /* EasyExpensesTests.xctest */,
-				DC8D18703053257E00AF5582 /* EasyExpensesUITests.xctest */,
+				DC8D18573053257B00AF5582 /* ArgiMoney.app */,
+				DC8D18663053257E00AF5582 /* ArgiMoneyTests.xctest */,
+				DC8D18703053257E00AF5582 /* ArgiMoneyUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DC8D18563053257B00AF5582 /* EasyExpenses */ = {
+		DC8D18563053257B00AF5582 /* ArgiMoney */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DC8D187A3053257E00AF5582 /* Build configuration list for PBXNativeTarget "EasyExpenses" */;
+			buildConfigurationList = DC8D187A3053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoney" */;
 			buildPhases = (
 				DC8D18533053257B00AF5582 /* Sources */,
 				DC8D18543053257B00AF5582 /* Frameworks */,
@@ -123,18 +123,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				DC8D18593053257B00AF5582 /* EasyExpenses */,
+				DC8D18593053257B00AF5582 /* ArgiMoney */,
 			);
-			name = EasyExpenses;
+			name = ArgiMoney;
 			packageProductDependencies = (
 			);
 			productName = EasyExpenses;
-			productReference = DC8D18573053257B00AF5582 /* EasyExpenses.app */;
+			productReference = DC8D18573053257B00AF5582 /* ArgiMoney.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DC8D18653053257E00AF5582 /* EasyExpensesTests */ = {
+		DC8D18653053257E00AF5582 /* ArgiMoneyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DC8D187D3053257E00AF5582 /* Build configuration list for PBXNativeTarget "EasyExpensesTests" */;
+			buildConfigurationList = DC8D187D3053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyTests" */;
 			buildPhases = (
 				DC8D18623053257E00AF5582 /* Sources */,
 				DC8D18633053257E00AF5582 /* Frameworks */,
@@ -146,18 +146,18 @@
 				DC8D18683053257E00AF5582 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				DC8D18693053257E00AF5582 /* EasyExpensesTests */,
+				DC8D18693053257E00AF5582 /* ArgiMoneyTests */,
 			);
-			name = EasyExpensesTests;
+			name = ArgiMoneyTests;
 			packageProductDependencies = (
 			);
 			productName = EasyExpensesTests;
-			productReference = DC8D18663053257E00AF5582 /* EasyExpensesTests.xctest */;
+			productReference = DC8D18663053257E00AF5582 /* ArgiMoneyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DC8D186F3053257E00AF5582 /* EasyExpensesUITests */ = {
+		DC8D186F3053257E00AF5582 /* ArgiMoneyUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DC8D18803053257E00AF5582 /* Build configuration list for PBXNativeTarget "EasyExpensesUITests" */;
+			buildConfigurationList = DC8D18803053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyUITests" */;
 			buildPhases = (
 				DC8D186C3053257E00AF5582 /* Sources */,
 				DC8D186D3053257E00AF5582 /* Frameworks */,
@@ -169,13 +169,13 @@
 				DC8D18723053257E00AF5582 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				DC8D18733053257E00AF5582 /* EasyExpensesUITests */,
+				DC8D18733053257E00AF5582 /* ArgiMoneyUITests */,
 			);
-			name = EasyExpensesUITests;
+			name = ArgiMoneyUITests;
 			packageProductDependencies = (
 			);
 			productName = EasyExpensesUITests;
-			productReference = DC8D18703053257E00AF5582 /* EasyExpensesUITests.xctest */;
+			productReference = DC8D18703053257E00AF5582 /* ArgiMoneyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -201,7 +201,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DC8D18523053257B00AF5582 /* Build configuration list for PBXProject "EasyExpenses" */;
+			buildConfigurationList = DC8D18523053257B00AF5582 /* Build configuration list for PBXProject "ArgiMoney" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -215,9 +215,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DC8D18563053257B00AF5582 /* EasyExpenses */,
-				DC8D18653053257E00AF5582 /* EasyExpensesTests */,
-				DC8D186F3053257E00AF5582 /* EasyExpensesUITests */,
+				DC8D18563053257B00AF5582 /* ArgiMoney */,
+				DC8D18653053257E00AF5582 /* ArgiMoneyTests */,
+				DC8D186F3053257E00AF5582 /* ArgiMoneyUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -273,12 +273,12 @@
 /* Begin PBXTargetDependency section */
 		DC8D18683053257E00AF5582 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DC8D18563053257B00AF5582 /* EasyExpenses */;
+			target = DC8D18563053257B00AF5582 /* ArgiMoney */;
 			targetProxy = DC8D18673053257E00AF5582 /* PBXContainerItemProxy */;
 		};
 		DC8D18723053257E00AF5582 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DC8D18563053257B00AF5582 /* EasyExpenses */;
+			target = DC8D18563053257B00AF5582 /* ArgiMoney */;
 			targetProxy = DC8D18713053257E00AF5582 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -415,8 +415,8 @@
 				DEVELOPMENT_TEAM = D5VPZG3BF4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need your permission to record your inputs";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need your permission to convert your inputs to text";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Argi uses the microphone so you can add expenses and income using your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Argi uses speech recognition to understand your voice and turn it into transaction details.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -427,8 +427,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jla.EasyExpenses;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoney;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -450,8 +450,8 @@
 				DEVELOPMENT_TEAM = D5VPZG3BF4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need your permission to record your inputs";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need your permission to convert your inputs to text";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Argi uses the microphone so you can add expenses and income using your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Argi uses speech recognition to understand your voice and turn it into transaction details.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -462,8 +462,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jla.EasyExpenses;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoney;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -485,7 +485,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jla.EasyExpensesTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoneyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -493,7 +493,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyExpenses.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EasyExpenses";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArgiMoney.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ArgiMoney";
 			};
 			name = Debug;
 		};
@@ -507,7 +507,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jla.EasyExpensesTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoneyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -515,7 +515,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyExpenses.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EasyExpenses";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArgiMoney.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ArgiMoney";
 			};
 			name = Release;
 		};
@@ -527,7 +527,7 @@
 				DEVELOPMENT_TEAM = D5VPZG3BF4;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jla.EasyExpensesUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoneyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -547,7 +547,7 @@
 				DEVELOPMENT_TEAM = D5VPZG3BF4;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jla.EasyExpensesUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoneyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -562,7 +562,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DC8D18523053257B00AF5582 /* Build configuration list for PBXProject "EasyExpenses" */ = {
+		DC8D18523053257B00AF5582 /* Build configuration list for PBXProject "ArgiMoney" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DC8D18783053257E00AF5582 /* Debug */,
@@ -571,7 +571,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DC8D187A3053257E00AF5582 /* Build configuration list for PBXNativeTarget "EasyExpenses" */ = {
+		DC8D187A3053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoney" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DC8D187B3053257E00AF5582 /* Debug */,
@@ -580,7 +580,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DC8D187D3053257E00AF5582 /* Build configuration list for PBXNativeTarget "EasyExpensesTests" */ = {
+		DC8D187D3053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DC8D187E3053257E00AF5582 /* Debug */,
@@ -589,7 +589,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DC8D18803053257E00AF5582 /* Build configuration list for PBXNativeTarget "EasyExpensesUITests" */ = {
+		DC8D18803053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DC8D18813053257E00AF5582 /* Debug */,

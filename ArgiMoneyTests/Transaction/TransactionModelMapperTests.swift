@@ -34,7 +34,7 @@ struct TransactionMapperTests {
     @Test("toModel maps all fields")
     func testToModel() {
         let domain = Th.createTransaction(
-            id: "tx1",
+            id: UUID(),
             date: 1625072400,
             category: "Utilities",
             detail: "Electric bill",
@@ -56,7 +56,7 @@ struct TransactionMapperTests {
     @Test("toDomain maps all fields")
     func testToDomain() {
         let model = Th.createModelTransaction(
-            id: "tx2",
+            id: UUID(),
             date: 1625072400,
             category: "Transport",
             detail: "Bus ticket",
@@ -83,7 +83,7 @@ struct TransactionMapperTests {
     @Test("round-trip preserves values")
     func testRoundTrip() {
         let domain = Th.createTransaction(
-            id: "tx3",
+            id: UUID(),
             date: 1625072400,
             category: "Groceries",
             detail: "Weekly shopping",

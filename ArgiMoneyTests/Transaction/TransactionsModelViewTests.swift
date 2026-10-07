@@ -15,10 +15,10 @@ import Testing
     func createTxBuilder() -> TransactionBuilder {
         
         return TransactionBuilder()
-            .setting(account: "Acc")
+            .setting(account: Account(name: "Acc"))
             .setting(date: 111111.0)
             .setting(detail: "")
-            .setting(category: "mycat")
+            .setting(category: Category(name: "mycat"))
             .setting(amount: 1.20)
     }
     @MainActor

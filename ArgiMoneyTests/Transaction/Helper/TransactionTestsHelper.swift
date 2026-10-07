@@ -10,7 +10,7 @@ import Foundation
 
 struct TransactionTestsHelper {
     
-    static func createTransaction(id: String = UUID().uuidString,
+    static func createTransaction(id: UUID = UUID(),
                                   date: TimeInterval = Date().timeIntervalSince1970,
                                   category: String = "MyCategory",
                                   detail: String = "",
@@ -36,7 +36,7 @@ struct TransactionTestsHelper {
                            amount: tx.amount)
     }
     
-    static func createModelTransaction(id: String = "id1",
+    static func createModelTransaction(id: UUID = UUID(),
                                        date: TimeInterval = 1234567890,
                                        category: String = "Food",
                                        detail: String = "Lunch",

@@ -1,6 +1,6 @@
 import Foundation
 import SwiftData
-@testable import EasyExpenses
+@testable import ArgiMoney
 
 enum TestError: Error {
     case forced
@@ -55,7 +55,7 @@ actor FakeTransactionRepository: TransactionRepository {
         return transactions
     }
     
-    func fetchById(_ id: String) throws -> Transaction? {
+    func fetchById(_ id: UUID) throws -> Transaction? {
         return transactions.first { $0.id == id }
     }
     

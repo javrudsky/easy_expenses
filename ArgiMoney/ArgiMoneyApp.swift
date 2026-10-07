@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct EasyExpensesApp: App {
+struct ArgiMoneyApp: App {
 
     var body: some Scene {
         WindowGroup {
@@ -20,7 +20,6 @@ struct EasyExpensesApp: App {
                 SomethingHappenView()
             }
         }
-        //.modelContainer(sharedModelContainer)
     }
 }
 
