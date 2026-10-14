@@ -15,6 +15,9 @@ protocol AppValues: Sendable {
     func set(account: Account)
     func account() -> Account
     func transactionDefaults() -> TransactionDefaults
+    
+    func theme() -> ThemeName
+    func set(theme: ThemeName)
 }
 
 struct DefaultAppValues: AppValues {
@@ -24,6 +27,7 @@ struct DefaultAppValues: AppValues {
         static let incomeCategory = "incomeCategory"
         static let expenseCategory = "expenseCategory"
         static let account = "account"
+        static let theme = "theme"
     }
     
     let vs: ValueStore
@@ -116,5 +120,14 @@ struct DefaultAppValues: AppValues {
                                    account: account())
     }
 
+    // MARK: -- Theme
+    func set(theme name: ThemeName) {
+        vs.setString(name.rawValue, forKey: Key.theme)
+    }
+    
+    func theme() -> ThemeName {
+        let nameStr = vs.getString(forKey: Key.theme,
+                                   default: nil) ?? AppDefaults.theme.rawValue
+        return ThemeName(rawValue: nameStr) ?? AppDefaults.theme
+    }
 }
-

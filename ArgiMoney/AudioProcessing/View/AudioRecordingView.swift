@@ -20,6 +20,7 @@ struct VV {
 
 struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
     @StateObject private var viewModel: VM
+    @Environment(\.theme) private var theme
 
     // Purely UI state
     @State private var pulse: Bool = false
@@ -50,7 +51,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 50.0)
-                            .fill(Color.blue.opacity(0.10))
+                            .fill(theme.cardBackground)
                             .offset(y: VV.charBgOffset)
                         
                         Image(viewModel.isRecording ?  "argi_listening" : "argi_waiting")
@@ -64,18 +65,18 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                 
                 Text("Tell Argi about your transaction")
                     .font(.system(size: w * 0.04, weight: .semibold))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(theme.textSecondary)
 
                 Spacer()
                         .frame(height: h * 0.07)
 
                 ZStack {
                     Circle()
-                        .fill(viewModel.isRecording ? Color.red.opacity(0.20) : Color.blue.opacity(0.15))
+                        .fill(viewModel.isRecording ? theme.micRecordingBackground : theme.micIdleBackground)
                         .frame(width: w * 0.40, height: w * 0.40)
                     
                     Circle()
-                        .fill(viewModel.isRecording ? Color.red : Color.blue)
+                        .fill(viewModel.isRecording ? theme.accentNegative : theme.brandPrimary)
                         .frame(width: w * 0.35, height: w * 0.35)
                     
                     Image(systemName: viewModel.isRecording ? "stop.fill" : "mic.fill")
@@ -111,7 +112,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
 
                 Text("Hold to record")
                     .font(.system(size: w * 0.04, weight: .regular))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(theme.textSecondary)
 
                 Spacer()
             }
@@ -250,5 +251,6 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                                             dataStore: cf.dataStore(),
                                             appValues: cf.appValues())
     AudioRecordingView<DefaultAudioRecordingViewModel>(viewModel: vm)
+        .environment(\.theme, ThemeManager.shared.currentTheme)
 }
 

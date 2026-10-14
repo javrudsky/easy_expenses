@@ -26,6 +26,8 @@ struct AppDefaults {
         name: "Cash"
     )
     
+    static let theme: ThemeName = ThemeName(rawValue: "default")!
+    
     static let defaultCategories = [
         // Expense categories
         Category(name: "Groceries", transactionType: .expense),
