@@ -11,13 +11,15 @@ protocol AudioRecordingViewModel: ObservableObject {
     var showTransactionForm: Bool { get set }
     var categories: [Category] { get }
     var accounts: [Account] { get }
-    
+    var totals: TransactionTotals { get }
+
     func startRecording()
     func stopRecording()
     func cancelRecording()
     func insertTransaction(builder: TransactionBuilder) async throws
     func reloadCategories() async
     func reloadAccounts() async
+    func reloadTotals() async
     func gridCategories(categories: [Category], selected: Category?) -> [Category]
 }
 
@@ -32,6 +34,7 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
     
     @Published private(set) var categories: [Category] = []
     @Published private(set) var accounts: [Account] = []
+    @Published private(set) var totals: TransactionTotals = TransactionTotals(income: 0.0, expenses: 0.0)
 
     private let transcriber: AudioTranscriber
     private let inputParser: InputParser
@@ -129,6 +132,24 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
         let items = await formService.getAccounts()
         await MainActor.run {
             self.accounts = items
+        }
+    }
+    
+    func reloadTotals() async {
+        let calendar = Calendar.current
+        let now = Date()
+        let firstMonthDay = calendar.date(from: calendar.dateComponents([.year, .month], from: now)) ?? now
+        let from = firstMonthDay.timeIntervalSince1970
+        let to = now.timeIntervalSince1970
+        
+        do {
+            let totals = try await transactionRepo.fetchTotals(from: from, to: to)
+            await MainActor.run {
+                self.totals = totals
+            }
+        } catch {
+            // Handle or log the error as appropriate for your app
+            print("Failed to fetch totals: \(error)")
         }
     }
     

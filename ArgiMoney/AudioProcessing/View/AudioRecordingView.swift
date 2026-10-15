@@ -41,7 +41,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
             VStack(spacing: w * 0.02) {
 
                 VStack {
-                    SummaryCard(income: 10, expenses: 200)
+                    SummaryCard(totals: viewModel.totals)
                     
                         .frame(maxWidth: .infinity, alignment: .center)
                         .frame(height: h * 0.10)
@@ -118,7 +118,10 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding()
-            .sheet(isPresented: $viewModel.showTransactionForm) {
+            .onAppear() {
+                reloadTotals()
+            }
+            .sheet(isPresented: $viewModel.showTransactionForm, onDismiss: reloadTotals) {
                 buildTransactionFormView()
             }
             .alert("Error", isPresented: $showingError, actions: {
@@ -204,6 +207,13 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
 //        .frame(maxWidth: .infinity, maxHeight: .infinity)
 //        .background(Color(.red))
 //        .ignoresSafeArea()
+    }
+    
+    private func reloadTotals() {
+        Task {
+            await viewModel.reloadTotals()
+        }
+        
     }
     
     private func buildTransactionFormView() -> TransactionFormView {

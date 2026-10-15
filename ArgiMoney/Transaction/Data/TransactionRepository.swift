@@ -9,11 +9,21 @@ import Foundation
 import SwiftData
     
 
+struct TransactionTotals {
+    let income: Decimal
+    let expenses: Decimal
+    var result: Decimal {
+        return income - expenses
+    }
+}
+
 protocol TransactionRepository: ModelActor {
     func fetchAll() async throws -> [Transaction]
     func fetchBy(id: UUID) async throws -> Transaction?
     func insertOrUpdate(_ transaction: Transaction) async throws
     func delete(_ transaction: Transaction) async throws
+    func fetchTotals(from: TimeInterval, to: TimeInterval) async throws -> TransactionTotals
+    func fetch(from: TimeInterval, to: TimeInterval) async throws -> [Transaction]
 }
 
 actor SwiftDataTransactionRepository: TransactionRepository {
@@ -38,6 +48,16 @@ actor SwiftDataTransactionRepository: TransactionRepository {
     func fetchAll() async throws -> [Transaction] {
         let all: [TransactionModel] = try getAll()
         return all.map { mapper.toDomain($0) }
+    }
+    
+    func fetchTotals(from: TimeInterval, to: TimeInterval) async throws -> TransactionTotals {
+        let items = try get(from: from, to: to)
+        return TransactionTotals(income: sumAmount(items, transactionType: .income),
+                                 expenses: sumAmount(items, transactionType: .expense))
+    }
+    
+    func fetch(from: TimeInterval, to: TimeInterval) async throws -> [Transaction] {
+        return try get(from: from, to: to).map { mapper.toDomain($0) }
     }
     
     func insertOrUpdate(_ transaction: Transaction) async throws {
@@ -92,6 +112,12 @@ actor SwiftDataTransactionRepository: TransactionRepository {
     }
     
     //MARK: Private
+    private func sumAmount(_ items: [TransactionModel], transactionType: TransactionType) -> Decimal {
+        return items.filter { $0.transactionType == transactionType.rawValue }
+            .map { $0.amount }
+            .reduce(0) { $0 + $1 }
+    }
+    
     private func getBy(id: UUID) throws -> TransactionModel? {
         let predicate = #Predicate<TransactionModel> { model in
             model.id == id
@@ -103,6 +129,14 @@ actor SwiftDataTransactionRepository: TransactionRepository {
     private func getAll() throws -> [TransactionModel] {
         return try modelContext.fetch(FetchDescriptor<TransactionModel>())
     }
+    
+    private func get(from: TimeInterval, to: TimeInterval) throws -> [TransactionModel] {
+        let predicate = #Predicate<TransactionModel> { model in
+            model.date >= from && model.date <= to
+        }
+        return try modelContext.fetch(FetchDescriptor<TransactionModel>(predicate: predicate))
+    }
+    
 
     private func insert(_ item: TransactionModel) throws {
         modelContext.insert(item)
@@ -120,5 +154,6 @@ actor SwiftDataTransactionRepository: TransactionRepository {
         let objs = try modelContext.fetch(FetchDescriptor<AccountModel>(predicate: predicate))
         return objs.first
     }
+    
 }
 

@@ -9,9 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SummaryCard: View {
-    var income: Double
-    var expenses: Double
-    var result: Double { income - expenses }
+    var totals: TransactionTotals
     var widthFraction: CGFloat = 1.0
     var heightFraction: CGFloat? = nil
 
@@ -46,7 +44,7 @@ struct SummaryCard: View {
                         icon: "arrow.up.right.circle.fill",
                         iconColor: .green,
                         title: "Income",
-                        value: income,
+                        value: totals.income,
                         valueColor: .primary,
                         titleFontSize: subtitleFontSize,
                         valueFontSize: valueFontSize,
@@ -57,7 +55,7 @@ struct SummaryCard: View {
                         icon: "arrow.down.right.circle.fill",
                         iconColor: .red,
                         title: "Expenses",
-                        value: expenses,
+                        value: totals.expenses,
                         valueColor: .primary,
                         titleFontSize: subtitleFontSize,
                         valueFontSize: valueFontSize,
@@ -66,10 +64,10 @@ struct SummaryCard: View {
                     Divider().padding(.vertical, 6)
                     StatColumn(
                         icon: "equal.circle.fill",
-                        iconColor: result >= 0 ? .green : .red,
+                        iconColor: totals.result >= 0 ? .green : .red,
                         title: "Result",
-                        value: result,
-                        valueColor: result >= 0 ? .green : .red,
+                        value: totals.result,
+                        valueColor: totals.result >= 0 ? .green : .red,
                         titleFontSize: subtitleFontSize,
                         valueFontSize: valueFontSize,
                         iconFontSize: iconFontSize
@@ -96,7 +94,7 @@ private struct StatColumn: View {
     let icon: String
     let iconColor: Color
     let title: String
-    let value: Double
+    let value: Decimal
     let valueColor: Color
     let titleFontSize: CGFloat
     let valueFontSize: CGFloat
