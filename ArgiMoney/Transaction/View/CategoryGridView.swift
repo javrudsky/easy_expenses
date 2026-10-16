@@ -11,15 +11,15 @@ import SwiftUI
 typealias OnGridButtonSelect = (String) -> Void
 
 struct CategoryGridView: View {
+    
+    @Environment(\.theme) private var theme
     private let items: [Category]
     private var buttons: [String: ButtonGrid] = [:]
-    @State var selectedId: UUID
     @Binding var value: Category
 
     init(items: [Category],
          value: Binding<Category>) {
         self.items = items
-        self._selectedId = State(initialValue: value.id)
         self._value = value
     }
     
@@ -31,14 +31,11 @@ struct CategoryGridView: View {
                         ButtonGrid(
                             value: item,
                             isSelected: Binding(
-                                get: { selectedId == item.id },
+                                get: { item.id == value.id },
                                 set: { newValue in
-                                    if newValue { selectedId = item.id }
-                                    if let v = items.first(where: { $0.id == item.id }) {
-                                        value = v
-                                        print("Selected ")
+                                    if newValue {
+                                        value = item
                                     }
-                                    print("New selected value \(value.name)")
                                 }
                             )
                         )
@@ -59,14 +56,13 @@ struct ButtonGrid: View {
         self._isSelected = isSelected
     }
     
-    
     var body: some View {
         Button(value.name) {
-            isSelected.toggle()
+            isSelected = true
         }
         .buttonStyle(ColoredGridButtonStyle(
             normalColor: Color(.systemGray6),
-            selectedColor: .blue,
+            selectedColor: .accentColor,
             isSelected: self.isSelected
         ))
     }
@@ -94,7 +90,6 @@ struct ColoredGridButtonStyle: ButtonStyle {
 
 extension Array {
     func chunked(into size: Int) -> [[Element]] {
-        precondition(size > 0, "size must be greater than zero")
         var result: [[Element]] = []
         result.reserveCapacity((count + size - 1) / size)
 

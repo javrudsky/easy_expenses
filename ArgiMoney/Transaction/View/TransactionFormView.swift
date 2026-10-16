@@ -56,6 +56,9 @@ struct TransactionFormView: View {
     @State private var type: TransactionType = .expense
     @State private var account: Account = Account(id: UUID(), name: "")
     @State private var amountText: String = ""
+    
+    
+    @State private var showCatList: Bool = false
 
     init(config: TransactionFormConfig,
          onComplete: @escaping (TransactionFormResult) -> Void) {
@@ -66,17 +69,35 @@ struct TransactionFormView: View {
     var body: some View {
         NavigationStack {
             Form {
+                
                 Section("") {
-                    TransactionTypeToggle(type: $type)
-                    DatePicker("Date", selection: $date, displayedComponents: [.date])
-                    CategoryGridView(items: cfg.gridCategories, value: $category)
-                    Spacer()
-                    HStack {
-                        Text("Amount")
-                        TextField("0.00", text: $amountText)
-                            .keyboardType(.decimalPad)
+                    Button ("Show") {
+                        showCatList.toggle()
                     }
-                    TextField("Description", text: $detail)
+                        TransactionTypeToggle(type: $type)
+                        DatePicker("Date", selection: $date, displayedComponents: [.date])
+                        
+                        ZStack {
+                            CategoryGridView(items: cfg.gridCategories, value: $category)
+                            Text("cat: \(category.name)").backgroundStyle(.defaultFail)
+                            if showCatList {
+                                ListOfValuesView(values: cfg.allCategories.map { LovValue(id: $0.id, name: $0.name)},
+                                                 name: \LovValue.name) { selCat in
+                                    print(selCat.name)
+                                    category = cfg.allCategories.first { $0.id == selCat.id } ?? category
+                                    print("new cat name \(category.name)")
+                                    showCatList = false
+                                }
+                            }
+                        }
+
+                        Spacer()
+                        HStack {
+                            Text("Amount")
+                            TextField("0.00", text: $amountText)
+                                .keyboardType(.decimalPad)
+                        }
+                        TextField("Description", text: $detail)
                 }
             }
             .navigationTitle(cfg.transaction == nil ? "New Transaction" : "Edit Transaction")

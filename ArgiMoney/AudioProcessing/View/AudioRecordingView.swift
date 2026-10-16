@@ -63,18 +63,20 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                     .frame(height: h * 0.30)
                 }
                 
-                Text("Tell Argi about your transaction")
+                Text(assistentMsg(isRec: viewModel.isRecording))
                     .font(.system(size: w * 0.04, weight: .semibold))
                     .foregroundStyle(theme.textSecondary)
 
-                Spacer()
-                        .frame(height: h * 0.07)
+                Spacer().frame(height: h * 0.07)
 
                 ZStack {
                     Circle()
                         .fill(viewModel.isRecording ? theme.micRecordingBackground : theme.micIdleBackground)
                         .frame(width: w * 0.40, height: w * 0.40)
-                    
+                        .scaleEffect(pulse ? 1.2 : 1.0)
+                        .animation(viewModel.isRecording ? .easeInOut(duration: 0.8)
+                            .repeatForever(autoreverses: true) : .default, value: pulse)
+                   
                     Circle()
                         .fill(viewModel.isRecording ? theme.accentNegative : theme.brandPrimary)
                         .frame(width: w * 0.35, height: w * 0.35)
@@ -83,6 +85,16 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                         .font(.system(size: w * 0.12, weight: .semibold))
                         .foregroundStyle(.white)
                     
+                }
+                .frame(width: w * 0.40, height: w * 0.40, alignment: .center)
+                .accessibilityLabel(viewModel.isRecording ? "Recording in progress" : "Not recording")
+                .onChange(of: viewModel.isRecording) { _, recording in
+                    if recording {
+                        print("pulse toggle")
+                        pulse.toggle()
+                    } else {
+                        pulse = false
+                    }
                 }
                 .gesture(
                     DragGesture(minimumDistance: 0)
@@ -110,7 +122,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                 .accessibilityAddTraits(.isButton)
                 .accessibilityHint("Press and hold to start recording. Slide left or right to cancel. Release to stop.")
 
-                Text("Hold to record")
+                Text(recBottonMsg(isRec: viewModel.isRecording))
                     .font(.system(size: w * 0.04, weight: .regular))
                     .foregroundStyle(theme.textSecondary)
 
@@ -130,83 +142,14 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                 Text(errorMessage)
             })
         }
-        
-        //                ZStack {
-//                    Circle()
-//                        .fill(viewModel.isRecording ? Color.red.opacity(0.25) : Color.gray.opacity(0.15))
-//                        .frame(width: w * 0.45, height: w * 0.45)
-//                    Circle()
-//                        .stroke(lineWidth: 6)
-//                        .fill(viewModel.isRecording ? Color.red : Color.gray)
-//                        .frame(width: pulse ? w * 0.42 : w * 0.37, height: pulse ? w * 0.42 : w * 0.37)
-//                        .animation(viewModel.isRecording ? .easeInOut(duration: 0.8).repeatForever(autoreverses: true) : .default, value: pulse)
-//                    Image(systemName: viewModel.isRecording ? "waveform" : "mic")
-//                        .font(.system(size: w * 0.12, weight: .semibold))
-//                        .foregroundStyle(viewModel.isRecording ? .red : .secondary)
-//                }
-//                .frame(maxWidth: .infinity, alignment: .center)
-//                .accessibilityLabel(viewModel.isRecording ? "Recording in progress" : "Not recording")
-//                .onChange(of: viewModel.isRecording) { _, recording in
-//                    if recording {
-//                        pulse.toggle()
-//                    } else {
-//                        pulse = false
-//                    }
-//                }
-//                
-
-                
-                // Press-and-hold record button
-//                Text(viewModel.isRecording ? (willCancel ? "Slide to Cancel" : "Release to Stop") : "Hold to Record")
-//                    .font(.headline)
-//                    .frame(width: 150)
-//                    .frame(height: 150)
-//                    .background((viewModel.isRecording && willCancel) ? Color.red : (viewModel.isRecording ? Color.accentColor : Color.green), in: Capsule())
-//                    .foregroundStyle(.white)
-//                    .contentShape(Capsule())
-//                    .padding(.horizontal)
-//                    .gesture(
-//                        DragGesture(minimumDistance: 0)
-//                            .onChanged { value in
-//                                if !viewModel.isRecording {
-//                                    viewModel.startRecording()
-//                                }
-//                                dragOffset = value.translation
-//                                let cancelThreshold: CGFloat = 100
-//                                willCancel = abs(dragOffset.width) > cancelThreshold
-//                            }
-//                            .onEnded { _ in
-//                                if viewModel.isRecording {
-//                                    if willCancel {
-//                                        viewModel.cancelRecording()
-//                                    } else {
-//                                        viewModel.stopRecording()
-//                                    }
-//                                }
-//                                dragOffset = .zero
-//                                willCancel = false
-//                            }
-//                    )
-//                    .offset(x: viewModel.isRecording ? dragOffset.width * 0.15 : 0)
-//                    .accessibilityAddTraits(.isButton)
-//                    .accessibilityHint("Press and hold to start recording. Slide left or right to cancel. Release to stop.")
-//                
-//                Spacer()
-//            }
-//            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-//            .padding()
-//            .sheet(isPresented: $viewModel.showTransactionForm) {
-//                buildTransactionFormView()
-//            }
-//            .alert("Error", isPresented: $showingError, actions: {
-//                Button("OK", role: .cancel) { }
-//            }, message: {
-//                Text(errorMessage)
-//            })
-//        }
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .background(Color(.red))
-//        .ignoresSafeArea()
+    }
+    
+    private func assistentMsg(isRec: Bool) -> String {
+        return isRec ? "I'm listening" : "Tell me about your transaction"
+    }
+    
+    private func recBottonMsg(isRec: Bool) -> String {
+        return isRec ? "Drag left / right to cancel" : "Hold to record"
     }
     
     private func reloadTotals() {

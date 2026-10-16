@@ -1,6 +1,6 @@
 import Foundation
 
-public struct LovType: Identifiable, Hashable, Codable, Sendable {
+public struct LovValue: Identifiable, Hashable, Codable, Sendable {
     public let id: UUID
     public var name: String
 
