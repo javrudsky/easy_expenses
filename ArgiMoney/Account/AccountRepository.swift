@@ -2,6 +2,7 @@ import Foundation
 import SwiftData
 
 protocol AccountRepository: ModelActor {
+    func fetchBy(id: UUID) async throws -> Account?
     func fetchAll() async throws -> [Account]
     func insertOrUpdate(_ account: Account) async throws
     func delete(_ account: Account) async throws
@@ -17,6 +18,13 @@ actor SwiftDataAccountRepository: AccountRepository {
         self.mapper = mapper
         let c = ModelContext(modelContainer)
         self.modelExecutor = DefaultSerialModelExecutor(modelContext: c)
+    }
+
+    func fetchBy(id: UUID) async throws -> Account? {
+        if let model = try getBy(id: id) {
+            return mapper.toDomain(model)
+        }
+        return nil
     }
 
     func fetchAll() async throws -> [Account] {

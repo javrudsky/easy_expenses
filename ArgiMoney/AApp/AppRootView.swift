@@ -90,6 +90,7 @@ struct MoreView: View {
         NavigationStack {
             List {
                 Section("Management") {
+                    NavigationLink { DataManagementView() } label: { Label("Import/Export", systemImage: "square.grid.2x2") }
                     NavigationLink { try? createCategoriesView(transactionType: .expense) } label: { Label("Expense Categories", systemImage: "square.grid.2x2") }
                     NavigationLink { try? createCategoriesView(transactionType: .income) } label: { Label("Income Categories", systemImage: "square.grid.2x2") }
                     NavigationLink { try? createAccountsView() } label: { Label("Accounts", systemImage: "creditcard") }

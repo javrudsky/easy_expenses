@@ -21,27 +21,34 @@ public struct ListOfValuesView<Value: Identifiable & Hashable>: View {
     }
 
     public var body: some View {
+            
         VStack(spacing: 0) {
-            // Search box
+            Spacer()
             HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
-                TextField("Search", text: $query)
-                    .textFieldStyle(.plain)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                if !query.isEmpty {
-                    Button {
-                        query = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(.secondary)
+                    TextField("Search", text: $query)
+                        .textFieldStyle(.plain)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                    if !query.isEmpty {
+                        Button {
+                            query = ""
+                        } label: {
+                            Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                        }
+                        .accessibilityLabel("Clear search")
                     }
-                    .accessibilityLabel("Clear search")
                 }
+                .safeAreaPadding(.horizontal)
+                .padding(.vertical)
+                .background(.thinMaterial)
             }
-            .padding(10)
-            .background(.thinMaterial)
-
+            .padding(.horizontal)
+            
+            Divider()
+            
             // List of values
             List(filtered, id: \.self) { value in
                 Button {
@@ -53,9 +60,11 @@ public struct ListOfValuesView<Value: Identifiable & Hashable>: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .listStyle(.insetGrouped)
         }
-        .navigationTitle("Select a value")
+        .backgroundStyle(Color(.white).opacity(30))
+        .padding()
     }
 }
 

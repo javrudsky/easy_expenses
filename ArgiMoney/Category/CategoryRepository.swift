@@ -2,6 +2,7 @@ import Foundation
 import SwiftData
 
 protocol CategoryRepository: ModelActor {
+    func fetchBy(id: UUID) async throws -> Category?
     func fetchAll() async throws -> [Category]
     func insertOrUpdate(_ category: Category) async throws
     func insert(_ categories: [Category]) async
@@ -23,6 +24,14 @@ actor SwiftDataCategoryRepository: CategoryRepository {
         self.modelContext = c
         self.modelExecutor = DefaultSerialModelExecutor(modelContext: c)
     }
+    
+    func fetchBy(id: UUID) async throws -> Category? {
+        if let model = try getBy(id: id) {
+            return mapper.toDomain(model)
+        }
+        return nil
+    }
+
 
     func fetchAll() async throws -> [Category] {
         let all: [CategoryModel] = try getAll()

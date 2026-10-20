@@ -49,6 +49,7 @@ struct TransactionFormView: View {
     private let cfg: TransactionFormConfig
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.theme) private var theme
 
     @State private var date: Date = .now
     @State private var category: Category = Category(id: UUID(), name: "", transactionType: .expense)
@@ -57,8 +58,13 @@ struct TransactionFormView: View {
     @State private var account: Account = Account(id: UUID(), name: "")
     @State private var amountText: String = ""
     
-    
     @State private var showCatList: Bool = false
+    
+    enum Field {
+        case amount
+        case detail
+    }
+    @FocusState private var focusedField: Field?
 
     init(config: TransactionFormConfig,
          onComplete: @escaping (TransactionFormResult) -> Void) {
@@ -69,37 +75,39 @@ struct TransactionFormView: View {
     var body: some View {
         NavigationStack {
             Form {
-                
                 Section("") {
-                    Button ("Show") {
-                        showCatList.toggle()
+                    
+                    DatePicker("", selection: $date, displayedComponents: [.date])
+                    TransactionTypeToggle(type: $type)
+                    VStack(alignment: .leading) {
+                        Text("Amount")
+                        TextField("0.00", text: $amountText)
+                            .keyboardType(.decimalPad)
+                            .focused($focusedField, equals: .amount)
+                            .themedTextField()
                     }
-                        TransactionTypeToggle(type: $type)
-                        DatePicker("Date", selection: $date, displayedComponents: [.date])
+                    
+                        CategoryGridView(items: cfg.gridCategories,
+                                         value: $category) {
+                            showCatList = true
+                        }
+                                         .frame(maxHeight: .infinity)
+                                         .frame(maxWidth: .infinity)
                         
-                        ZStack {
-                            CategoryGridView(items: cfg.gridCategories, value: $category)
-                            Text("cat: \(category.name)").backgroundStyle(.defaultFail)
-                            if showCatList {
-                                ListOfValuesView(values: cfg.allCategories.map { LovValue(id: $0.id, name: $0.name)},
-                                                 name: \LovValue.name) { selCat in
-                                    print(selCat.name)
-                                    category = cfg.allCategories.first { $0.id == selCat.id } ?? category
-                                    print("new cat name \(category.name)")
-                                    showCatList = false
-                                }
-                            }
+                        VStack(alignment: .leading) {
+                            Text("Description")
+                            TextEditor(text: $detail)
+                                .frame(height: 120)
+                                .backgroundStyle(Color(.systemGray))
+                                .focused($focusedField, equals: .detail)
+                                .themedTextField()
                         }
-
-                        Spacer()
-                        HStack {
-                            Text("Amount")
-                            TextField("0.00", text: $amountText)
-                                .keyboardType(.decimalPad)
-                        }
-                        TextField("Description", text: $detail)
+                    
                 }
+                .listRowSpacing(1)
+                .listRowSeparator(.hidden)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle(cfg.transaction == nil ? "New Transaction" : "Edit Transaction")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -133,6 +141,9 @@ struct TransactionFormView: View {
                     .disabled(!isValid)
                 }
             }
+            .onTapGesture {
+                focusedField = nil
+            }
             .onAppear { populateFromTransactionIfNeeded() }
         }
     }
@@ -163,7 +174,8 @@ struct TransactionFormView: View {
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
-    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income), Category(name: "Fuel", transactionType: .income)]
+    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income), Category(name: "Fuel", transactionType: .income), Category(name: "Rent", transactionType: .income)]
     let cfg = TransactionFormConfig(allCategories: [AppDefaults.incomeCategory], gridCategories: cat, accounts: [])
     TransactionFormView(config: cfg, onComplete: { _ in })
 }
+

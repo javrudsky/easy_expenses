@@ -30,8 +30,11 @@ enum AudioError: Error {
     case unexpected(String)
 }
 
-
 enum AppAuthError: Error {
     case speechRecognitionNotGranted
     case audioRecordingNotGranted
+}
+
+enum MigrationError: Error {
+   case invalidData(String)
 }

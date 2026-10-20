@@ -37,6 +37,9 @@ struct Theme {
     var micRecordingBackground: Color
     var cardBackground: Color
     
+    // MARK: - Form
+    var inputFieldBorder: Color
+
     init(name: ThemeName) {
         self.name = name
         // MARK: - Brand
@@ -61,6 +64,8 @@ struct Theme {
         micIdleBackground = Theme.color("MicIdleBg", .blue.opacity(0.15))
         micRecordingBackground = Theme.color("MicRecordingBg", .red.opacity(0.20))
         cardBackground = Theme.color("CardBg", .secondarySystemBackground)
+        
+        inputFieldBorder = Theme.color("InputFieldBorder", Color.gray, name)
     }
     
     private static func color(_ colorName: String, _ fallback: UIColor, _ theme: ThemeName = ThemeName.default) -> Color {

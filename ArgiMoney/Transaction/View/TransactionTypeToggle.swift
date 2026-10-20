@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 
 struct TransactionTypeToggle: View {
+    
+    @Environment(\.theme) var theme: Theme
+    
     @Binding var type: TransactionType
 
     private let inactiveCircleGray = Color.gray.opacity(0.35) // mid–dark gray for inactive icon bg
@@ -21,14 +24,14 @@ struct TransactionTypeToggle: View {
                 HStack(spacing: 6) {
                     Image(systemName: "arrow.down.circle.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, type == .expense ? .red : inactiveCircleGray)
+                        .foregroundStyle(.white, type == .expense ? theme.accentLightNegative : inactiveCircleGray)
                     Text("Expense")
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .background(type == .expense ? Color.red.opacity(0.15) : Color.clear)
-                .foregroundStyle(type == .expense ? .red : .secondary)
+                .background(type == .expense ? theme.brandPrimary.opacity(0.15) : Color.clear)
+                .foregroundStyle(type == .expense ? theme.brandPrimary : .secondary)
             }
             .buttonStyle(.plain)
 
@@ -38,14 +41,14 @@ struct TransactionTypeToggle: View {
                 HStack(spacing: 6) {
                     Image(systemName: "arrow.up.circle.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, type == .income ? .green : inactiveCircleGray)
+                        .foregroundStyle(.white, type == .income ? theme.accentLightPositive : inactiveCircleGray)
                     Text("Income")
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .background(type == .income ? Color.green.opacity(0.15) : Color.clear)
-                .foregroundStyle(type == .income ? .green : .secondary)
+                .background(type == .income ? theme.brandPrimary.opacity(0.15) : Color.clear)
+                .foregroundStyle(type == .income ? theme.brandPrimary : .secondary)
             }
             .buttonStyle(.plain)
         }
