@@ -117,9 +117,6 @@ struct DefaultDataTransferService: DataTransferService {
 
         let iso8601 = ISO8601DateFormatter()
         for tx in transactions {
-            let category = try await categoryRepo.fetchBy(id: tx.category.id)
-            let account = try await accountRepo.fetchBy(id: tx.account.id)
-
             let date = Date(timeIntervalSince1970: tx.date)
             let dateString = iso8601.string(from: date)
             let row: [String] = [
@@ -415,7 +412,7 @@ struct DefaultDataTransferService: DataTransferService {
         var result: [String] = []
         var current = ""
         var inQuotes = false
-        var chars = Array(line)
+        let chars = Array(line)
         var i = 0
         while i < chars.count {
             let c = chars[i]

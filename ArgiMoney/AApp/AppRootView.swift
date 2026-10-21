@@ -90,7 +90,7 @@ struct MoreView: View {
         NavigationStack {
             List {
                 Section("Management") {
-                    NavigationLink { DataManagementView() } label: { Label("Import/Export", systemImage: "square.grid.2x2") }
+                    NavigationLink { createDataManagementView() } label: { Label("Import/Export", systemImage: "square.grid.2x2") }
                     NavigationLink { try? createCategoriesView(transactionType: .expense) } label: { Label("Expense Categories", systemImage: "square.grid.2x2") }
                     NavigationLink { try? createCategoriesView(transactionType: .income) } label: { Label("Income Categories", systemImage: "square.grid.2x2") }
                     NavigationLink { try? createAccountsView() } label: { Label("Accounts", systemImage: "creditcard") }
@@ -104,7 +104,7 @@ struct MoreView: View {
     }
     
     private func createCategoriesView(transactionType: TransactionType) throws -> CategoriesView<DefaultCategoriesViewModel> {
-         if let vm = af.categoriesViewModel(transactionType: transactionType,
+        if let vm = af.categoriesViewModel(transactionType: transactionType,
                                             dataStore: dataStore) as? DefaultCategoriesViewModel {
             return CategoriesView<DefaultCategoriesViewModel>(viewModel: vm)
         }
@@ -118,5 +118,9 @@ struct MoreView: View {
         }
         // This should never happen
         throw ViewError.couldNotCreateView
+    }
+    
+    private func createDataManagementView() -> DataManagementView {
+        return DataManagementView(factory: af, dataStore: dataStore)
     }
 }

@@ -28,7 +28,11 @@ protocol AppFactory {
     @MainActor func categoriesViewModel(transactionType: TransactionType,
                                         dataStore: DataStore) -> any CategoriesViewModel
     @MainActor func accountsViewModel(dataStore: DataStore) -> any AccountsViewModel
+    
+    @MainActor func exportTransactionsViewModel(dataStore: DataStore) -> any ExportTransactionsViewModel
+    
     @MainActor func transactionFormService(dataStore: DataStore) -> TransactionFormViewService
+    @MainActor func dataTransferService(dataStore: DataStore) -> DataTransferService
 }
 
 struct DefaultAppFactory: AppFactory {
@@ -123,7 +127,19 @@ struct DefaultAppFactory: AppFactory {
     }
     
     @MainActor
+    func exportTransactionsViewModel(dataStore: DataStore) -> any ExportTransactionsViewModel {
+        let ts = dataTransferService(dataStore: dataStore)
+        return DefaultExportTransactionsViewModel(dataTransferService: ts)
+    }
+
+    
+    @MainActor
     func transactionFormService(dataStore: DataStore) -> TransactionFormViewService {
         return DefaultTransactionFormViewService(dataStore: dataStore)
+    }
+    
+    @MainActor
+    func dataTransferService(dataStore: DataStore) -> DataTransferService {
+        return DefaultDataTransferService(dataStore: dataStore)
     }
 }

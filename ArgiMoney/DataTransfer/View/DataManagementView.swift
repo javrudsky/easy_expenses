@@ -7,6 +7,14 @@
 import SwiftUI
 
 struct DataManagementView: View {
+    let af: AppFactory
+    let ds: DataStore
+    init(factory: AppFactory,
+         dataStore: DataStore) {
+        af = factory
+        ds = dataStore
+    }
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -22,7 +30,7 @@ struct DataManagementView: View {
                     .padding(.bottom, 12)
 
                     NavigationLink {
-                        ExportTransactionsView()
+                        try? createExportTransactionsView()
                     } label: {
                         DataFeatureCard(
                             title: "Export",
@@ -58,5 +66,12 @@ struct DataManagementView: View {
             .navigationTitle("Data")
             .navigationBarTitleDisplayMode(.inline)
         }
+    }
+    
+    private func createExportTransactionsView() throws -> ExportTransactionsView<DefaultExportTransactionsViewModel> {
+        if let vm = af.exportTransactionsViewModel(dataStore: ds) as? DefaultExportTransactionsViewModel {
+            return ExportTransactionsView<DefaultExportTransactionsViewModel>(viewModel: vm)
+        }
+        throw ViewError.couldNotCreateView
     }
 }
