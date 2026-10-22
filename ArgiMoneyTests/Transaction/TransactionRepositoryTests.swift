@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 import Testing
-@testable import EasyExpenses
+@testable import ArgiMoney
 
 @Suite("TransactionRepository Contract") struct TransactionRepositoryContractTests {
     

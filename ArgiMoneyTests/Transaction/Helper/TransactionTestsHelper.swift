@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import EasyExpenses
+@testable import ArgiMoney
 
 struct TransactionTestsHelper {
     
@@ -14,15 +14,15 @@ struct TransactionTestsHelper {
                                   date: TimeInterval = Date().timeIntervalSince1970,
                                   category: String = "MyCategory",
                                   detail: String = "",
-                                  transactionType: TransactionType = .debit,
+                                  transactionType: TransactionType = .expense,
                                   account: String = "MyAccount",
                                   amount: Decimal = 10) -> Transaction {
         return Transaction(id: id,
                            date: date,
-                           category: category,
+                           category: Category(name: category, transactionType: transactionType),
                            detail: detail,
                            transactionType: transactionType,
-                           account: account,
+                           account: Account(name: account),
                            amount: amount)
     }
     
@@ -40,15 +40,19 @@ struct TransactionTestsHelper {
                                        date: TimeInterval = 1234567890,
                                        category: String = "Food",
                                        detail: String = "Lunch",
-                                       transactionType: String = TransactionType.debit.rawValue,
+                                       transactionType: TransactionType = TransactionType.expense,
                                        account: String = "Checking",
                                        amount: Decimal = 45.67) -> TransactionModel {
+        
+        let catModel = DefaultCategoryMapper().toModel(Category(name: category, transactionType: transactionType))
+        let accModel = DefaultAccountMapper().toModel(Account(name: account))
+        
         return TransactionModel(id: id,
                                 date: date,
-                                category: category,
                                 detail: detail,
-                                transactionType: transactionType,
-                                account: account,
-                                amount: amount)
+                                transactionType: transactionType.rawValue,
+                                amount: amount,
+                                category: catModel,
+                                account: accModel)
     }
 }

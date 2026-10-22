@@ -8,11 +8,15 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct ImportTransactionsView: View {
+struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
+    @ObservedObject private var viewModel: VM
     @State private var showingFileImporter = false
-    @State private var selectedFile: URL?
-    @State private var importError: String?
     @State private var showingError = false
+    @State private var isShowingPreview = false
+
+    init(viewModel: VM) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         ScrollView {
@@ -40,7 +44,7 @@ struct ImportTransactionsView: View {
                         .font(.system(size: 42))
                         .foregroundStyle(ArgiColors.green)
 
-                    Text(selectedFile?.lastPathComponent ?? "Select a CSV file")
+                    Text(viewModel.selectedFile?.lastPathComponent ?? "Select a CSV file")
                         .font(.headline)
                         .lineLimit(2)
 
@@ -68,9 +72,17 @@ struct ImportTransactionsView: View {
                 .background(ArgiColors.cardBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 22))
 
-                if selectedFile != nil {
+                if viewModel.selectedFile != nil {
                     Button {
-                        // Validate, preview and import the selected CSV.
+                        Task {
+                            do {
+                                let _ = try await viewModel.importCsv()
+                                isShowingPreview = true
+                                // TODO: Navigate to preview using the returned summary
+                            } catch {
+                                showingError = true
+                            }
+                        }
                     } label: {
                         Text("Continue to Preview")
                             .font(.headline)
@@ -81,6 +93,7 @@ struct ImportTransactionsView: View {
                     .foregroundStyle(.white)
                     .background(ArgiColors.blue)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .disabled(viewModel.isImporting)
                 }
 
                 DataInfoBox(
@@ -88,6 +101,15 @@ struct ImportTransactionsView: View {
                     title: "Before importing",
                     message: "Review your transactions before adding them. Argi will check the file for errors and possible duplicates."
                 )
+                
+                NavigationLink(isActive: $isShowingPreview) {
+                    ImportPreviewView(viewModel: viewModel,
+                                      onCancel: { isShowingPreview = false },
+                                      onProceed: {
+                                          Task { try? await viewModel.proceedImport() }
+                                      })
+                } label: { EmptyView() }
+                .hidden()
             }
             .padding(20)
         }
@@ -100,16 +122,17 @@ struct ImportTransactionsView: View {
         ) { result in
             switch result {
             case .success(let url):
-                selectedFile = url
+                viewModel.setSelectedFile(url)
             case .failure(let error):
-                importError = error.localizedDescription
+                viewModel.lastError = error.localizedDescription
                 showingError = true
             }
         }
         .alert("Unable to Open File", isPresented: $showingError) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(importError ?? "An unknown error occurred.")
+            Text(viewModel.lastError ?? "An unknown error occurred.")
         }
     }
 }
+

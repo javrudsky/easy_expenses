@@ -7,7 +7,7 @@
 
 import Foundation
 import Testing
-@testable import EasyExpenses
+@testable import ArgiMoney
 
 @Suite("InputParser parsing")
 struct InputParserTests {

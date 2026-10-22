@@ -35,6 +35,9 @@ enum AppAuthError: Error {
     case audioRecordingNotGranted
 }
 
-enum MigrationError: Error {
-   case invalidData(String)
+enum DataTransferError: Error {
+    case wrongFile(String)
+    case permissionDenied(String)
+    case wrongCsvFormat(String)
+    case invalidData(String)
 }

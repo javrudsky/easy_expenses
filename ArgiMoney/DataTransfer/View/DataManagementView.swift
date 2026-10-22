@@ -42,7 +42,7 @@ struct DataManagementView: View {
                     .buttonStyle(.plain)
 
                     NavigationLink {
-                        ImportTransactionsView()
+                        try? createImportTransactionsView()
                     } label: {
                         DataFeatureCard(
                             title: "Import",
@@ -74,4 +74,12 @@ struct DataManagementView: View {
         }
         throw ViewError.couldNotCreateView
     }
+    
+    private func createImportTransactionsView() throws -> ImportTransactionsView<DefaultImportTransactionsViewModel> {
+        if let vm = af.importTransactionsViewModel(dataStore: ds) as? DefaultImportTransactionsViewModel {
+            return ImportTransactionsView<DefaultImportTransactionsViewModel>(viewModel: vm)
+        }
+        throw ViewError.couldNotCreateView
+    }
+
 }

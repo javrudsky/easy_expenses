@@ -147,7 +147,7 @@ struct DefaultDataTransferService: DataTransferService {
         let lines = csv.split(whereSeparator: { $0.isNewline })
         
         
-        guard let headerLine = lines.first else { throw MigrationError.invalidData("Invalid file header")}
+        guard let headerLine = lines.first else { throw DataTransferError.invalidData("Invalid file header")}
         let headers = Self.parseCsvLine(String(headerLine))
         // Expected headers (order enforced here). If different order, map indices by name.
 

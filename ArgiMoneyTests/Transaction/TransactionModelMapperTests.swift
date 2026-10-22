@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import EasyExpenses
+@testable import ArgiMoney
 
 typealias Th = TransactionTestsHelper
 

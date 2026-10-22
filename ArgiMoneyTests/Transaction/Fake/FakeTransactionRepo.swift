@@ -7,6 +7,7 @@ enum TestError: Error {
 }
 
 actor FakeTransactionRepository: TransactionRepository {
+    
     let modelContainer: ModelContainer
     let modelExecutor: any ModelExecutor
     private(set) var insertedOrUpdated: [Transaction] = []
@@ -65,5 +66,19 @@ actor FakeTransactionRepository: TransactionRepository {
         }
         transactions.removeAll { $0.id == tx.id }
         deleted.append(tx)
+    }
+    
+    func fetchBy(id: UUID) async throws -> ArgiMoney.Transaction? {
+        return transactions.first(where: { $0.id == id })
+    }
+    
+    func fetchTotals(from: TimeInterval, to: TimeInterval) async throws -> ArgiMoney.TransactionTotals {
+        return TransactionTotals(income: transactions.filter { $0.transactionType == .income}.reduce(0) { $0 + $1.amount },
+                                 expenses: transactions.filter { $0.transactionType == .expense}.reduce(0) { $0 + $1.amount }
+        )
+    }
+    
+    func fetch(from: TimeInterval, to: TimeInterval) async throws -> [ArgiMoney.Transaction] {
+        return transactions.filter { $0.date <= from && $0.date >= to }
     }
 }
