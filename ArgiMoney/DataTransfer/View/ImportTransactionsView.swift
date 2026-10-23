@@ -13,6 +13,7 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
     @State private var showingFileImporter = false
     @State private var showingError = false
     @State private var isShowingPreview = false
+    @State private var showSuccess = false
 
     init(viewModel: VM) {
         self.viewModel = viewModel
@@ -101,17 +102,23 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
                     title: "Before importing",
                     message: "Review your transactions before adding them. Argi will check the file for errors and possible duplicates."
                 )
-                
-                NavigationLink(isActive: $isShowingPreview) {
-                    ImportPreviewView(viewModel: viewModel,
-                                      onCancel: { isShowingPreview = false },
-                                      onProceed: {
-                                          Task { try? await viewModel.proceedImport() }
-                                      })
-                } label: { EmptyView() }
-                .hidden()
             }
             .padding(20)
+        }
+        .navigationDestination(isPresented: $isShowingPreview) {
+            ImportPreviewView(viewModel: viewModel,
+                              onCancel: { isShowingPreview = false },
+                              onProceed: {
+                Task {
+                    do {
+                        try await viewModel.proceedImport()
+                        showSuccess = true
+                    } catch {
+                        showingError = true
+                    }
+                    isShowingPreview = false
+                }
+            })
         }
         .background(ArgiColors.background)
         .navigationTitle("Import")
@@ -132,6 +139,11 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(viewModel.lastError ?? "An unknown error occurred.")
+        }
+        .confirmationDialog("Import Success", isPresented: $showSuccess) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Transactions imported")
         }
     }
 }

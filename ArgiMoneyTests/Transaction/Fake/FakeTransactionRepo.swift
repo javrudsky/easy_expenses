@@ -79,6 +79,6 @@ actor FakeTransactionRepository: TransactionRepository {
     }
     
     func fetch(from: TimeInterval, to: TimeInterval) async throws -> [ArgiMoney.Transaction] {
-        return transactions.filter { $0.date <= from && $0.date >= to }
+        return transactions.filter { $0.date >= from && $0.date <= to }
     }
 }

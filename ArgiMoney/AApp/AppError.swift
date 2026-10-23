@@ -40,4 +40,5 @@ enum DataTransferError: Error {
     case permissionDenied(String)
     case wrongCsvFormat(String)
     case invalidData(String)
+    case importFail(String)
 }

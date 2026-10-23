@@ -21,27 +21,17 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
                 header
 
                 if let summary = viewModel.summary {
-                    countsBubble(summary: summary)
+                    countsBubble(summary: ProcessedSummary(summary: summary))
                     issuesBubble(summary: summary)
                 }
 
                 logSection
 
                 HStack(spacing: 12) {
-                    Button(role: .cancel) { onCancel() } label: {
-                        Text("Cancel")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(ArgiColors.primaryText)
-                    .background(ArgiColors.cardBackground)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-
                     Button {
                         onProceed()
                     } label: {
-                        Text(viewModel.canProceed ? "Proceed" : "Proceed Anyway")
+                        Text(viewModel.areIssues ? "Proceed" : "Proceed Anyway")
                             .frame(maxWidth: .infinity)
                             .padding()
                     }
@@ -79,15 +69,35 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
         }
     }
 
-    private func countsBubble(summary: ImportSummary) -> some View {
-        VStack(spacing: 12) {
-            HStack {
-                bubbleItem(icon: "list.bullet", title: "Transactions", value: "\(summary.transactions.count)")
+    struct ProcessedSummary {
+        let tc: Int
+        let dup: Int
+        let imp: Int
+        let cat: Int
+        let acc: Int
+        init(summary: ImportSummary) {
+            tc = summary.transactions.count
+            dup = summary.duplicatedTransactions.count
+            imp = tc - dup
+            cat = summary.categories.count
+            acc = summary.accounts.count
+        }
+    }
+    
+    private func countsBubble(summary: ProcessedSummary) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Grid {
+                bubbleItem(icon: "list.bullet", title: "Transactions", value: "\(summary.tc)")
                 Spacer()
-                bubbleItem(icon: "folder", title: "Categories", value: "\(summary.categories.count)")
+                bubbleItem(icon: "document.on.document", title: "Duplicates", value: "\(summary.dup)")
                 Spacer()
-                bubbleItem(icon: "creditcard", title: "Accounts", value: "\(summary.accounts.count)")
+                bubbleItem(icon: "arrow.down.square", title: "Importing", value: "\(summary.imp)")
+                Spacer()
+                bubbleItem(icon: "folder", title: "Categories", value: "\(summary.cat)")
+                Spacer()
+                bubbleItem(icon: "creditcard", title: "Accounts", value: "\(summary.acc)")
             }
+            .frame(maxWidth: .infinity)
         }
         .padding(18)
         .background(ArgiColors.blue.opacity(0.06))
@@ -100,22 +110,26 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
         let hasIssues = (errors + warnings) > 0
         return VStack(alignment: .leading, spacing: 10) {
             if hasIssues {
-                HStack(spacing: 14) {
+                Grid {
                     bubbleItem(icon: "xmark.octagon.fill", title: "Errors", value: "\(errors)", color: Color.red)
                     Spacer()
                     bubbleItem(icon: "exclamationmark.triangle.fill", title: "Warnings", value: "\(warnings)", color: Color.orange)
                 }
+                .frame(maxWidth: .infinity)
+                
                 Text("There were issues found in your file. You can proceed, but some items may be skipped or need attention.")
                     .font(.subheadline)
                     .foregroundStyle(ArgiColors.secondaryText)
+                    .frame(maxWidth: .infinity)
             } else {
                 HStack(spacing: 14) {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(ArgiColors.green)
                     Text("Everything looks good! You're ready to import.")
                         .foregroundStyle(ArgiColors.secondaryText)
                 }
                 .font(.subheadline)
+                .frame(maxWidth: .infinity)
+
             }
         }
         .padding(18)
@@ -124,15 +138,17 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
     }
 
     private func bubbleItem(icon: String, title: String, value: String, color: Color = ArgiColors.blue) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Image(systemName: icon)
-                    .foregroundStyle(color)
-                Text(title)
-                    .foregroundStyle(ArgiColors.secondaryText)
-            }
+        
+        GridRow {
+            Image(systemName: icon)
+                .foregroundStyle(color)
+                .gridColumnAlignment(.leading)
+//                .gridCellAnchor(UnitPoint(x: 0.1, y: 0.5))
+            Text(title)
+                .foregroundStyle(ArgiColors.secondaryText)
+                .gridColumnAlignment(.leading)
             Text(value)
-                .font(.headline)
+            .font(.headline)
         }
     }
 
@@ -141,10 +157,14 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
             Text("Log")
                 .font(.headline)
 
-            ScrollView {
-                Text(viewModel.importLog.isEmpty ? "No log available." : viewModel.importLog)
-                    .font(.caption)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            ScrollView([.vertical, .horizontal]) {
+                Text(currentLog())
+                    .font(.system(size: 12, weight: .regular, design: .monospaced))
+                    .lineSpacing(2)
+                    .foregroundStyle(ArgiColors.secondaryText)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .fixedSize(horizontal: true, vertical: false)
                     .padding(12)
                     .background(ArgiColors.cardBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -152,4 +172,16 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
             .frame(minHeight: 120)
         }
     }
+    
+    func currentLog() -> String {
+        guard let log = viewModel.summary?.logSummary.log else {
+            return "No log available"
+        }
+        
+        if log.isEmpty {
+            return "The log is empty"
+        }
+        return log
+    }
 }
+

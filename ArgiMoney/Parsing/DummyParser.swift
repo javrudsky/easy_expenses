@@ -46,7 +46,7 @@ struct DummyInputParser: InputParser {
         var hasCredit = false
         var hasDebit = false
         var amount: Decimal = 0.0
-        var category: String = defaults.incomeCategory.name
+        var category: String?
         
         for word in lowText {
             let w = String(word)
@@ -54,7 +54,7 @@ struct DummyInputParser: InputParser {
                 hasCredit = true
                 detail.replace(word, with: "")
             }
-            if !hasCredit && InputWordSet.debitWords.contains(w) {
+            if InputWordSet.debitWords.contains(w) {
                 hasDebit = true
                 detail.replace(word, with: "")
             }
@@ -64,17 +64,6 @@ struct DummyInputParser: InputParser {
                 detail.replace(word, with: "")
             }
             
-            if hasCredit {
-                if category == defaults.incomeCategory.name && InputWordSet.creditCategoryWords.contains(w) {
-                    category = w
-                    detail.replace(word, with: "")
-                }
-            } else if hasDebit {
-                if category == defaults.expenseCategory.name && InputWordSet.debitCategoryWords.contains(w) {
-                    category = w
-                    detail.replace(word, with: "")
-                }
-            }
         }
        
         if hasDebit == hasCredit {
@@ -82,6 +71,15 @@ struct DummyInputParser: InputParser {
         }
         
         let type: TransactionType = hasDebit ? .expense : .income
+        let categoryWords = type == .expense ? InputWordSet.debitCategoryWords : InputWordSet.creditCategoryWords
+        for word in lowText {
+            let name = String(word)
+            if category == nil && categoryWords.contains(name) {
+                category = name
+                detail.replace(word, with: "")
+            }
+        }
+        let defaultCategory = type == .expense ? defaults.expenseCategory : defaults.incomeCategory
         
         let builder = TransactionBuilder()
         return try builder
@@ -91,8 +89,8 @@ struct DummyInputParser: InputParser {
             .setting(type: type)
             .setting(account: defaults.account)
             .setting(category: getCategory(categories: categories,
-                                           name: category,
-                                           defaultValue: (type == .expense ? defaults.expenseCategory : defaults.incomeCategory)))
+                                            name: category ?? defaultCategory.name,
+                                            defaultValue: defaultCategory))
             .build()
     }
     
@@ -103,4 +101,3 @@ struct DummyInputParser: InputParser {
         return defaultValue
     }
 }
-

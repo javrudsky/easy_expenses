@@ -1,8 +1,8 @@
 import Foundation
 
 enum ImportLogLineType: String {
-    case error
-    case warning
+    case error = "ERROR"
+    case warning = "WARN"
 }
 
 struct ImportLogLine: Sendable {
@@ -13,8 +13,8 @@ struct ImportLogLine: Sendable {
 struct ImportLogSummary: Sendable {
     let lines: [ImportLogLine]
     var warningCount: Int { return lines.filter { $0.type == .warning }.count }
-    var errorCount: Int { return lines.filter { $0.type == .warning }.count }
-    
+    var errorCount: Int { return lines.filter { $0.type == .error }.count }
+
     var log: String {
         return String(lines.map { log in  "[\(log.type.rawValue.uppercased())] - \(log.line)" }.joined(separator: "\n"))
     }
@@ -23,6 +23,7 @@ struct ImportLogSummary: Sendable {
 struct ImportSummary: Sendable {
     let logSummary: ImportLogSummary
     let categories: [Category]
+    let duplicatedTransactions: [Transaction]
     let accounts: [Account]
     let transactions: [Transaction]
 }
@@ -70,6 +71,12 @@ protocol DataTransferService {
     ///    - Category/Account: compare name. If equal, skip; otherwise, log difference.
     /// 4) All conflicts must be stored in an importation log.
     func importFrom(csv: String, logBuilder: ImportLogBuilder) async throws -> ImportSummary
+
+    /// Persists a previously parsed import summary.
+    ///
+    /// Categories and accounts are saved before transactions so each transaction's
+    /// relationships are present when it is inserted or updated.
+    func executeImport(summary: ImportSummary) async throws
 }
 
 /// A simple default migrator scaffold. Replace persistence calls with your app's database layer.
@@ -164,7 +171,9 @@ struct DefaultDataTransferService: DataTransferService {
         var transactions: [Transaction] = []
 
         // Collect data
-        for (lineNumber, line) in lines.enumerated() {
+        // The first record is the header, which has already been validated above.
+        for (lineIndex, line) in lines.dropFirst().enumerated() {
+            let lineNumber = lineIndex + 2
             
             if line.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 log.add(emptyLineLog(number: lineNumber))
@@ -176,13 +185,13 @@ struct DefaultDataTransferService: DataTransferService {
                 guard let i = idx[key] else {
                     return nil
                 }
+                guard cols.indices.contains(i) else { return nil }
                 return cols[i]
             }
             
             let tranIdStr = val("transaction_id") ?? ""
             guard let tranId = UUID(uuidString: tranIdStr) else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: "",
-                                            amount: "", categoryName: "", accountName: "", detail: "",
                                             message: "Invalid transaction ID", csvLine: lineNumber))
                 continue
             }
@@ -190,7 +199,6 @@ struct DefaultDataTransferService: DataTransferService {
             let tranTypeStr = val("transaction_type") ?? ""
             guard let tranType = TransactionType(rawValue: tranTypeStr) else {
                 log.add(transactionErrorLog(transactionId: tranId.uuidString, transactionType: tranTypeStr,
-                                            amount: "", categoryName: "", accountName: "", detail: "",
                                             message: "Missing transaction type", csvLine: lineNumber))
                 continue
             }
@@ -205,17 +213,16 @@ struct DefaultDataTransferService: DataTransferService {
 
             guard let account = buildAccount(id: val("account_id"), name: val("account_name")) else  {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
-                                            amount: "", categoryName: category.name, accountName: val("account_name") ?? "", detail: "",
+                                            categoryName: category.name, accountName: val("account_name") ?? "",
                                             message: "Invalid account", csvLine: lineNumber))
                 continue
             }
             accountIdx[account.id] = account
 
-            let iso8601 = ISO8601DateFormatter()
             let dateStr = val("date") ?? ""
-            guard let date = iso8601.date(from: dateStr)?.timeIntervalSince1970 else {
+            guard let date = Self.parseISO8601Date(dateStr)?.timeIntervalSince1970 else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
-                                            amount: "", categoryName: category.name, accountName: account.name, detail: "",
+                                            categoryName: category.name, accountName: account.name, date: dateStr, 
                                             message: "Invalid date", csvLine: lineNumber))
                 continue
             }
@@ -244,11 +251,28 @@ struct DefaultDataTransferService: DataTransferService {
         let accounts = Array(accountIdx.values)
         log.add(contentsOf: await logDuplicates(categories: categories).lines)
         log.add(contentsOf: await logDuplicates(accounts: accounts).lines)
-        log.add(contentsOf: await logDuplicates(transactions: transactions).lines)
+        let (tlog, dup) = await logDuplicates(transactions: transactions)
+        log.add(contentsOf: tlog.lines)
         return ImportSummary(logSummary: log.summary(),
                              categories: categories,
+                             duplicatedTransactions: dup,
                              accounts: accounts,
-                             transactions: transactions)
+                             transactions: transactions
+        )
+    }
+
+    func executeImport(summary: ImportSummary) async throws {
+        for category in summary.categories {
+            try await categoryRepo.insertOrUpdate(category)
+        }
+
+        for account in summary.accounts {
+            try await accountRepo.insertOrUpdate(account)
+        }
+
+        for transaction in summary.transactions {
+            try await transactionRepo.insertOrUpdate(transaction)
+        }
     }
 
     // MARK: - Persistence hooks (replace with real DB layer)
@@ -312,26 +336,31 @@ struct DefaultDataTransferService: DataTransferService {
 
 
     /// Upsert transaction comparing transactionType, amount, and category when ID exists; log differences when not equal.
-    private func logDuplicates(transactions: [Transaction]) async -> ImportLogSummary {
+    private func logDuplicates(transactions: [Transaction]) async -> (ImportLogSummary, [Transaction]) {
 
         var log = DefaultImportLogBuilder()
+        var duplicates: [Transaction] = []
         
         for tran in transactions {
             do {
                 if let existing = try await transactionRepo.fetchBy(id: tran.id) {
+                    var isDup = true
                     if existing.transactionType != tran.transactionType {
                         log.add(transactionConflictLog(transactionId: tran.id.uuidString, transactionType: tran.transactionType.rawValue,
                                                        field: "transaction_type",
-                                                       existing: tran.transactionType.rawValue,
-                                                       incoming: existing.transactionType.rawValue,
+                                                       existing: existing.transactionType.rawValue,
+                                                       incoming: tran.transactionType.rawValue,
                                                        csvLine: 0))
+                        isDup = false
                     }
+                    
                     if existing.amount != tran.amount {
                         log.add(transactionConflictLog(transactionId: tran.id.uuidString, transactionType: tran.transactionType.rawValue,
                                                        field: "amount",
                                                        existing: String(describing: existing.amount),
                                                        incoming: String(describing: tran.amount),
                                                        csvLine: 0))
+                        isDup = false
                     }
                     
                     if existing.category.id != tran.category.id {
@@ -340,14 +369,23 @@ struct DefaultDataTransferService: DataTransferService {
                                                        existing: existing.category.id.uuidString,
                                                        incoming: tran.category.id.uuidString,
                                                        csvLine: 0))
+                        isDup = false
                     }
                     
                     if existing.account.id != tran.account.id {
                         log.add(transactionConflictLog(transactionId: tran.id.uuidString, transactionType: tran.transactionType.rawValue,
-                                                       field: "category",
-                                                       existing: existing.category.id.uuidString,
-                                                       incoming: tran.category.id.uuidString,
+                                                       field: "account",
+                                                       existing: existing.account.id.uuidString,
+                                                       incoming: tran.account.id.uuidString,
                                                        csvLine: 0))
+                        isDup = false
+                    }
+                    
+                    if isDup {
+                        log.add(transactionDuplicatedLog(transactionId: tran.id.uuidString, transactionType: tran.transactionType.rawValue,
+                                                         amount: "\(tran.amount)", categoryName: tran.category.name, accountName: tran.account.name,
+                                                         detail: tran.detail ?? "", csvLine: 0))
+                        duplicates.append(tran)
                     }
                 }
             } catch {
@@ -358,7 +396,7 @@ struct DefaultDataTransferService: DataTransferService {
                                             message: errMessage, csvLine: 0))
             }
         }
-        return log.summary()
+        return (log.summary(), duplicates)
     }
     
     func emptyLineLog(number: Int) -> ImportLogLine {
@@ -366,30 +404,65 @@ struct DefaultDataTransferService: DataTransferService {
     }
 
 
+    private static let naVal = "NA"
     // MARK: - Import log
-    private func transactionErrorLog(transactionId: String, transactionType: String, amount: String,
-                                     categoryName: String, accountName: String, detail: String, message: String, csvLine: Int) -> ImportLogLine {
-        let line = "\(logDate()) - (\(csvLine))[TRAN ERROR] T:\(transactionId)|\(transactionType)]  - amount: \(amount), category: \(categoryName), account: \(accountName), detail: \(detail): message=\(message)"
+    private func transactionErrorLog(transactionId: String, transactionType: String, amount: String = naVal,
+                                     categoryName: String = naVal, accountName: String = naVal, detail: String = naVal, date: String = naVal,
+                                     message: String, csvLine: Int) -> ImportLogLine {
+        
+        var lineMsg: String = "CSV line: \(csvLine) "
+        if csvLine == 0 {
+           lineMsg = ""
+        }
+        
+        let line = "\(logDate()) (\(lineMsg))-> TranId: '\(transactionId)', type: '\(transactionType)', date: '\(date)', amount: '\(amount)', category: '\(categoryName)', account: '\(accountName)', detail: '\(detail)': message='\(message)'"
         return ImportLogLine(type: .error, line: line)
     }
     
     private func entityErrorLog(transactionId: String, transactionType: String, id: String, name: String, isCat: Bool,
                                 message: String, csvLine: Int) -> ImportLogLine {
         
+        var lineMsg: String = "CSV line: \(csvLine) "
+        if csvLine == 0 {
+           lineMsg = ""
+        }
         let entity = isCat ? "Category" : "Account"
-        let line = "(\(logDate()) - (\(csvLine)[ENTITY] T:\(transactionId)|\(transactionType)] message=\(message) - \(entity)(id: \(id), name: \(name))"
+        let line = "\(logDate()) \(lineMsg)-> TranId: \(transactionId): \(message) - Item type: '\(entity)' (id: '\(id)', name: '\(name)')"
         return ImportLogLine(type: .error, line: line)
     }
     
     private func importConflictLog(transactionId: String, transactionType: String, entity: String, id: String,
                                    field: String, existing: String, incoming: String, csvLine: Int) -> ImportLogLine {
-        let line = "\(logDate()) - (\(csvLine)[CONFLICT] T:[\(transactionId)|\(transactionType)] entity=\(entity) id=\(id) field=\(field) existing=\(existing) incoming=\(incoming)"
+        
+        var lineMsg: String = "CSV line: \(csvLine) - "
+        if csvLine == 0 {
+           lineMsg = ""
+        }
+        let line = "\(logDate()) \(lineMsg)CONFLICT -> TranId: \(transactionId) -> Item type: '\(entity)', Value='\(field)' existing=\(existing) incoming=\(incoming)"
         return ImportLogLine(type: .error, line: line)
     }
     
+    private func transactionDuplicatedLog(transactionId: String, transactionType: String, amount: String = naVal,
+                                          categoryName: String = naVal, accountName: String = naVal, detail: String = naVal,
+                                          date: String = naVal, csvLine: Int) -> ImportLogLine {
+       
+        var lineMsg: String = "CSV line: \(csvLine) - "
+        if csvLine == 0 {
+           lineMsg = ""
+        }
+        
+        let line = "\(logDate()) \(lineMsg)DUPLICATED -> TranId: '\(transactionId)', type: '\(transactionType)', date: '\(date)', amount: '\(amount)', category: '\(categoryName)', account: '\(accountName)', detail: '\(detail)'"
+        return ImportLogLine(type: .warning, line: line)
+    }
+
     private func transactionConflictLog(transactionId: String, transactionType: String, field: String, existing: String,
                                         incoming: String, csvLine: Int) -> ImportLogLine {
-        let line = "\(logDate()) - (\(csvLine)[CONFLICT] T:[\(transactionId)|\(transactionType)] entity=transaction field=\(field) existing=\(existing) incoming=\(incoming)"
+        
+        var lineMsg: String = "CSV line: \(csvLine) - "
+        if csvLine == 0 {
+           lineMsg = ""
+        }
+        let line = "\(logDate()) \(lineMsg) CONFLICT TranId: \(transactionId) -> value='\(field)' existing=\(existing) incoming=\(incoming)"
         return ImportLogLine(type: .error, line: line)
     }
     
@@ -441,6 +514,15 @@ struct DefaultDataTransferService: DataTransferService {
         }
         result.append(current)
         return result
+    }
+
+    private static func parseISO8601Date(_ value: String) -> Date? {
+        let fractionalFormatter = ISO8601DateFormatter()
+        fractionalFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = fractionalFormatter.date(from: value) {
+            return date
+        }
+        return ISO8601DateFormatter().date(from: value)
     }
 
     // MARK: - Errors

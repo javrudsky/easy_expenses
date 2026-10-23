@@ -40,7 +40,7 @@ struct TransactionTestsHelper {
                                        date: TimeInterval = 1234567890,
                                        category: String = "Food",
                                        detail: String = "Lunch",
-                                       transactionType: TransactionType = TransactionType.expense,
+                                       transactionType: TransactionType = .expense,
                                        account: String = "Checking",
                                        amount: Decimal = 45.67) -> TransactionModel {
         
@@ -54,5 +54,21 @@ struct TransactionTestsHelper {
                                 amount: amount,
                                 category: catModel,
                                 account: accModel)
+    }
+    
+    static func getUUIDStr(_ char: String) -> String {
+        if char.isEmpty {
+            print("Empty")
+            return ""
+        }
+        let c = String(char[char.startIndex])
+        let p1 = String(repeating: c, count: 8)
+        let p2 = String(repeating: c, count: 4)
+        let p3 = String(repeating: c, count: 4)
+        let p4 = String(repeating: c, count: 4)
+        let p5 = String(repeating: c, count: 12)
+        let uuid =  "\(p1)-\(p2)-\(p3)-\(p4)-\(p5)"
+        print(uuid)
+        return uuid
     }
 }

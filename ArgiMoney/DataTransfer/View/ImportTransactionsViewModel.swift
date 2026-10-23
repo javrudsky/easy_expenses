@@ -8,13 +8,12 @@ protocol ImportTransactionsViewModel: ObservableObject {
     var isImporting: Bool { get }
 
     var summary: ImportSummary? { get }
-    var importLog: String { get }
-    var canProceed: Bool { get }
+    var areIssues: Bool { get }
 
     var lastError: String? { get set }
     
     func setSelectedFile(_ url: URL?)
-    func importCsv() async throws -> ImportSummary
+    func importCsv() async throws  -> ImportSummary
     func proceedImport() async throws
     func cancelImport()
 }
@@ -27,12 +26,11 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
     @Published var lastError: String?
 
     @Published private(set) var summary: ImportSummary? = nil
-    @Published private(set) var importLog: String = ""
 
     private let dataTransferService: DataTransferService
     private let fileUtil = FileUtil()
 
-    var canProceed: Bool {
+    var areIssues: Bool {
         summary != nil && (summary?.logSummary.errorCount ?? 0) == 0
     }
 
@@ -67,6 +65,7 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
             fileUrl.stopAccessingSecurityScopedResource()
             let summary = try await dataTransferService.importFrom(csv: content, logBuilder: DefaultImportLogBuilder())
             self.summary = summary
+            print(summary.logSummary.log)
             return summary
         } catch {
             self.lastError = (error as NSError).localizedDescription
@@ -76,11 +75,26 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
     }
 
     func proceedImport() async throws {
-        // Placeholder implementation; delegate to service if needed
+       
+        guard let summary = self.summary else { return }
+        
+        do {
+            try await dataTransferService.executeImport(summary: summary)
+            resetProcess()
+        } catch {
+            throw DataTransferError.importFail("Something when wrong importing")
+        }
     }
 
     func cancelImport() {
         // Placeholder implementation; reset state if needed
+    }
+    
+    func resetProcess() {
+        selectedFile = nil
+        isImporting = false
+        lastError = nil
+        summary = nil
     }
 }
 

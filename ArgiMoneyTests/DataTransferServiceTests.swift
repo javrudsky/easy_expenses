@@ -12,10 +12,7 @@ import Testing
     var dataStore: DataStore
     var sut: DefaultDataTransferService
 
-    let iso8601Formatter: ISO8601DateFormatter
-
     init() {
-        let cont = try! DefaultAppFactory.createModelContainer(inMemory: true)
         categoryRepo = FakeCategoryRepository()
         accountRepo = FakeAccountRepository()
         transactionRepo = FakeTransactionRepository()
@@ -24,11 +21,6 @@ import Testing
                               categoryRepo: categoryRepo,
                               accountRepo: accountRepo)
         sut = DefaultDataTransferService(dataStore: dataStore)
-        iso8601Formatter = {
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            return formatter
-        }()
     }
 
     // MARK: - CSV Helpers
@@ -64,8 +56,6 @@ import Testing
         try await categoryRepo.insertOrUpdate(category1)
         try await accountRepo.insertOrUpdate(account1)
 
-//        let date1 = iso8601Formatter.date(from: "2026-10-21T12:34:56.789Z")!
-//        let date2 = iso8601Formatter.date(from: "2026-10-22T01:23:45.123Z")!
         let date1 = 11111.0
         let date2 = 22222.0
 
@@ -120,24 +110,17 @@ import Testing
             var result = [String]()
             var current = ""
             var inQuotes = false
-            var iterator = line.makeIterator()
+            let characters = Array(line)
+            var index = 0
 
-            while let char = iterator.next() {
+            while index < characters.count {
+                let char = characters[index]
                 if char == "\"" {
-                    if inQuotes {
-                        if let nextChar = iterator.next() {
-                            if nextChar == "\"" {
-                                current.append("\"")
-                            } else {
-                                inQuotes = false
-                                // Put back nextChar
-                                current.append(nextChar)
-                            }
-                        } else {
-                            inQuotes = false
-                        }
+                    if inQuotes && index + 1 < characters.count && characters[index + 1] == "\"" {
+                        current.append("\"")
+                        index += 1
                     } else {
-                        inQuotes = true
+                        inQuotes.toggle()
                     }
                 } else if char == "," && !inQuotes {
                     result.append(current)
@@ -145,6 +128,7 @@ import Testing
                 } else {
                     current.append(char)
                 }
+                index += 1
             }
             result.append(current)
             return result
@@ -154,14 +138,31 @@ import Testing
         #expect(fields.count == 9)
 
         #expect(fields[0] == transactionId1.uuidString)
-        #expect(fields[1] == String(describing: date1))
+        #expect(fields[1] == ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: date1)))
         #expect(fields[2] == transaction1.transactionType.rawValue)
         #expect(fields[3] == String(describing: transaction1.amount))
         #expect(fields[4] == "Lunch at \"Joe's\", very tasty")
         #expect(fields[5] == categoryId1.uuidString)
         #expect(fields[6] == "Cat1")
         #expect(fields[7] == accountId1.uuidString)
-        #expect(fields[8] == "Main \"acc1\"")
+        #expect(fields[8] == "Main \"Acc1\"")
+    }
+
+    @Test
+    func exportToCsv_withNoTransactions_returnsOnlyHeader() async throws {
+        let csv = try await sut.exportToCsv()
+
+        #expect(csv == [
+            "transaction_id",
+            "date",
+            "transaction_type",
+            "amount",
+            "detail",
+            "category_id",
+            "category_name",
+            "account_id",
+            "account_name"
+        ].joined(separator: ","))
     }
 
     @Test
@@ -207,6 +208,45 @@ import Testing
         #expect(result.transactions.count == 1)
         #expect(result.logSummary.errorCount == 0)
         #expect(result.logSummary.warningCount == 0)
+    }
+
+    @Test
+    func importFrom_withReorderedColumns_parsesByHeaderName() async throws {
+        let transactionId = UUID()
+        let categoryId = UUID()
+        let accountId = UUID()
+        let header = [
+            "account_name",
+            "amount",
+            "transaction_id",
+            "category_name",
+            "date",
+            "account_id",
+            "detail",
+            "transaction_type",
+            "category_id"
+        ].joined(separator: ",")
+        let row = csvRow([
+            "Wallet",
+            "25.50",
+            transactionId.uuidString,
+            "Dining",
+            "2026-10-21T00:00:00Z",
+            accountId.uuidString,
+            "Dinner",
+            TransactionType.expense.rawValue,
+            categoryId.uuidString
+        ])
+
+        let result = try await sut.importFrom(csv: [header, row].joined(separator: "\n"))
+
+        #expect(result.logSummary.errorCount == 0)
+        #expect(result.transactions.count == 1)
+        #expect(result.transactions[0].id == transactionId)
+        #expect(result.transactions[0].category.id == categoryId)
+        #expect(result.transactions[0].account.id == accountId)
+        #expect(result.transactions[0].detail == "Dinner")
+        #expect(result.transactions[0].amount == 25.50)
     }
 
     @Test
@@ -297,7 +337,22 @@ import Testing
         #expect(result.logSummary.errorCount >= 1)
 
         let logsString = result.logSummary.log.lowercased()
-        #expect(logsString.contains("invalid transaction id") || logsString.contains("invalid transaction id"))
+        #expect(logsString.contains("invalid transaction id"))
+    }
+
+    @Test
+    func importFrom_withShortRow_logsErrorInsteadOfCrashing() async throws {
+        let header = [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ",")
+        let csv = [header, UUID().uuidString].joined(separator: "\n")
+
+        let result = try await sut.importFrom(csv: csv)
+
+        #expect(result.transactions.isEmpty)
+        #expect(result.logSummary.errorCount == 1)
+        #expect(result.logSummary.log.localizedCaseInsensitiveContains("missing transaction type"))
     }
 
     @Test
@@ -313,7 +368,7 @@ import Testing
         let existingAccount = Account(id: existingAccountId, name: "ExistingAccount")
         let existingTransaction = Transaction(
             id: existingTransactionId,
-            date: 1111.0,
+            date: 1792650200,
             category: existingCategory,
             detail: "Existing transaction",
             transactionType: .income,
@@ -340,9 +395,9 @@ import Testing
 
         let conflictingRow = csvRow([
             existingTransactionId.uuidString,
-            "1112.0",
+            "2026-10-19T00:00:00-03:00",
             TransactionType.income.rawValue,
-            "100.00",
+            "101.00",
             "Conflicting transaction",
             existingCategoryId.uuidString,
             "ExistingCategory",
@@ -360,5 +415,92 @@ import Testing
         let logsString = result.logSummary.log
         #expect(logsString.contains("[CONFLICT]"))
     }
-}
 
+    @Test
+    func executeImport_persistsEntitiesInSummary() async throws {
+        let category = Category(name: "Groceries", transactionType: .expense)
+        let account = Account(name: "Wallet")
+        let transaction = Transaction(
+            id: UUID(uuidString: "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")!,
+            date: 1_000,
+            category: category,
+            detail: "Market",
+            transactionType: .expense,
+            account: account,
+            amount: 12.50
+        )
+        let summary = ImportSummary(
+            logSummary: ImportLogSummary(lines: []),
+            categories: [category],
+            accounts: [account],
+            transactions: [transaction]
+        )
+
+        try await sut.executeImport(summary: summary)
+
+        let importedCategory = try await categoryRepo.fetchBy(id: category.id)
+        let importedAccount = try await accountRepo.fetchBy(id: account.id)
+        let importedTransaction = try await transactionRepo.fetchBy(id: transaction.id)
+        #expect(importedCategory == category)
+        #expect(importedAccount == account)
+        #expect(importedTransaction?.id == transaction.id)
+        #expect(importedTransaction?.amount == transaction.amount)
+    }
+
+    @Test
+    func executeImport_updatesExistingEntitiesWithMatchingIDs() async throws {
+        let categoryId = UUID()
+        let accountId = UUID()
+        let transactionId = UUID()
+        let originalCategory = Category(id: categoryId, name: "Food", transactionType: .expense)
+        let originalAccount = Account(id: accountId, name: "Cash")
+        let originalTransaction = Transaction(
+            id: transactionId,
+            date: 1,
+            category: originalCategory,
+            detail: "Lunch",
+            transactionType: .expense,
+            account: originalAccount,
+            amount: 10
+        )
+        try await sut.executeImport(summary: ImportSummary(
+            logSummary: ImportLogSummary(lines: []),
+            categories: [originalCategory],
+            accounts: [originalAccount],
+            transactions: [originalTransaction]
+        ))
+
+        let updatedCategory = Category(id: categoryId, name: "Restaurants", transactionType: .expense)
+        let updatedAccount = Account(id: accountId, name: "Debit Card")
+        let updatedTransaction = Transaction(
+            id: transactionId,
+            date: 2,
+            category: updatedCategory,
+            detail: "Dinner",
+            transactionType: .expense,
+            account: updatedAccount,
+            amount: 25
+        )
+        try await sut.executeImport(summary: ImportSummary(
+            logSummary: ImportLogSummary(lines: []),
+            categories: [updatedCategory],
+            accounts: [updatedAccount],
+            transactions: [updatedTransaction]
+        ))
+
+        let categories = try await categoryRepo.fetchAll()
+        let accounts = try await accountRepo.fetchAll()
+        let transactions = try await transactionRepo.fetchAll()
+        let category = try await categoryRepo.fetchBy(id: categoryId)
+        let account = try await accountRepo.fetchBy(id: accountId)
+        let transaction = try await transactionRepo.fetchBy(id: transactionId)
+        #expect(categories.count == 1)
+        #expect(accounts.count == 1)
+        #expect(transactions.count == 1)
+        #expect(category?.name == "Restaurants")
+        #expect(account?.name == "Debit Card")
+        #expect(transaction?.date == 2)
+        #expect(transaction?.detail == "Dinner")
+        #expect(transaction?.amount == 25)
+    }
+}

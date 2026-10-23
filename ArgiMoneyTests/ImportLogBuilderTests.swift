@@ -4,6 +4,7 @@ import Testing
 
 @Suite("Import Log Builder Tests")
 struct ImportLogBuilderTests {
+  @Test
   func testCounts_whenMixOfWarningsAndErrors_calculatesCorrectly() {
     let lines = [
       makeLine(.warning, "first warning"),
@@ -15,9 +16,10 @@ struct ImportLogBuilderTests {
     let summary = ImportLogSummary(lines: lines)
 
     #expect(summary.warningCount == 2)
-    #expect(summary.errorCount == 3) // This test will fail because errorCount is currently counting warnings incorrectly
+    #expect(summary.errorCount == 3)
   }
 
+  @Test
   func testLogFormatting_joinsWithUppercasedLevelAndBrackets() {
     let lines = [
       makeLine(.error, "line"),
@@ -29,6 +31,7 @@ struct ImportLogBuilderTests {
     #expect(summary.log == expectedLog)
   }
 
+  @Test
   func testBuilder_addAndAddContentsOf_aggregatesLinesInOrder() {
     var builder = DefaultImportLogBuilder()
     let firstLines = [
@@ -54,6 +57,7 @@ struct ImportLogBuilderTests {
     #expect(summary.errorCount == 2)
   }
 
+  @Test
   func testEmptySummary_whenNoLines_returnsZeroCountsAndEmptyLog() {
     let builder = DefaultImportLogBuilder()
     let summary = builder.summary()

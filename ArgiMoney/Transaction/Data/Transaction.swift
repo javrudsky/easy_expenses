@@ -117,9 +117,8 @@ extension Transaction {
             .setting(category: category)
             .setting(account: account)
             .setting(amount: amount)
-            .setting(type: .expense)
+            .setting(type: .income)
             .setting(detail: detail)
             .build()
     }
 }
-
