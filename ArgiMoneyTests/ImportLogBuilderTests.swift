@@ -27,7 +27,7 @@ struct ImportLogBuilderTests {
     ]
     let summary = ImportLogSummary(lines: lines)
 
-    let expectedLog = "[ERROR] - line\n[WARNING] - line2"
+    let expectedLog = "[ERROR] - line\n[WARN] - line2"
     #expect(summary.log == expectedLog)
   }
 

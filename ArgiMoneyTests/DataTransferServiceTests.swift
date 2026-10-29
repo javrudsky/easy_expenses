@@ -166,6 +166,34 @@ import Testing
     }
 
     @Test
+    func exportThenImport_preservesQuotedCommaAndMultilineFields() async throws {
+        let category = Category(name: "Food, dining", transactionType: .expense)
+        let account = Account(name: "Cash \"wallet\"")
+        let transaction = Transaction(
+            id: UUID(),
+            date: 1_700_000_000,
+            category: category,
+            detail: "Dinner, with \"friends\"\nand dessert",
+            transactionType: .expense,
+            account: account,
+            amount: 45.67
+        )
+        try await transactionRepo.insertOrUpdate(transaction)
+
+        let csv = try await sut.exportToCsv()
+        let summary = try await sut.importFrom(csv: csv)
+
+        #expect(summary.logSummary.errorCount == 0)
+        #expect(summary.transactions.count == 1)
+        let imported = summary.transactions[0]
+        #expect(imported.id == transaction.id)
+        #expect(imported.detail == transaction.detail)
+        #expect(imported.category == category)
+        #expect(imported.account == account)
+        #expect(imported.amount == transaction.amount)
+    }
+
+    @Test
     func testImportFrom_withValidCsv_parsesEntitiesAndReturnsSummary() async throws {
         // Arrange
         let transactionId = UUID(uuidString: "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEEEE")!
@@ -250,6 +278,26 @@ import Testing
     }
 
     @Test
+    func importFrom_acceptsUTF8BomAndCRLFLineEndings() async throws {
+        let transactionID = UUID()
+        let categoryID = UUID()
+        let accountID = UUID()
+        let header = "\u{FEFF}" + [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ",")
+        let row = csvRow([
+            transactionID.uuidString, "2026-10-21T00:00:00Z", "income", "10.00", "Salary",
+            categoryID.uuidString, "Salary", accountID.uuidString, "Cash"
+        ])
+
+        let summary = try await sut.importFrom(csv: [header, row].joined(separator: "\r\n"))
+
+        #expect(summary.logSummary.errorCount == 0)
+        #expect(summary.transactions.map(\.id) == [transactionID])
+    }
+
+    @Test
     func testImportFrom_withInvalidHeader_throwsMissingColumn() async {
         // Arrange
         let headerMissingAccountName = [
@@ -279,6 +327,13 @@ import Testing
             }
         } catch {
             Issue.record("Expected ImportError.missingColumn but got different error: \(error)")
+        }
+    }
+
+    @Test
+    func importFrom_withEmptyDocument_throwsInvalidData() async {
+        await #expect(throws: DataTransferError.self) {
+            _ = try await sut.importFrom(csv: "")
         }
     }
 
@@ -356,6 +411,72 @@ import Testing
     }
 
     @Test
+    func importFrom_invalidDateOrAmount_skipsTheWholeInvalidRecord() async throws {
+        let header = [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ",")
+        let categoryID = UUID()
+        let accountID = UUID()
+        let invalidDate = csvRow([
+            UUID().uuidString, "not-a-date", "expense", "12.00", "Bad date",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash"
+        ])
+        let invalidAmount = csvRow([
+            UUID().uuidString, "2026-10-21T00:00:00Z", "expense", "twelve", "Bad amount",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash"
+        ])
+
+        let summary = try await sut.importFrom(csv: [header, invalidDate, invalidAmount].joined(separator: "\n"))
+
+        #expect(summary.transactions.isEmpty)
+        #expect(summary.categories.isEmpty)
+        #expect(summary.accounts.isEmpty)
+        #expect(summary.logSummary.errorCount == 2)
+        #expect(summary.logSummary.log.localizedCaseInsensitiveContains("invalid date"))
+        #expect(summary.logSummary.log.localizedCaseInsensitiveContains("invalid amount"))
+    }
+
+    @Test
+    func importFrom_withUnterminatedQuotedField_throwsInvalidData() async {
+        let header = [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ",")
+        let csv = header + "\n\"unterminated"
+
+        await #expect(throws: DataTransferError.self) {
+            _ = try await sut.importFrom(csv: csv)
+        }
+    }
+
+    @Test
+    func importFrom_duplicateTransactionIDInFile_keepsFirstRecordAndLogsError() async throws {
+        let header = [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ",")
+        let transactionID = UUID()
+        let categoryID = UUID()
+        let accountID = UUID()
+        let first = csvRow([
+            transactionID.uuidString, "2026-10-21T00:00:00Z", "expense", "10.00", "First",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash"
+        ])
+        let conflictingSecond = csvRow([
+            transactionID.uuidString, "2026-10-22T00:00:00Z", "expense", "99.00", "Second",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash"
+        ])
+
+        let summary = try await sut.importFrom(csv: [header, first, conflictingSecond].joined(separator: "\n"))
+
+        #expect(summary.transactions.count == 1)
+        #expect(summary.transactions.first?.detail == "First")
+        #expect(summary.logSummary.errorCount == 1)
+        #expect(summary.logSummary.log.localizedCaseInsensitiveContains("duplicate transaction id"))
+    }
+
+    @Test
     func testImportFrom_logsDuplicates_usingRepositories() async throws {
         // Arrange
 
@@ -413,7 +534,35 @@ import Testing
         // Assert
         #expect(result.logSummary.errorCount > 0)
         let logsString = result.logSummary.log
-        #expect(logsString.contains("[CONFLICT]"))
+        #expect(logsString.contains("CONFLICT"))
+    }
+
+    @Test
+    func importFrom_existingIdenticalTransaction_marksItAsDuplicateAndExecutionSkipsIt() async throws {
+        let category = Category(name: "Food", transactionType: .expense)
+        let account = Account(name: "Cash")
+        let transaction = Transaction(
+            id: UUID(),
+            date: 1_700_000_000,
+            category: category,
+            detail: "Lunch",
+            transactionType: .expense,
+            account: account,
+            amount: 12.50
+        )
+        try await categoryRepo.insertOrUpdate(category)
+        try await accountRepo.insertOrUpdate(account)
+        try await transactionRepo.insertOrUpdate(transaction)
+
+        let summary = try await sut.importFrom(csv: try await sut.exportToCsv())
+        try await sut.executeImport(summary: summary)
+
+        let storedTransactions = try await transactionRepo.fetchAll()
+        #expect(summary.transactions.count == 1)
+        #expect(summary.duplicatedTransactions.map(\.id) == [transaction.id])
+        #expect(summary.logSummary.warningCount == 1)
+        #expect(storedTransactions.count == 1)
+        #expect(storedTransactions.first?.id == transaction.id)
     }
 
     @Test
@@ -432,6 +581,7 @@ import Testing
         let summary = ImportSummary(
             logSummary: ImportLogSummary(lines: []),
             categories: [category],
+            duplicatedTransactions: [],
             accounts: [account],
             transactions: [transaction]
         )
@@ -466,6 +616,7 @@ import Testing
         try await sut.executeImport(summary: ImportSummary(
             logSummary: ImportLogSummary(lines: []),
             categories: [originalCategory],
+            duplicatedTransactions: [],
             accounts: [originalAccount],
             transactions: [originalTransaction]
         ))
@@ -484,6 +635,7 @@ import Testing
         try await sut.executeImport(summary: ImportSummary(
             logSummary: ImportLogSummary(lines: []),
             categories: [updatedCategory],
+            duplicatedTransactions: [],
             accounts: [updatedAccount],
             transactions: [updatedTransaction]
         ))
@@ -502,5 +654,35 @@ import Testing
         #expect(transaction?.date == 2)
         #expect(transaction?.detail == "Dinner")
         #expect(transaction?.amount == 25)
+    }
+
+    @Test
+    func executeImport_doesNotOverwriteTransactionsMarkedAsDuplicates() async throws {
+        let category = Category(name: "Food", transactionType: .expense)
+        let account = Account(name: "Cash")
+        let existing = Transaction(
+            id: UUID(),
+            date: 1,
+            category: category,
+            detail: "Original",
+            transactionType: .expense,
+            account: account,
+            amount: 10
+        )
+        try await transactionRepo.insertOrUpdate(existing)
+        var duplicate = existing
+        duplicate.amount = 99
+
+        try await sut.executeImport(summary: ImportSummary(
+            logSummary: ImportLogSummary(lines: []),
+            categories: [category],
+            duplicatedTransactions: [duplicate],
+            accounts: [account],
+            transactions: [duplicate]
+        ))
+
+        let stored = try await transactionRepo.fetchBy(id: existing.id)
+        #expect(stored?.amount == 10)
+        #expect(stored?.detail == "Original")
     }
 }

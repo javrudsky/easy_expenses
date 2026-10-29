@@ -147,15 +147,27 @@ struct DefaultDataTransferService: DataTransferService {
 
     // MARK: - Import
     func importFrom(csv: String, logBuilder: ImportLogBuilder = DefaultImportLogBuilder()) async throws -> ImportSummary {
+        if csv.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            throw DataTransferError.invalidData("Invalid file header")
+        }
         
         var log = logBuilder
         
-        // Parse CSV into rows
-        let lines = csv.split(whereSeparator: { $0.isNewline })
-        
-        
-        guard let headerLine = lines.first else { throw DataTransferError.invalidData("Invalid file header")}
-        let headers = Self.parseCsvLine(String(headerLine))
+        // Parse the entire document so newlines inside quoted fields remain part
+        // of the field rather than becoming separate, invalid records.
+        let rows = try Self.parseCsvRecords(csv)
+
+        guard let headerRow = rows.first else { throw DataTransferError.invalidData("Invalid file header")}
+        // Check if header is effectively empty
+        let headerTrimmed = headerRow.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        if headerTrimmed.isEmpty || (headerTrimmed.count == 1 && headerTrimmed[0].isEmpty) {
+            throw DataTransferError.invalidData("Invalid file header")
+        }
+        var headers = headerRow
+        if let firstHeader = headers.first {
+            // Excel commonly writes a UTF-8 BOM before the first column name.
+            headers[0] = firstHeader.trimmingCharacters(in: CharacterSet(charactersIn: "\u{FEFF}"))
+        }
         // Expected headers (order enforced here). If different order, map indices by name.
 
         // Build index map
@@ -163,24 +175,24 @@ struct DefaultDataTransferService: DataTransferService {
         
         for (i, h) in headers.enumerated() { idx[h] = i }
         // Validate minimal required columns exist
-        for key in Self.fileColumns { if idx[key] == nil { throw ImportError.missingColumn(key) } }
+        for key in Self.fileColumns { if idx[key] == nil { throw DefaultDataTransferService.ImportError.missingColumn(key) } }
 
         // Temporary sets/dictionaries to aggregate unique categories and accounts prior to insertion
         var categoryIdx: [UUID: Category] = [:]
         var accountIdx: [UUID: Account] = [:]
         var transactions: [Transaction] = []
+        var transactionIDs = Set<UUID>()
 
         // Collect data
         // The first record is the header, which has already been validated above.
-        for (lineIndex, line) in lines.dropFirst().enumerated() {
+        for (lineIndex, cols) in rows.dropFirst().enumerated() {
             let lineNumber = lineIndex + 2
             
-            if line.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if cols.allSatisfy({ $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
                 log.add(emptyLineLog(number: lineNumber))
                 continue
             }
-            
-            let cols = Self.parseCsvLine(String(line))
+
             func val(_ key: String) -> String? {
                 guard let i = idx[key] else {
                     return nil
@@ -198,8 +210,8 @@ struct DefaultDataTransferService: DataTransferService {
 
             let tranTypeStr = val("transaction_type") ?? ""
             guard let tranType = TransactionType(rawValue: tranTypeStr) else {
-                log.add(transactionErrorLog(transactionId: tranId.uuidString, transactionType: tranTypeStr,
-                                            message: "Missing transaction type", csvLine: lineNumber))
+                log.add(transactionErrorLog(transactionId: tranId.uuidString, transactionType: tranTypeStr.isEmpty ? "" : tranTypeStr,
+                                            message: tranTypeStr.isEmpty ? "Missing transaction type" : "Missing transaction type", csvLine: lineNumber))
                 continue
             }
             
@@ -209,16 +221,12 @@ struct DefaultDataTransferService: DataTransferService {
                                             message: "Invalid category", csvLine: lineNumber))
                 continue
             }
-            categoryIdx[category.id] = category
-
             guard let account = buildAccount(id: val("account_id"), name: val("account_name")) else  {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             categoryName: category.name, accountName: val("account_name") ?? "",
                                             message: "Invalid account", csvLine: lineNumber))
                 continue
             }
-            accountIdx[account.id] = account
-
             let dateStr = val("date") ?? ""
             guard let date = Self.parseISO8601Date(dateStr)?.timeIntervalSince1970 else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
@@ -235,6 +243,14 @@ struct DefaultDataTransferService: DataTransferService {
                 continue
             }
 
+            guard transactionIDs.insert(tranId).inserted else {
+                log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
+                                             amount: amountStr, categoryName: category.name, accountName: account.name,
+                                             detail: val("detail") ?? "", message: "Duplicate transaction ID in CSV",
+                                             csvLine: lineNumber))
+                continue
+            }
+
             let t = Transaction(
                 id: tranId,
                 date: date,
@@ -244,6 +260,10 @@ struct DefaultDataTransferService: DataTransferService {
                 account: account,
                 amount: amount,
             )
+            // Only entities belonging to a fully valid transaction may be
+            // persisted by executeImport.
+            categoryIdx[category.id] = category
+            accountIdx[account.id] = account
             transactions.append(t)
         }
 
@@ -270,7 +290,8 @@ struct DefaultDataTransferService: DataTransferService {
             try await accountRepo.insertOrUpdate(account)
         }
 
-        for transaction in summary.transactions {
+        let duplicateTransactionIDs = Set(summary.duplicatedTransactions.map(\.id))
+        for transaction in summary.transactions where !duplicateTransactionIDs.contains(transaction.id) {
             try await transactionRepo.insertOrUpdate(transaction)
         }
     }
@@ -480,40 +501,88 @@ struct DefaultDataTransferService: DataTransferService {
         return needsQuotes ? "\"\(v)\"" : v
     }
 
-    private static func parseCsvLine(_ line: String) -> [String] {
-        // Minimal CSV parser for RFC 4180-like lines.
-        var result: [String] = []
-        var current = ""
+    private static func parseCsvRecords(_ csv: String) throws -> [[String]] {
+        var records: [[String]] = []
+        var field = ""
         var inQuotes = false
-        let chars = Array(line)
+        let chars = Array(csv)
+        var record: [String] = []
         var i = 0
+        
         while i < chars.count {
             let c = chars[i]
             if inQuotes {
                 if c == "\"" {
                     if i + 1 < chars.count && chars[i + 1] == "\"" {
-                        current.append("\"")
-                        i += 1
+                        field.append("\"")
+                        i += 2
+                        continue
                     } else {
                         inQuotes = false
+                        i += 1
+                        continue
                     }
+                } else if c == "\n" || c == "\r\n" {
+                    // Swift takes a "\r\n" as a grapheme cluster
+                    field.append(c)
+//                    if c == "\r" && i + 1 < chars.count && chars[i + 1] == "\n" {
+//                        i += 2
+//                    } else {
+                        i += 1
+//                    }
+                    continue
                 } else {
-                    current.append(c)
+                    field.append(c)
+                    i += 1
+                    continue
                 }
             } else {
-                if c == "," {
-                    result.append(current)
-                    current = ""
-                } else if c == "\"" {
+                if c == "\"" && field.isEmpty {
                     inQuotes = true
+                    i += 1
+                    continue
+                } else if c == "," {
+                    record.append(field)
+                    field = ""
+                    i += 1
+                    continue
+                } else if c == "\n" || c == "\r\n" {
+                    // Swift takes a "\r\n" as a grapheme cluster
+                    record.append(field)
+                    field = ""
+                    records.append(record)
+                    record = []
+                    i += 1
+                    continue
+//                } else if c == "\r" {
+//                    if i + 1 < chars.count && chars[i + 1] == "\n" {
+//                        i += 2
+//                    } else {
+//                        i += 1
+//                    }
+//                    record.append(field)
+//                    field = ""
+//                    records.append(record)
+//                    record = []
+//                    continue
                 } else {
-                    current.append(c)
+                    if field == "account_name" {
+                        print("pepe")
+                    }
+                    field.append(c)
+                    i += 1
+                    continue
                 }
             }
-            i += 1
         }
-        result.append(current)
-        return result
+        
+        guard !inQuotes else {
+            throw DataTransferError.invalidData("Unterminated quoted CSV field")
+        }
+        
+        record.append(field)
+        records.append(record)
+        return records
     }
 
     private static func parseISO8601Date(_ value: String) -> Date? {

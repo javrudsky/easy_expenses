@@ -20,7 +20,6 @@ protocol AudioRecordingViewModel: ObservableObject {
     func reloadCategories() async
     func reloadAccounts() async
     func reloadTotals() async
-    func gridCategories(categories: [Category], selected: Category?) -> [Category]
 }
 
 @MainActor
@@ -151,9 +150,5 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
             // Handle or log the error as appropriate for your app
             print("Failed to fetch totals: \(error)")
         }
-    }
-    
-    func gridCategories(categories: [Category], selected: Category?) -> [Category] {
-        formService.gridCategories(categories: categories, selected: selected)
     }
 }

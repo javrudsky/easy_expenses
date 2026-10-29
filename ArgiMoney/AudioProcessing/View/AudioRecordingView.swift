@@ -163,9 +163,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
         let tran = viewModel.pendingTransaction
         let config = TransactionFormConfig(transaction: tran,
                                            crudOperation: .create,
-                                           allCategories: viewModel.categories,
-                                           gridCategories: viewModel.gridCategories(categories: viewModel.categories,
-                                                                                    selected: tran?.category),
+                                           categories: viewModel.categories,
                                            accounts: viewModel.accounts)
         return TransactionFormView(config: config) { handleTransactionResult(result: $0)}
     }

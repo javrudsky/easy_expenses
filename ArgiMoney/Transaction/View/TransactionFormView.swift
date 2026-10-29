@@ -27,19 +27,16 @@ enum CRUDOperation {
 struct TransactionFormConfig {
     var transaction: Transaction?
     var crudOperation: CRUDOperation
-    var allCategories: [Category]
-    var gridCategories: [Category]
+    var categories: [Category]
     var accounts: [Account]
     
     init(transaction: Transaction? = nil,
          crudOperation: CRUDOperation = .create,
-         allCategories: [Category],
-         gridCategories: [Category],
+         categories: [Category],
          accounts: [Account]) {
         self.transaction = transaction
         self.crudOperation = crudOperation
-        self.allCategories = allCategories
-        self.gridCategories = gridCategories
+        self.categories = categories
         self.accounts = accounts
     }
 }
@@ -47,12 +44,13 @@ struct TransactionFormConfig {
 struct TransactionFormView: View {
     var onComplete: (TransactionFormResult) -> Void
     private let cfg: TransactionFormConfig
-
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.theme) private var theme
-
+    
     @State private var date: Date = .now
-    @State private var category: Category = Category(id: UUID(), name: "", transactionType: .expense)
+    @State private var inCategory: Category = Category(id: UUID(), name: "", transactionType: .income)
+    @State private var exCategory: Category = Category(id: UUID(), name: "", transactionType: .expense)
     @State private var detail: String = ""
     @State private var type: TransactionType = .expense
     @State private var account: Account = Account(id: UUID(), name: "")
@@ -65,13 +63,13 @@ struct TransactionFormView: View {
         case detail
     }
     @FocusState private var focusedField: Field?
-
+    
     init(config: TransactionFormConfig,
          onComplete: @escaping (TransactionFormResult) -> Void) {
         self.cfg = config
         self.onComplete = onComplete
     }
-
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -85,23 +83,32 @@ struct TransactionFormView: View {
                             .keyboardType(.decimalPad)
                             .focused($focusedField, equals: .amount)
                             .themedTextField()
+                            .accessibilityIdentifier("transaction-amount")
                     }
                     
-                        CategoryGridView(items: cfg.gridCategories,
-                                         value: $category) {
-                            showCatList = true
-                        }
+                    if type == .income {
+                        CategoryGridView(items: cfg.categories.filter { $0.transactionType == .income },
+                                         value: $inCategory)
+                                     .frame(maxHeight: .infinity)
+                                     .frame(maxWidth: .infinity)
+
+                    } else {
+                        CategoryGridView(items: cfg.categories.filter { $0.transactionType == .expense },
+                                         value: $exCategory)
                                          .frame(maxHeight: .infinity)
                                          .frame(maxWidth: .infinity)
-                        
-                        VStack(alignment: .leading) {
-                            Text("Description")
-                            TextEditor(text: $detail)
-                                .frame(height: 120)
-                                .backgroundStyle(Color(.systemGray))
-                                .focused($focusedField, equals: .detail)
-                                .themedTextField()
-                        }
+
+                    }
+                                            
+                    VStack(alignment: .leading) {
+                        Text("Description")
+                        TextEditor(text: $detail)
+                            .frame(height: 120)
+                            .backgroundStyle(Color(.systemGray))
+                            .focused($focusedField, equals: .detail)
+                            .themedTextField()
+                            .accessibilityIdentifier("transaction-detail")
+                    }
                     
                 }
                 .listRowSpacing(1)
@@ -120,7 +127,7 @@ struct TransactionFormView: View {
                     Button {
                         if cfg.crudOperation == .update, var tx = cfg.transaction {
                             tx.date = date.timeIntervalSince1970
-                            tx.category = category
+                            tx.category = selectedCategory()
                             tx.detail = detail
                             tx.transactionType = type
                             tx.account = account
@@ -129,7 +136,7 @@ struct TransactionFormView: View {
                         } else {
                             guard let amount = Decimal(string: amountText) else { return }
                             dismissAndSend(.created(date: date,
-                                                    category: category,
+                                                    category: selectedCategory(),
                                                     detail: detail,
                                                     type: type,
                                                     account: account,
@@ -139,6 +146,7 @@ struct TransactionFormView: View {
                         Image(systemName: "checkmark")
                     }
                     .disabled(!isValid)
+                    .accessibilityIdentifier("save-transaction")
                 }
             }
             .onTapGesture {
@@ -147,25 +155,33 @@ struct TransactionFormView: View {
             .onAppear { populateFromTransactionIfNeeded() }
         }
     }
-
+    
+    private func selectedCategory() -> Category {
+        return type == .income ? inCategory : exCategory
+    }
+    
     private var isValid: Bool {
         Decimal(string: amountText) != nil
     }
-
+    
     private func populateFromTransactionIfNeeded() {
         if let tx = cfg.transaction {
             date = Date(timeIntervalSince1970: tx.date)
-            category = cfg.allCategories.first(where: { $0.id == tx.category.id }) ?? cfg.allCategories.first ?? category
             detail = tx.detail ?? ""
             type = tx.transactionType
             account = tx.account
             amountText = NSDecimalNumber(decimal: tx.amount).stringValue
-        } else {
-            category = cfg.allCategories.first ?? category
-            account = cfg.accounts.first ?? account
         }
+        inCategory = populateCategory(cfg.categories, transactionType: .income, current: inCategory)
+        exCategory = populateCategory(cfg.categories, transactionType: .expense, current: exCategory)
     }
-
+    
+    private func populateCategory(_ categories: [Category], transactionType: TransactionType, current: Category) -> Category {
+        let filtered = categories.filter { $0.transactionType == transactionType }
+        let cat = filtered.first(where: { $0.id == current.id })
+        return cat ?? filtered.first ?? current
+    }
+    
     private func dismissAndSend(_ result: TransactionFormResult) {
         dismiss()
         onComplete(result)
@@ -175,7 +191,6 @@ struct TransactionFormView: View {
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
     var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income), Category(name: "Fuel", transactionType: .income), Category(name: "Rent", transactionType: .income)]
-    let cfg = TransactionFormConfig(allCategories: [AppDefaults.incomeCategory], gridCategories: cat, accounts: [])
+    let cfg = TransactionFormConfig(categories: [AppDefaults.incomeCategory], accounts: [])
     TransactionFormView(config: cfg, onComplete: { _ in })
 }
-

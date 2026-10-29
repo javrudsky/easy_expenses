@@ -47,6 +47,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                     showDeleteConfirmation = true
                 }
             }
+            .accessibilityIdentifier("transactions-list")
             .navigationTitle("Transactions")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) { EditButton() }
@@ -56,6 +57,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                         viewModel.showingForm = true
                     } label: { Image(systemName: "plus") }
                     .accessibilityLabel("Add")
+                    .accessibilityIdentifier("add-transaction")
                 }
             }
             .confirmationDialog("Delete selected transactions?", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
@@ -81,9 +83,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                 let tran = viewModel.editingTransaction
                 let config = TransactionFormConfig(transaction: tran,
                                                    crudOperation: (tran == nil ? .create : .update),
-                                                   allCategories: viewModel.categories,
-                                                   gridCategories: viewModel.gridCategories(categories: viewModel.categories,
-                                                                                            selected: tran?.category),
+                                                   categories: viewModel.categories,
                                                    accounts: viewModel.accounts)
                 
                 TransactionFormView(config: config) { handleResult(result: $0) }
@@ -164,4 +164,3 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
     let vm = cf.transactionsViewModel(dataStore: cf.dataStore()) as! DefaultTransactionsViewModel
     TransactionsView<DefaultTransactionsViewModel>(viewModel: vm)
 }
-

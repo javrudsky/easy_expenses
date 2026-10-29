@@ -10,24 +10,20 @@ import SwiftUI
 
 typealias OnGridButtonSelect = (String) -> Void
 
-typealias OnMore = () -> Void
 struct CategoryGridView: View {
     
     @Environment(\.theme) private var theme
-    private let items: [Category]
+    @State var items: [Category]
     private var buttons: [String: ButtonGrid] = [:]
     private var itemCount: Int = 8
-    private var onMore: OnMore?
     @State var showCatList: Bool = false
     
     @Binding var value: Category
 
     init(items: [Category],
-         value: Binding<Category>,
-         onMore: OnMore? = nil) {
+         value: Binding<Category>) {
         self.items = items
         self._value = value
-        self.onMore = onMore
     }
     
     func itemCount(_ count: Int) -> Self {
@@ -49,13 +45,13 @@ struct CategoryGridView: View {
                                     set: { newValue in
                                         if newValue {
                                             value = item
+                                            items = process(categories: items, selected: value)
                                         }
                                     }
                                 )
                             )
-                            if item == items[itemCount - 1] {
+                            if items.count >= itemCount && item == items[itemCount - 1] {
                                 Button("More") {
-                                    //onMore?()
                                     showCatList = true
                                 }
                                         .aspectRatio(1, contentMode: .fit)
@@ -87,6 +83,16 @@ struct CategoryGridView: View {
                 isSelected: false
             ))
         }
+    }
+    
+    func process(categories: [Category], selected: Category?) -> [Category] {
+        let cSel = selected ?? categories[0]
+        var gc = [cSel]
+        let max = min(categories.count - 1, 8)
+        if max > 0 {
+            gc.append(contentsOf: categories.filter {$0.id != cSel.id}[..<max])
+        }
+        return gc
     }
 }
 

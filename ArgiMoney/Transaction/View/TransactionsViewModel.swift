@@ -25,7 +25,6 @@ protocol TransactionsViewModel: ObservableObject {
     func delete(at offsets: IndexSet) async throws
     func reloadCategories() async
     func reloadAccounts() async
-    func gridCategories(categories: [Category], selected: Category?) -> [Category]
 }
 
 @MainActor
@@ -90,10 +89,6 @@ final class DefaultTransactionsViewModel: TransactionsViewModel {
         await MainActor.run {
             self.accounts = items
         }
-    }
-    
-    func gridCategories(categories: [Category], selected: Category?) -> [Category] {
-        formService.gridCategories(categories: categories, selected: selected)
     }
 }
 

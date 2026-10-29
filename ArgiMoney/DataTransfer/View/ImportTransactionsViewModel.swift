@@ -52,9 +52,11 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
             throw DataTransferError.wrongFile("Could not open file")
         }
         
-        if !fileUrl.startAccessingSecurityScopedResource() {
-            print("Permission denied")
-            throw DataTransferError.permissionDenied("Could not open file")
+        let isAccessingSecurityScopedResource = fileUrl.startAccessingSecurityScopedResource()
+        defer {
+            if isAccessingSecurityScopedResource {
+                fileUrl.stopAccessingSecurityScopedResource()
+            }
         }
 
         isImporting = true
@@ -62,7 +64,6 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
 
         do {
             let content = try fileUtil.open(fileUrl)
-            fileUrl.stopAccessingSecurityScopedResource()
             let summary = try await dataTransferService.importFrom(csv: content, logBuilder: DefaultImportLogBuilder())
             self.summary = summary
             print(summary.logSummary.log)
@@ -87,7 +88,7 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
     }
 
     func cancelImport() {
-        // Placeholder implementation; reset state if needed
+        resetProcess()
     }
     
     func resetProcess() {

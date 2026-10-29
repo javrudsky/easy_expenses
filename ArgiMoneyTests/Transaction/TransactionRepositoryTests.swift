@@ -72,5 +72,22 @@ import Testing
         #expect(ts.count == 1)
         #expect(ts.first?.id == b.id)
     }
-}
 
+    @Test("fetch and totals use an inclusive date range")
+    func fetchAndTotalsUseDateRange() async throws {
+        let expense = Th.createTransaction(date: 100, transactionType: .expense, amount: 10)
+        let income = Th.createTransaction(date: 200, transactionType: .income, amount: 25)
+        let outsideRange = Th.createTransaction(date: 201, transactionType: .expense, amount: 99)
+        for transaction in [expense, income, outsideRange] {
+            try await repo.insertOrUpdate(transaction)
+        }
+
+        let fetched = try await repo.fetch(from: 100, to: 200)
+        let totals = try await repo.fetchTotals(from: 100, to: 200)
+
+        #expect(Set(fetched.map(\.id)) == Set([expense.id, income.id]))
+        #expect(totals.income == 25)
+        #expect(totals.expenses == 10)
+        #expect(totals.result == 15)
+    }
+}
