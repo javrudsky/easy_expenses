@@ -525,11 +525,6 @@ struct DefaultDataTransferService: DataTransferService {
                 } else if c == "\n" || c == "\r\n" {
                     // Swift takes a "\r\n" as a grapheme cluster
                     field.append(c)
-//                    if c == "\r" && i + 1 < chars.count && chars[i + 1] == "\n" {
-//                        i += 2
-//                    } else {
-                        i += 1
-//                    }
                     continue
                 } else {
                     field.append(c)
@@ -554,17 +549,6 @@ struct DefaultDataTransferService: DataTransferService {
                     record = []
                     i += 1
                     continue
-//                } else if c == "\r" {
-//                    if i + 1 < chars.count && chars[i + 1] == "\n" {
-//                        i += 2
-//                    } else {
-//                        i += 1
-//                    }
-//                    record.append(field)
-//                    field = ""
-//                    records.append(record)
-//                    record = []
-//                    continue
                 } else {
                     if field == "account_name" {
                         print("pepe")
