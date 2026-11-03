@@ -14,12 +14,12 @@ struct ArgiMoneyApp: App {
     @StateObject private var themeManager = ThemeManager.shared
     private let factory: AppFactory? = try? DefaultAppFactory()
     
-    init() {
-        
-        if let factory = self.factory {
-            themeManager.setTheme(factory.appValues().theme())
-        }
-    }
+//    init() {
+//        
+//        if let factory = self.factory {
+//            themeManager.setTheme(factory.appValues().theme())
+//        }
+//    }
     
     var body: some Scene {
         WindowGroup {

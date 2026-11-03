@@ -62,7 +62,9 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
         let tType = viewModel.transactionType
         let updated = Category(id: category.id,
                                name: editingName[category.id] ?? category.name,
-                               transactionType: tType)
+                               transactionType: tType,
+                               imageName: category.imageName,
+                               rgbColor: category.rgbColor)
         
         Task {
             do {

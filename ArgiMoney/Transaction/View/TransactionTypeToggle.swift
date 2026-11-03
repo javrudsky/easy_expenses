@@ -24,12 +24,12 @@ struct TransactionTypeToggle: View {
                 HStack(spacing: 6) {
                     Image(systemName: "arrow.down.circle.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, type == .expense ? theme.accentLightNegative : inactiveCircleGray)
+                        .foregroundStyle(.white, type == .expense ? theme.brandPrimary : inactiveCircleGray)
                     Text("Expense")
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .padding(.vertical, 12)
                 .background(type == .expense ? theme.brandPrimary.opacity(0.15) : Color.clear)
                 .foregroundStyle(type == .expense ? theme.brandPrimary : .secondary)
             }
@@ -41,12 +41,12 @@ struct TransactionTypeToggle: View {
                 HStack(spacing: 6) {
                     Image(systemName: "arrow.up.circle.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, type == .income ? theme.accentLightPositive : inactiveCircleGray)
+                        .foregroundStyle(.white, type == .income ? theme.brandPrimary : inactiveCircleGray)
                     Text("Income")
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .padding(.vertical, 12)
                 .background(type == .income ? theme.brandPrimary.opacity(0.15) : Color.clear)
                 .foregroundStyle(type == .income ? theme.brandPrimary : .secondary)
             }

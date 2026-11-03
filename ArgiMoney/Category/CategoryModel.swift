@@ -12,16 +12,23 @@ final class CategoryModel {
     @Attribute(.unique) var id: UUID
     var name: String
     var transactionType: String
+    // SFSymbol Name for now
+    var imageName: String
+    var rgbColor: String
     
     @Relationship(deleteRule: .deny, inverse: \TransactionModel.category)
     var transactions: [TransactionModel]?
-
+    
     init(id: UUID = UUID(),
          name: String,
-         transactionType: String) {
+         transactionType: String,
+         imageName: String,
+         rgbColor: String) {
         self.id = id
         self.name = name
         self.transactionType = transactionType
+        self.imageName = imageName
+        self.rgbColor = rgbColor
     }
 }
 

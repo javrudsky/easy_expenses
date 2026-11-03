@@ -20,8 +20,11 @@ struct DefaultTransactionMapper: TransactionMapper {
 
     func toDomain(_ model: TransactionModel) -> Transaction {
         let type = TransactionType(rawValue: model.transactionType) ?? .expense
-        let category = Category(id: model.category.id, name: model.category.name, transactionType: type)
-                                    let account = Account(id: model.account.id, name: model.account.name)
+        let category = Category(id: model.category.id, name: model.category.name,
+                                transactionType: type, imageName: model.category.imageName,
+                                rgbColor: model.category.rgbColor)
+        let account = Account(id: model.account.id, name: model.account.name)
+        
         return Transaction(
             id: model.id,
             date: model.date,

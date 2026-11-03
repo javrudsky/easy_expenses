@@ -49,8 +49,9 @@ struct TransactionFormView: View {
     @Environment(\.theme) private var theme
     
     @State private var date: Date = .now
-    @State private var inCategory: Category = Category(id: UUID(), name: "", transactionType: .income)
-    @State private var exCategory: Category = Category(id: UUID(), name: "", transactionType: .expense)
+    @State private var inCategory: Category = AppDefaults.incomeCategory
+    @State private var exCategory: Category = AppDefaults.expenseCategory
+    
     @State private var detail: String = ""
     @State private var type: TransactionType = .expense
     @State private var account: Account = Account(id: UUID(), name: "")
@@ -79,27 +80,41 @@ struct TransactionFormView: View {
                     TransactionTypeToggle(type: $type)
                     VStack(alignment: .leading) {
                         Text("Amount")
-                        TextField("0.00", text: $amountText)
-                            .keyboardType(.decimalPad)
-                            .focused($focusedField, equals: .amount)
-                            .themedTextField()
-                            .accessibilityIdentifier("transaction-amount")
+                        HStack(spacing: 4) {
+                            // Static currency code that cannot be deleted or selected
+                            Text("USD")
+                                .foregroundColor(.secondary)
+                                .font(.body)
+                                .bold()
+                            
+                            TextField("0.00", text: $amountText)
+                                .keyboardType(.decimalPad) // Shows numeric keyboard with decimal point
+                                .focused($focusedField, equals: .amount)
+                                .themedTextField()
+                                .accessibilityIdentifier("transaction-amount")
+                                .onChange(of: amountText) { oldValue, newValue in
+                                    amountText = filterInvalidCurrencyCharacters(newValue)
+                                }
+                        }
+                        .padding()
                     }
                     
                     if type == .income {
                         CategoryGridView(items: cfg.categories.filter { $0.transactionType == .income },
                                          value: $inCategory)
-                                     .frame(maxHeight: .infinity)
-                                     .frame(maxWidth: .infinity)
-
+                        .frame(maxHeight: .infinity)
+                        .frame(maxWidth: .infinity)
+                        .padding(.all, 0.0)
+                        
                     } else {
                         CategoryGridView(items: cfg.categories.filter { $0.transactionType == .expense },
                                          value: $exCategory)
-                                         .frame(maxHeight: .infinity)
-                                         .frame(maxWidth: .infinity)
-
+                        .frame(maxHeight: .infinity)
+                        .frame(maxWidth: .infinity)
+                        .padding(.all, 0.0)
+                        
                     }
-                                            
+                    
                     VStack(alignment: .leading) {
                         Text("Description")
                         TextEditor(text: $detail)
@@ -131,10 +146,13 @@ struct TransactionFormView: View {
                             tx.detail = detail
                             tx.transactionType = type
                             tx.account = account
-                            if let amount = Decimal(string: amountText) { tx.amount = amount }
+                            // Necessary to create a decimal nummber when using "," as separator
+                            if let amount = Decimal(string: amountText.replacingOccurrences(of: ",", with: ".")) {
+                                tx.amount = amount
+                            }
                             dismissAndSend(.updated(tx))
                         } else {
-                            guard let amount = Decimal(string: amountText) else { return }
+                            guard let amount = Decimal(string: amountText.replacingOccurrences(of: ",", with: ".")) else { return }
                             dismissAndSend(.created(date: date,
                                                     category: selectedCategory(),
                                                     detail: detail,
@@ -161,7 +179,7 @@ struct TransactionFormView: View {
     }
     
     private var isValid: Bool {
-        Decimal(string: amountText) != nil
+        return Decimal(string: amountText) != nil
     }
     
     private func populateFromTransactionIfNeeded() {
@@ -170,10 +188,14 @@ struct TransactionFormView: View {
             detail = tx.detail ?? ""
             type = tx.transactionType
             account = tx.account
-            amountText = NSDecimalNumber(decimal: tx.amount).stringValue
+            let grpSep = Locale.current.groupingSeparator ?? ","
+            amountText = tx.amount.formatted().replacingOccurrences(of: grpSep, with: "")
+            inCategory = populateCategory(cfg.categories, transactionType: .income, current: tx.category)
+            exCategory = populateCategory(cfg.categories, transactionType: .expense, current: tx.category)
+        } else {
+            inCategory = populateCategory(cfg.categories, transactionType: .income, current: AppDefaults.incomeCategory)
+            exCategory = populateCategory(cfg.categories, transactionType: .expense, current: AppDefaults.expenseCategory)
         }
-        inCategory = populateCategory(cfg.categories, transactionType: .income, current: inCategory)
-        exCategory = populateCategory(cfg.categories, transactionType: .expense, current: exCategory)
     }
     
     private func populateCategory(_ categories: [Category], transactionType: TransactionType, current: Category) -> Category {
@@ -186,11 +208,34 @@ struct TransactionFormView: View {
         dismiss()
         onComplete(result)
     }
+    
+    
+    private func filterInvalidCurrencyCharacters(_ input: String) -> String {
+        let sep = Locale.current.decimalSeparator ?? "."
+        let sepChar = Character(sep)
+        // 1. Allow only numbers and the local decimal separator (dot or comma)
+        let filtered = input.filter { $0.isNumber || $0 == sepChar }
+
+        // 2. Prevent multiple decimal points
+        let components = filtered.components(separatedBy: CharacterSet(charactersIn: sep))
+        if components.count > 2 {
+            // Keep only the first part and the second part
+            return "\(components[0])\(sep)\(components[1])"
+        }
+        
+        // 3. Limit to exactly 2 decimal places maximum
+        if components.count == 2, components[1].count > 2 {
+            let cents = String(components[1].prefix(2))
+            return "\(components[0])\(sep)\(cents)"
+        }
+        
+        return filtered
+    }
 }
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
-    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income), Category(name: "Fuel", transactionType: .income), Category(name: "Rent", transactionType: .income)]
+    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income, imageName: "fork.knife", rgbColor: "#FF0000"), Category(name: "Fuel", transactionType: .income, imageName: "fuelpump.fill", rgbColor: "#FFA500"), Category(name: "Rent", transactionType: .income, imageName: "house.fill", rgbColor: "#4A90E2")]
     let cfg = TransactionFormConfig(categories: [AppDefaults.incomeCategory], accounts: [])
     TransactionFormView(config: cfg, onComplete: { _ in })
 }

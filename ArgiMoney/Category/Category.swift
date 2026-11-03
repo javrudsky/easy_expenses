@@ -11,5 +11,7 @@ struct Category: Identifiable, Hashable, Codable {
     var id: UUID = UUID()
     var name: String
     var transactionType: TransactionType
-    
+    // SFSymbol
+    var imageName: String
+    var rgbColor: String
 }

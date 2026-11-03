@@ -12,9 +12,13 @@ protocol CategoryMapper: Sendable {
 
 struct DefaultCategoryMapper: CategoryMapper {
     func toDomain(_ model: CategoryModel) -> Category {
-        Category(id: model.id, name: model.name, transactionType: TransactionType(rawValue: model.transactionType) ?? .expense)
+        Category(id: model.id, name: model.name,
+                 transactionType: TransactionType(rawValue: model.transactionType) ?? .expense,
+                 imageName: model.imageName, rgbColor: model.rgbColor)
     }
     func toModel(_ domain: Category) -> CategoryModel {
-        CategoryModel(id: domain.id, name: domain.name, transactionType: domain.transactionType.rawValue)
+        CategoryModel(id: domain.id, name: domain.name,
+                      transactionType: domain.transactionType.rawValue,
+                      imageName: domain.imageName, rgbColor: domain.rgbColor)
     }
 }

@@ -67,7 +67,10 @@ actor SwiftDataTransactionRepository: TransactionRepository {
             existingCat.name = transaction.category.name
             catModel = existingCat
         } else {
-            catModel = CategoryModel(id: transaction.category.id, name: transaction.category.name, transactionType: transaction.transactionType.rawValue)
+            catModel = CategoryModel(id: transaction.category.id, name: transaction.category.name,
+                                     transactionType: transaction.transactionType.rawValue,
+                                     imageName: transaction.category.imageName,
+                                     rgbColor: transaction.category.rgbColor)
             modelContext.insert(catModel)
         }
 

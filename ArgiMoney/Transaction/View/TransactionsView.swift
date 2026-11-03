@@ -199,7 +199,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                     .foregroundStyle(.secondary)
                 
                 Text(currency(totalBalance))
-                    .font(.title2.bold())
+                    .font(.title3.bold())
                     .foregroundStyle(
                         totalBalance >= 0 ? .green : .red
                     )
@@ -208,9 +208,9 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
             
             Spacer()
             
-            Image(systemName: "chevron.right")
-                .font(.footnote.weight(.semibold))
-                .foregroundStyle(.secondary)
+//            Image(systemName: "chevron.right")
+//                .font(.footnote.weight(.semibold))
+//                .foregroundStyle(.secondary)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
@@ -422,12 +422,12 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
         } label: {
             HStack(spacing: 12) {
                 
-                Image(systemName: categorySymbol(for: tx))
+                Image(systemName: tx.category.imageName)
                     .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(categoryColor(for: tx))
+//                    .foregroundStyle(Color(rgb: tx.category.rgbColor))
+                    .foregroundStyle(Color.white)
                     .frame(width: 36, height: 36)
-                    .background(
-                        categoryColor(for: tx).opacity(0.10),
+                    .background(Color(rgb: tx.category.rgbColor), 
                         in: Circle()
                     )
                 
@@ -476,37 +476,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
             }
         }
     }
-    
-    private func categorySymbol(for tx: Transaction) -> String {
-        let name = tx.category.name.lowercased()
         
-        if !tx.isExpense {
-            return "dollarsign.circle.fill"
-        }
-        
-        if name.contains("transport") { return "car.fill" }
-        if name.contains("grocer") { return "cart.fill" }
-        if name.contains("travel") { return "airplane" }
-        if name.contains("fire") { return "flame.fill" }
-        if name.contains("food") { return "fork.knife" }
-        if name.contains("health") { return "cross.case.fill" }
-        
-        return "creditcard.fill"
-    }
-    
-    private func categoryColor(for tx: Transaction) -> Color {
-        if !tx.isExpense { return .green }
-        
-        let name = tx.category.name.lowercased()
-        
-        if name.contains("transport") { return .blue }
-        if name.contains("grocer") { return .orange }
-        if name.contains("travel") { return .purple }
-        if name.contains("fire") { return .orange }
-        
-        return .blue
-    }
-    
     // MARK: - Helpers
     
     private func currency(_ amount: Decimal) -> String {

@@ -215,7 +215,10 @@ struct DefaultDataTransferService: DataTransferService {
                 continue
             }
             
-            guard let category = buildCategory(id: val("category_id"), name: val("category_name"), transactionType: tranType) else {
+            guard let category = buildCategory(id: val("category_id"), name: val("category_name"),
+                                               transactionType: tranType,
+                                               imageName: AppDefaults.defaultCategoryImage,
+                                               rgbColor: AppDefaults.defaultCategoryColor) else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             amount: "", categoryName: val("category_name") ?? "", accountName: "", detail: "",
                                             message: "Invalid category", csvLine: lineNumber))
@@ -304,9 +307,15 @@ struct DefaultDataTransferService: DataTransferService {
         return nil
     }
    
-    private func buildCategory(id: String?, name: String?, transactionType: TransactionType) -> Category? {
-        if let id, let id = UUID(uuidString: id), let name, !name.isEmpty {
-            return Category(id: id, name: name, transactionType: transactionType)
+    private func buildCategory(id: String?, name: String?,
+                               transactionType: TransactionType,
+                               imageName: String?, rgbColor: String?) -> Category? {
+        if let id, let id = UUID(uuidString: id),
+            let name, !name.isEmpty,
+            let imageName, !imageName.isEmpty,
+           let rgbColor, !rgbColor.isEmpty {
+            return Category(id: id, name: name, transactionType: transactionType,
+                            imageName: imageName, rgbColor: rgbColor)
         }
         return nil
     }

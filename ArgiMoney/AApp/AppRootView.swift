@@ -3,8 +3,9 @@ import SwiftData
 
 struct AppRootView: View {
     
-    let af: AppFactory
-    let dataStore: DataStore
+    private let af: AppFactory
+    private let dataStore: DataStore
+    @Environment(\.theme) var theme: Theme
     
     init(appFactory: AppFactory) {
         //_viewModel = StateObject(wrappedValue: di.makeTransactionsViewModel())
@@ -29,6 +30,9 @@ struct AppRootView: View {
             
             MoreView(appFactory: af, dataStore: dataStore)
                 .tabItem { Label("More", systemImage: "ellipsis.circle") }
+        }
+        .onAppear {
+            ThemeManager.shared.setTheme(af.appValues().theme())
         }
     }
        
