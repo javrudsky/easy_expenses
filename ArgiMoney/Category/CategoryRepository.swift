@@ -41,6 +41,8 @@ actor SwiftDataCategoryRepository: CategoryRepository {
     func insertOrUpdate(_ category: Category) async throws {
         if let obj: CategoryModel = try getBy(id: category.id) {
             obj.name = category.name
+            obj.imageName = category.imageName
+            obj.rgbColor = category.rgbColor
         } else {
             insert(mapper.toModel(category))
         }

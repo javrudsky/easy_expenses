@@ -16,7 +16,7 @@ struct DataManagementView: View {
     }
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     VStack(alignment: .leading, spacing: 8) {
@@ -65,7 +65,7 @@ struct DataManagementView: View {
             .background(ArgiColors.background)
             .navigationTitle("Data")
             .navigationBarTitleDisplayMode(.inline)
-        }
+//        }
     }
     
     private func createExportTransactionsView() throws -> ExportTransactionsView<DefaultExportTransactionsViewModel> {

@@ -39,7 +39,7 @@ final class DefaultCategoriesViewModel: CategoriesViewModel {
     }
 
     func add() {
-        categories.append(Category(name: "New Category", transactionType: transactionType, imageName: transactionType == .expense ? "cart.fill" : "dollarsign.circle.fill", rgbColor: transactionType == .expense ? "#FF0000" : "#00FF00"))
+        // Kept for backward compatibility if used elsewhere
     }
 
     func save(_ category: Category) async throws {

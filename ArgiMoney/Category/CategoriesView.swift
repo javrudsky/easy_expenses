@@ -8,24 +8,38 @@ import SwiftUI
 
 struct CategoriesView<VM: CategoriesViewModel>: View {
     @ObservedObject var viewModel: VM
-    @State private var editingName: [UUID: String] = [:]
     @State private var showingError: Bool = false
     @State private var errorMessage: String = ""
 
     var body: some View {
         List {
             ForEach(viewModel.categories) { category in
-                HStack {
-                    Image(systemName: "tag")
-                        .foregroundStyle(.secondary)
-                    TextField("Name", text: Binding(
-                        get: { editingName[category.id] ?? category.name },
-                        set: { editingName[category.id] = $0 }
-                    ), onCommit: {
+                NavigationLink {
+                    CategoryEditView(category: category,
+                                     transactionType: viewModel.transactionType,
+                                     usedColors: viewModel.categories.map { $0.rgbColor }) { category in
                         save(category)
-                    })
-                    .textFieldStyle(.roundedBorder)
+                    }
+                } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: category.imageName)
+                            .foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .background(Color(rgbaCsv: category.rgbColor), in: Circle())
+                        
+                        Text(category.name)
+                            .foregroundStyle(.primary)
+                            .font(.body)
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundStyle(.tertiary)
+                            .font(.caption)
+                    }
+                    .padding(.vertical, 4)
                 }
+                .buttonStyle(.plain)
             }
             .onDelete { offsets in
                 delete(offsets: offsets)
@@ -35,11 +49,17 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
             }, message: {
                 Text(errorMessage)
             })
-
         }
+        .listStyle(.insetGrouped)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button(action: { viewModel.add() }) {
+                NavigationLink {
+                    CategoryEditView(category: nil,
+                                     transactionType: viewModel.transactionType,
+                                     usedColors: viewModel.categories.map { $0.rgbColor }) { category in
+                        save(category)
+                    }
+                } label: {
                     Label("Add Category", systemImage: "plus")
                 }
             }
@@ -59,24 +79,15 @@ struct CategoriesView<VM: CategoriesViewModel>: View {
     }
     
     private func save(_ category: Category) {
-        let tType = viewModel.transactionType
-        let updated = Category(id: category.id,
-                               name: editingName[category.id] ?? category.name,
-                               transactionType: tType,
-                               imageName: category.imageName,
-                               rgbColor: category.rgbColor)
-        
         Task {
             do {
-                try await viewModel.save(updated)
+                try await viewModel.save(category)
             } catch {
                 errorMessage = "We couldn’t save your changes. Please try again."
                 showingError = true
             }
         }
-       
     }
-
 }
 
 #Preview {

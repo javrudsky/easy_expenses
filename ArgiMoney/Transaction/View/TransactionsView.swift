@@ -207,10 +207,6 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
             }
             
             Spacer()
-            
-//            Image(systemName: "chevron.right")
-//                .font(.footnote.weight(.semibold))
-//                .foregroundStyle(.secondary)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
@@ -424,10 +420,9 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                 
                 Image(systemName: tx.category.imageName)
                     .font(.system(size: 15, weight: .semibold))
-//                    .foregroundStyle(Color(rgb: tx.category.rgbColor))
                     .foregroundStyle(Color.white)
                     .frame(width: 36, height: 36)
-                    .background(Color(rgb: tx.category.rgbColor), 
+                    .background(Color(rgbaCsv: tx.category.rgbColor),
                         in: Circle()
                     )
                 

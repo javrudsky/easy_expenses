@@ -57,7 +57,6 @@ struct CategoryGridView: View {
                                     set: { newValue in
                                         if newValue {
                                             value = item
-//                                            items = process(categories: items, selected: value)
                                         }
                                     }
                                 )
@@ -156,7 +155,7 @@ struct ButtonGridLabel: View {
             Image(systemName: imageName)
                 .foregroundStyle(Color.white)
                 .frame(width: 36, height: 36)
-                .background(Color(rgb: rgbColor),
+                .background(Color(rgbaCsv: rgbColor),
                             in: Circle()
                 )
         }

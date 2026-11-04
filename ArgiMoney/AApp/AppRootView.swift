@@ -74,28 +74,6 @@ struct ReportsView: View {
     }
 }
 
-struct SettingsView: View {
-    @AppStorage("transactionGrouping")
-    private var transactionGrouping: TransactionGrouping = .day
-    
-    var body: some View {
-        
-        Text("Settings")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
-        
-        Form {
-            Section("Transactions") {
-                Picker("Group transactions", selection: $transactionGrouping) {
-                    ForEach(TransactionGrouping.allCases) { grouping in
-                        Text(grouping.title).tag(grouping)
-                    }
-                }
-            }
-        }
-    }
-}
-
 struct MoreView: View {
     let af: AppFactory
     let dataStore: DataStore

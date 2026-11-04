@@ -9,7 +9,7 @@ import Foundation
 
 struct AppDefaults {
     
-    static let defaultCategoryColor = "000000"
+    static let defaultCategoryColor = "0.0, 0.0, 0.0, 1.0"
     static let defaultCategoryImage = "wallet.bifold.fill"
 
     // Provide sensible defaults for first run
@@ -40,36 +40,36 @@ struct AppDefaults {
         // Expense categories
         
         Category(name: "Groceries", transactionType: .expense,
-                 imageName: "cart.fill", rgbColor: "3485FF"),
+                 imageName: "cart.fill", rgbColor: defaultCategoryColor),
         Category(name: "Housing", transactionType: .expense,
-                 imageName: "house.fill", rgbColor: "9565E8"),
+                 imageName: "house.fill", rgbColor: defaultCategoryColor),
         Category(name: "Utilities", transactionType: .expense,
-                 imageName: "bolt.fill", rgbColor: "FFC629"),
+                 imageName: "bolt.fill", rgbColor: defaultCategoryColor),
         Category(name: "Transportation", transactionType: .expense,
-                 imageName: "car.fill", rgbColor: "3485FF"),
+                 imageName: "car.fill", rgbColor: defaultCategoryColor),
         Category(name: "Health", transactionType: .expense,
-                 imageName: "heart.fill", rgbColor: "FF4B55"),
+                 imageName: "heart.fill", rgbColor: defaultCategoryColor),
         Category(name: "Dining & Entertainment", transactionType: .expense,
-                 imageName: "fork.knife", rgbColor: "FF9233"),
+                 imageName: "fork.knife", rgbColor: defaultCategoryColor),
         Category(name: "Shopping", transactionType: .expense,
-                 imageName: "bag.fill", rgbColor: "F04498"),
+                 imageName: "bag.fill", rgbColor: defaultCategoryColor),
         Category(name: "Subscriptions", transactionType: .expense,
-                 imageName: "creditcard.fill", rgbColor: "2CC65C"),
+                 imageName: "creditcard.fill", rgbColor: defaultCategoryColor),
         Category(name: "Education", transactionType: .expense,
-                 imageName: "graduationcap.fill", rgbColor: "6478D8"),
+                 imageName: "graduationcap.fill", rgbColor: defaultCategoryColor),
         Category(name: "Travel", transactionType: .expense,
-                 imageName: "airplane", rgbColor: "9565E8"),
+                 imageName: "airplane", rgbColor: defaultCategoryColor),
         Category(name: "Taxes", transactionType: .expense,
-                 imageName: "doc.text.fill", rgbColor: "78879B"),
+                 imageName: "doc.text.fill", rgbColor: defaultCategoryColor),
         Self.expenseCategory,
 
         // Income categories
         Category(name: "Freelance", transactionType: .income,
-                 imageName: "laptopcomputer", rgbColor: "3485FF"),
+                 imageName: "laptopcomputer", rgbColor: defaultCategoryColor),
         Category(name: "Business Income", transactionType: .income,
-                 imageName: "building.2.fill", rgbColor: "9565E8"),
+                 imageName: "building.2.fill", rgbColor: defaultCategoryColor),
         Category(name: "Investment Income", transactionType: .income,
-                 imageName: "chart.line.uptrend.xyaxis", rgbColor: "18A88F"),
+                 imageName: "chart.line.uptrend.xyaxis", rgbColor: defaultCategoryColor),
         Self.incomeCategory
     ]
 }
