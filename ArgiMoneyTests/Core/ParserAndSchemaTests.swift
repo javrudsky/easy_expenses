@@ -4,8 +4,8 @@ import Testing
 
 @Suite("Parser and schema tests")
 struct ParserAndSchemaTests {
-    private let expenseCategory = Category(name: "food", transactionType: .expense)
-    private let incomeCategory = Category(name: "salary", transactionType: .income)
+    private let expenseCategory = Category(name: "food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
+    private let incomeCategory = Category(name: "salary", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00")
     private let account = Account(name: "Cash")
 
     private var defaults: TransactionDefaults {

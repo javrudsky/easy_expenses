@@ -37,6 +37,10 @@ actor FakeTransactionRepository: TransactionRepository {
         return insertedOrUpdated
     }
     
+    func mockDeleteAll() async {
+        transactions.removeAll()
+    }
+    
     func insertOrUpdate(_ tx: Transaction) throws {
         if shouldFailInsertUpdate {
             throw TestError.forced

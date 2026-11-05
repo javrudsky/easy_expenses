@@ -4,7 +4,7 @@ import Testing
 
 @Suite("Transaction domain tests")
 struct TransactionDomainTests {
-    private let category = Category(name: "Food", transactionType: .expense)
+    private let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
     private let account = Account(name: "Cash")
 
     @Test
@@ -51,7 +51,7 @@ struct TransactionDomainTests {
     @Test
     func expenseAndIncomeFactoriesSetTheCorrectType() throws {
         let expense = try Transaction.expense(date: 1, category: category, account: account, amount: 1)
-        let incomeCategory = Category(name: "Salary", transactionType: .income)
+        let incomeCategory = Category(name: "Salary", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00")
         let income = try Transaction.income(date: 2, category: incomeCategory, account: account, amount: 2)
 
         #expect(expense.transactionType == .expense)

@@ -68,7 +68,7 @@ struct TransactionMapperTests {
             detail: nil,
             transactionType: "unknownType",
             amount: 0,
-            category: DefaultCategoryMapper().toModel(Category(name: "Other", transactionType: .expense)),
+            category: DefaultCategoryMapper().toModel(Category(name: "Other", transactionType: .expense, imageName: "creditcard.fill", rgbColor: "#0000FF")),
             account: DefaultAccountMapper().toModel(Account(name: "Cash"))
         )
         let defaultDomain = DefaultTransactionMapper().toDomain(unknownModel)

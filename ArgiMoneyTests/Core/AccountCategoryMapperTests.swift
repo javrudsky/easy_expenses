@@ -19,7 +19,7 @@ struct AccountCategoryMapperTests {
 
     @Test
     func categoryMapperRoundTripPreservesValues() {
-        let category = Category(id: UUID(), name: "Freelance", transactionType: .income)
+        let category = Category(id: UUID(), name: "Freelance", transactionType: .income, imageName: "symbol", rgbColor: "0.0, 0.0, 0.0, 1.0")
         let mapper = DefaultCategoryMapper()
 
         let model = mapper.toModel(category)
@@ -33,7 +33,7 @@ struct AccountCategoryMapperTests {
 
     @Test
     func categoryMapperDefaultsUnknownPersistedTypeToExpense() {
-        let model = CategoryModel(id: UUID(), name: "Unknown", transactionType: "invalid")
+        let model = CategoryModel(id: UUID(), name: "Unknown", transactionType: "invalid", imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
 
         let category = DefaultCategoryMapper().toDomain(model)
 

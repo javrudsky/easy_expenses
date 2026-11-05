@@ -20,6 +20,11 @@ actor FakeCategoryRepository: CategoryRepository {
         let c = ModelContext(modelContainer)
         self.modelExecutor = DefaultSerialModelExecutor(modelContext: c)
     }
+    
+    func mockDeleteAll() async {
+        categoriesById.removeAll()
+    }
+
 
     func fetchAll() async throws -> [ArgiMoney.Category] {
         return Array(categoriesById.values)
@@ -55,6 +60,10 @@ actor FakeAccountRepository: AccountRepository {
     init() {
         let c = ModelContext(modelContainer)
         self.modelExecutor = DefaultSerialModelExecutor(modelContext: c)
+    }
+    
+    func mockDeleteAll() async {
+        accountsById.removeAll()
     }
 
     func fetchAll() async throws -> [Account] {

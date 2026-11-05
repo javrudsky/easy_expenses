@@ -33,8 +33,8 @@ struct ValueStoreAndAppValuesTests {
     @Test
     func appValuesPersistsDefaultsThemeAndFirstRunState() {
         let values = DefaultAppValues(valueStore: makeStore())
-        let income = Category(name: "Consulting", transactionType: .income)
-        let expense = Category(name: "Transport", transactionType: .expense)
+        let income = Category(name: "Consulting", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00")
+        let expense = Category(name: "Transport", transactionType: .expense, imageName: "car.fill", rgbColor: "#0000FF")
         let account = Account(name: "Checking")
 
         #expect(values.getAndUpdateIsFirstRun())

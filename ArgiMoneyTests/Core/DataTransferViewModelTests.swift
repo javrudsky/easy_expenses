@@ -5,7 +5,7 @@ import Testing
 @Suite("Import and export view model tests")
 struct DataTransferViewModelTests {
     private func summary() -> ImportSummary {
-        let category = Category(name: "Food", transactionType: .expense)
+        let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
         let account = Account(name: "Cash")
         let transaction = Transaction(
             id: UUID(),

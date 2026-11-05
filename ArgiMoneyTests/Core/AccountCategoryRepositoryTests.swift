@@ -18,12 +18,12 @@ struct AccountCategoryRepositoryTests {
 
     @Test
     func categoryRepositoryInsertsUpdatesFetchesAndDeletes() async throws {
-        let original = Category(name: "Food", transactionType: .expense)
+        let original = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
         try await categoryRepository.insertOrUpdate(original)
         let fetchedOriginal = try await categoryRepository.fetchBy(id: original.id)
         #expect(fetchedOriginal == original)
 
-        let updated = Category(id: original.id, name: "Restaurants", transactionType: .expense)
+        let updated = Category(id: original.id, name: "Restaurants", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
         try await categoryRepository.insertOrUpdate(updated)
         let categories = try await categoryRepository.fetchAll()
         #expect(categories.count == 1)

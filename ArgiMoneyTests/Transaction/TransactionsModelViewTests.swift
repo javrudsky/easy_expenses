@@ -18,7 +18,7 @@ import Testing
             .setting(account: Account(name: "Acc"))
             .setting(date: 111111.0)
             .setting(detail: "")
-            .setting(category: Category(name: "mycat", transactionType: .income))
+            .setting(category: Category(name: "mycat", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00"))
             .setting(amount: 1.20)
     }
 

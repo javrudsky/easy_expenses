@@ -19,7 +19,7 @@ struct TransactionTestsHelper {
                                   amount: Decimal = 10) -> Transaction {
         return Transaction(id: id,
                            date: date,
-                           category: Category(name: category, transactionType: transactionType),
+                           category: Category(name: category, transactionType: transactionType, imageName: transactionType == .expense ? "fork.knife" : "dollarsign.circle.fill", rgbColor: transactionType == .expense ? "#FF0000" : "#00FF00"),
                            detail: detail,
                            transactionType: transactionType,
                            account: Account(name: account),
@@ -44,7 +44,7 @@ struct TransactionTestsHelper {
                                        account: String = "Checking",
                                        amount: Decimal = 45.67) -> TransactionModel {
         
-        let catModel = DefaultCategoryMapper().toModel(Category(name: category, transactionType: transactionType))
+        let catModel = DefaultCategoryMapper().toModel(Category(name: category, transactionType: transactionType, imageName: transactionType == .expense ? "fork.knife" : "dollarsign.circle.fill", rgbColor: transactionType == .expense ? "#FF0000" : "#00FF00"))
         let accModel = DefaultAccountMapper().toModel(Account(name: account))
         
         return TransactionModel(id: id,

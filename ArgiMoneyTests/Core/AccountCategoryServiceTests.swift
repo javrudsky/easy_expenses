@@ -37,8 +37,9 @@ struct AccountCategoryServiceTests {
     @Test
     func categoriesViewModelFiltersByTypeAndPersistsChanges() async throws {
         let repository = FakeCategoryRepository()
-        let expense = Category(name: "Food", transactionType: .expense)
-        let income = Category(name: "Salary", transactionType: .income)
+        let expense = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
+        let expense1 = Category(name: "Drink", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 1.0, 0.0, 1.0")
+        let income = Category(name: "Salary", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "0.0, 1.0, 0.0, 1.0")
         try await repository.insertOrUpdate(expense)
         try await repository.insertOrUpdate(income)
         let viewModel = DefaultCategoriesViewModel(transactionType: .expense, repo: repository)
@@ -46,10 +47,10 @@ struct AccountCategoryServiceTests {
         await viewModel.load()
         #expect(viewModel.categories == [expense])
 
-        viewModel.add()
+        try await viewModel.save(expense1)
         let created = viewModel.categories[1]
         #expect(created.transactionType == .expense)
-        let renamed = Category(id: created.id, name: "Transport", transactionType: .expense)
+        let renamed = Category(id: expense1.id, name: "Transport", transactionType: .expense, imageName: created.imageName, rgbColor: created.rgbColor)
         try await viewModel.save(renamed)
         #expect(viewModel.categories.contains(renamed))
 
@@ -68,7 +69,7 @@ struct AccountCategoryServiceTests {
         let categoryRepo = FakeCategoryRepository()
         let accountRepo = FakeAccountRepository()
         let transactionRepo = FakeTransactionRepository()
-        let category = Category(name: "Food", transactionType: .expense)
+        let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
         let account = Account(name: "Cash")
         try await categoryRepo.insertOrUpdate(category)
         try await accountRepo.insertOrUpdate(account)
