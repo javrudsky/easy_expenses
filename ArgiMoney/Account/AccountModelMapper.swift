@@ -13,6 +13,6 @@ protocol AccountMapper: Sendable {
 }
 
 struct DefaultAccountMapper: AccountMapper {
-    func toDomain(_ model: AccountModel) -> Account { Account(id: model.id, name: model.name) }
-    func toModel(_ domain: Account) -> AccountModel { AccountModel(id: domain.id, name: domain.name) }
+    func toDomain(_ model: AccountModel) -> Account { Account(id: model.id, name: model.name, imageName: model.imageName, rgbColor: model.rgbColor) }
+    func toModel(_ domain: Account) -> AccountModel { AccountModel(id: domain.id, name: domain.name, imageName: domain.imageName, rgbColor: domain.rgbColor) }
 }

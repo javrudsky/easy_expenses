@@ -35,6 +35,8 @@ actor SwiftDataAccountRepository: AccountRepository {
     func insertOrUpdate(_ account: Account) async throws {
         if let obj: AccountModel = try getBy(id: account.id) {
             obj.name = account.name
+            obj.imageName = account.imageName
+            obj.rgbColor = account.rgbColor
         } else {
             insert(mapper.toModel(account))
         }
