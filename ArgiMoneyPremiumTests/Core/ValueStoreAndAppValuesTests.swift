@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Value store and app values tests")
 struct ValueStoreAndAppValuesTests {
@@ -35,7 +35,7 @@ struct ValueStoreAndAppValuesTests {
         let values = DefaultAppValues(valueStore: makeStore())
         let income = Category(name: "Consulting", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00")
         let expense = Category(name: "Transport", transactionType: .expense, imageName: "car.fill", rgbColor: "#0000FF")
-        let account = Account(name: "Checking")
+        let account = Account(name: "Checking", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
 
         #expect(values.getAndUpdateIsFirstRun())
         #expect(!values.getAndUpdateIsFirstRun())

@@ -12,13 +12,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DC8D18673053257E00AF5582 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DC8D184F3053257B00AF5582 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DC8D18563053257B00AF5582;
-			remoteInfo = EasyExpenses;
-		};
 		DC8D18713053257E00AF5582 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DC8D184F3053257B00AF5582 /* Project object */;
@@ -26,14 +19,22 @@
 			remoteGlobalIDString = DC8D18563053257B00AF5582;
 			remoteInfo = EasyExpenses;
 		};
+		DCFF5A2730A3C41400E0F0DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC8D184F3053257B00AF5582 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DC8D18563053257B00AF5582;
+			remoteInfo = ArgiMoneyPremium;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		DC6B43DC30A27414007BFC8C /* ArgiMoneyCommunity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArgiMoneyCommunity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8D18573053257B00AF5582 /* ArgiMoneyPremium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArgiMoneyPremium.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC8D18663053257E00AF5582 /* ArgiMoneyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArgiMoneyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8D18703053257E00AF5582 /* ArgiMoneyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArgiMoneyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8D18F130583C9800AF5582 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
+		DCFF5A1E30A3C20A00E0F0DE /* ArgiMoneyPremium.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArgiMoneyPremium.xctestplan; sourceTree = "<group>"; };
+		DCFF5A2330A3C41400E0F0DE /* ArgiMoneyPremiumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArgiMoneyPremiumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -69,14 +70,9 @@
 			path = ArgiMoney;
 			sourceTree = "<group>";
 		};
-		DC8D18693053257E00AF5582 /* ArgiMoneyTests */ = {
+		DCFF5A2430A3C41400E0F0DE /* ArgiMoneyPremiumTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ArgiMoneyTests;
-			sourceTree = "<group>";
-		};
-		DC8D18733053257E00AF5582 /* ArgiMoneyUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ArgiMoneyUITests;
+			path = ArgiMoneyPremiumTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -98,14 +94,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC8D18633053257E00AF5582 /* Frameworks */ = {
+		DC8D186D3053257E00AF5582 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC8D186D3053257E00AF5582 /* Frameworks */ = {
+		DCFF5A2030A3C41400E0F0DE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -119,8 +115,8 @@
 			isa = PBXGroup;
 			children = (
 				DC8D18593053257B00AF5582 /* ArgiMoney */,
-				DC8D18693053257E00AF5582 /* ArgiMoneyTests */,
-				DC8D18733053257E00AF5582 /* ArgiMoneyUITests */,
+				DCFF5A1E30A3C20A00E0F0DE /* ArgiMoneyPremium.xctestplan */,
+				DCFF5A2430A3C41400E0F0DE /* ArgiMoneyPremiumTests */,
 				DC8D18F030583C9800AF5582 /* Frameworks */,
 				DC8D18583053257B00AF5582 /* Products */,
 			);
@@ -130,9 +126,9 @@
 			isa = PBXGroup;
 			children = (
 				DC8D18573053257B00AF5582 /* ArgiMoneyPremium.app */,
-				DC8D18663053257E00AF5582 /* ArgiMoneyTests.xctest */,
 				DC8D18703053257E00AF5582 /* ArgiMoneyUITests.xctest */,
 				DC6B43DC30A27414007BFC8C /* ArgiMoneyCommunity.app */,
+				DCFF5A2330A3C41400E0F0DE /* ArgiMoneyPremiumTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -192,29 +188,6 @@
 			productReference = DC8D18573053257B00AF5582 /* ArgiMoneyPremium.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DC8D18653053257E00AF5582 /* ArgiMoneyTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DC8D187D3053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyTests" */;
-			buildPhases = (
-				DC8D18623053257E00AF5582 /* Sources */,
-				DC8D18633053257E00AF5582 /* Frameworks */,
-				DC8D18643053257E00AF5582 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DC8D18683053257E00AF5582 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				DC8D18693053257E00AF5582 /* ArgiMoneyTests */,
-			);
-			name = ArgiMoneyTests;
-			packageProductDependencies = (
-			);
-			productName = EasyExpensesTests;
-			productReference = DC8D18663053257E00AF5582 /* ArgiMoneyTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		DC8D186F3053257E00AF5582 /* ArgiMoneyUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DC8D18803053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyUITests" */;
@@ -228,15 +201,35 @@
 			dependencies = (
 				DC8D18723053257E00AF5582 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				DC8D18733053257E00AF5582 /* ArgiMoneyUITests */,
-			);
 			name = ArgiMoneyUITests;
 			packageProductDependencies = (
 			);
 			productName = EasyExpensesUITests;
 			productReference = DC8D18703053257E00AF5582 /* ArgiMoneyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		DCFF5A2230A3C41400E0F0DE /* ArgiMoneyPremiumTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCFF5A2930A3C41400E0F0DE /* Build configuration list for PBXNativeTarget "ArgiMoneyPremiumTests" */;
+			buildPhases = (
+				DCFF5A1F30A3C41400E0F0DE /* Sources */,
+				DCFF5A2030A3C41400E0F0DE /* Frameworks */,
+				DCFF5A2130A3C41400E0F0DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCFF5A2830A3C41400E0F0DE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DCFF5A2430A3C41400E0F0DE /* ArgiMoneyPremiumTests */,
+			);
+			name = ArgiMoneyPremiumTests;
+			packageProductDependencies = (
+			);
+			productName = ArgiMoneyPremiumTests;
+			productReference = DCFF5A2330A3C41400E0F0DE /* ArgiMoneyPremiumTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -251,11 +244,11 @@
 					DC8D18563053257B00AF5582 = {
 						CreatedOnToolsVersion = 26.5;
 					};
-					DC8D18653053257E00AF5582 = {
+					DC8D186F3053257E00AF5582 = {
 						CreatedOnToolsVersion = 26.5;
 						TestTargetID = DC8D18563053257B00AF5582;
 					};
-					DC8D186F3053257E00AF5582 = {
+					DCFF5A2230A3C41400E0F0DE = {
 						CreatedOnToolsVersion = 26.5;
 						TestTargetID = DC8D18563053257B00AF5582;
 					};
@@ -276,9 +269,9 @@
 			projectRoot = "";
 			targets = (
 				DC8D18563053257B00AF5582 /* ArgiMoneyPremium */,
-				DC8D18653053257E00AF5582 /* ArgiMoneyTests */,
-				DC8D186F3053257E00AF5582 /* ArgiMoneyUITests */,
 				DC6B43D430A27414007BFC8C /* ArgiMoneyCommunity */,
+				DC8D186F3053257E00AF5582 /* ArgiMoneyUITests */,
+				DCFF5A2230A3C41400E0F0DE /* ArgiMoneyPremiumTests */,
 			);
 		};
 /* End PBXProject section */
@@ -298,14 +291,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC8D18643053257E00AF5582 /* Resources */ = {
+		DC8D186E3053257E00AF5582 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC8D186E3053257E00AF5582 /* Resources */ = {
+		DCFF5A2130A3C41400E0F0DE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -329,14 +322,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC8D18623053257E00AF5582 /* Sources */ = {
+		DC8D186C3053257E00AF5582 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC8D186C3053257E00AF5582 /* Sources */ = {
+		DCFF5A1F30A3C41400E0F0DE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -346,15 +339,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DC8D18683053257E00AF5582 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DC8D18563053257B00AF5582 /* ArgiMoneyPremium */;
-			targetProxy = DC8D18673053257E00AF5582 /* PBXContainerItemProxy */;
-		};
 		DC8D18723053257E00AF5582 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DC8D18563053257B00AF5582 /* ArgiMoneyPremium */;
 			targetProxy = DC8D18713053257E00AF5582 /* PBXContainerItemProxy */;
+		};
+		DCFF5A2830A3C41400E0F0DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC8D18563053257B00AF5582 /* ArgiMoneyPremium */;
+			targetProxy = DCFF5A2730A3C41400E0F0DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -620,50 +613,6 @@
 			};
 			name = Release;
 		};
-		DC8D187E3053257E00AF5582 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D5VPZG3BF4;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoneyTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArgiMoney.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ArgiMoney";
-			};
-			name = Debug;
-		};
-		DC8D187F3053257E00AF5582 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D5VPZG3BF4;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoneyTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArgiMoney.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ArgiMoney";
-			};
-			name = Release;
-		};
 		DC8D18813053257E00AF5582 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -704,6 +653,48 @@
 			};
 			name = Release;
 		};
+		DCFF5A2A30A3C41400E0F0DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VPZG3BF4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jla.ArgiMoneyPremiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArgiMoneyPremium.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ArgiMoneyPremium";
+			};
+			name = Debug;
+		};
+		DCFF5A2B30A3C41400E0F0DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D5VPZG3BF4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jla.ArgiMoneyPremiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArgiMoneyPremium.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ArgiMoneyPremium";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -734,20 +725,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DC8D187D3053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DC8D187E3053257E00AF5582 /* Debug */,
-				DC8D187F3053257E00AF5582 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		DC8D18803053257E00AF5582 /* Build configuration list for PBXNativeTarget "ArgiMoneyUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DC8D18813053257E00AF5582 /* Debug */,
 				DC8D18823053257E00AF5582 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCFF5A2930A3C41400E0F0DE /* Build configuration list for PBXNativeTarget "ArgiMoneyPremiumTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCFF5A2A30A3C41400E0F0DE /* Debug */,
+				DCFF5A2B30A3C41400E0F0DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

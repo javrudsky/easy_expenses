@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 // MARK: - Tests
 
@@ -48,10 +48,10 @@ import Testing
         let transactionId2 = UUID(uuidString: "DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD")!
 
         let category1 = Category(id: categoryId1, name: "Cat1", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let account1 = Account(id: accountId1, name: "Main \"Acc1\"")
+        let account1 = Account(id: accountId1, name: "Main \"Acc1\"", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         
         let category2 = Category(id: categoryId1, name: "Cat2", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let account2 = Account(id: accountId1, name: "Main \"Acc2\"")
+        let account2 = Account(id: accountId1, name: "Main \"Acc2\"", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
 
         try await categoryRepo.insertOrUpdate(category1)
         try await accountRepo.insertOrUpdate(account1)
@@ -168,7 +168,7 @@ import Testing
     @Test
     func exportThenImport_preservesQuotedCommaAndMultilineFields() async throws {
         let category = Category(name: "Food, dining", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let account = Account(name: "Cash \"wallet\"")
+        let account = Account(name: "Cash \"wallet\"", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let transaction = Transaction(
             id: UUID(),
             date: 1_700_000_000,
@@ -494,7 +494,7 @@ import Testing
         let existingTransactionId = UUID(uuidString: "77777777-7777-7777-7777-777777777777")!
 
         let existingCategory = Category(id: existingCategoryId, name: "ExistingCategory", transactionType: .income, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let existingAccount = Account(id: existingAccountId, name: "ExistingAccount")
+        let existingAccount = Account(id: existingAccountId, name: "ExistingAccount", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let existingTransaction = Transaction(
             id: existingTransactionId,
             date: 1792650200,
@@ -548,7 +548,7 @@ import Testing
     @Test
     func importFrom_existingIdenticalTransaction_marksItAsDuplicateAndExecutionSkipsIt() async throws {
         let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let account = Account(name: "Cash")
+        let account = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let transaction = Transaction(
             id: UUID(),
             date: 1_700_000_000,
@@ -576,7 +576,7 @@ import Testing
     @Test
     func executeImport_persistsEntitiesInSummary() async throws {
         let category = Category(name: "Groceries", transactionType: .expense, imageName: "cart.fill", rgbColor: "1.0, 0.6, 0.0, 1.0")
-        let account = Account(name: "Wallet")
+        let account = Account(name: "Wallet", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let transaction = Transaction(
             id: UUID(uuidString: "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")!,
             date: 1_000,
@@ -611,7 +611,7 @@ import Testing
         let accountId = UUID()
         let transactionId = UUID()
         let originalCategory = Category(id: categoryId, name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let originalAccount = Account(id: accountId, name: "Cash")
+        let originalAccount = Account(id: accountId, name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let originalTransaction = Transaction(
             id: transactionId,
             date: 1,
@@ -630,7 +630,7 @@ import Testing
         ))
  
         let updatedCategory = Category(id: categoryId, name: "Restaurants", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let updatedAccount = Account(id: accountId, name: "Debit Card")
+        let updatedAccount = Account(id: accountId, name: "Debit Card", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let updatedTransaction = Transaction(
             id: transactionId,
             date: 2,
@@ -667,7 +667,7 @@ import Testing
     @Test
     func executeImport_doesNotOverwriteTransactionsMarkedAsDuplicates() async throws {
         let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0")
-        let account = Account(name: "Cash")
+        let account = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let existing = Transaction(
             id: UUID(),
             date: 1,

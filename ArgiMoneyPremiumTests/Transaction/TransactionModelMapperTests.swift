@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 typealias Th = TransactionTestsHelper
 
@@ -69,7 +69,7 @@ struct TransactionMapperTests {
             transactionType: "unknownType",
             amount: 0,
             category: DefaultCategoryMapper().toModel(Category(name: "Other", transactionType: .expense, imageName: "creditcard.fill", rgbColor: "#0000FF")),
-            account: DefaultAccountMapper().toModel(Account(name: "Cash"))
+            account: DefaultAccountMapper().toModel(Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0"))
         )
         let defaultDomain = DefaultTransactionMapper().toDomain(unknownModel)
         #expect(defaultDomain.transactionType == .expense)

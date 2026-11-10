@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Account and category repository contracts")
 struct AccountCategoryRepositoryTests {
@@ -36,12 +36,12 @@ struct AccountCategoryRepositoryTests {
 
     @Test
     func accountRepositoryInsertsUpdatesFetchesAndDeletes() async throws {
-        let original = Account(name: "Cash")
+        let original = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         try await accountRepository.insertOrUpdate(original)
         let fetchedOriginal = try await accountRepository.fetchBy(id: original.id)
         #expect(fetchedOriginal == original)
 
-        let updated = Account(id: original.id, name: "Checking")
+        let updated = Account(id: original.id, name: "Checking", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         try await accountRepository.insertOrUpdate(updated)
         let accounts = try await accountRepository.fetchAll()
         #expect(accounts.count == 1)

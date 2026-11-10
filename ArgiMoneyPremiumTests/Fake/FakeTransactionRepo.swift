@@ -1,6 +1,6 @@
 import Foundation
 import SwiftData
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 enum TestError: Error {
     case forced
@@ -72,17 +72,17 @@ actor FakeTransactionRepository: TransactionRepository {
         deleted.append(tx)
     }
     
-    func fetchBy(id: UUID) async throws -> ArgiMoney.Transaction? {
+    func fetchBy(id: UUID) async throws -> ArgiMoneyPremium.Transaction? {
         return transactions.first(where: { $0.id == id })
     }
     
-    func fetchTotals(from: TimeInterval, to: TimeInterval) async throws -> ArgiMoney.TransactionTotals {
+    func fetchTotals(from: TimeInterval, to: TimeInterval) async throws -> ArgiMoneyPremium.TransactionTotals {
         return TransactionTotals(income: transactions.filter { $0.transactionType == .income}.reduce(0) { $0 + $1.amount },
                                  expenses: transactions.filter { $0.transactionType == .expense}.reduce(0) { $0 + $1.amount }
         )
     }
     
-    func fetch(from: TimeInterval, to: TimeInterval) async throws -> [ArgiMoney.Transaction] {
+    func fetch(from: TimeInterval, to: TimeInterval) async throws -> [ArgiMoneyPremium.Transaction] {
         return transactions.filter { $0.date >= from && $0.date <= to }
     }
 }

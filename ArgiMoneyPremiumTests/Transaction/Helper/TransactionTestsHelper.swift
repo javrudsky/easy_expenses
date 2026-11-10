@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 struct TransactionTestsHelper {
     
@@ -22,7 +22,7 @@ struct TransactionTestsHelper {
                            category: Category(name: category, transactionType: transactionType, imageName: transactionType == .expense ? "fork.knife" : "dollarsign.circle.fill", rgbColor: transactionType == .expense ? "#FF0000" : "#00FF00"),
                            detail: detail,
                            transactionType: transactionType,
-                           account: Account(name: account),
+                           account: Account(name: account, imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0"),
                            amount: amount)
     }
     
@@ -45,7 +45,7 @@ struct TransactionTestsHelper {
                                        amount: Decimal = 45.67) -> TransactionModel {
         
         let catModel = DefaultCategoryMapper().toModel(Category(name: category, transactionType: transactionType, imageName: transactionType == .expense ? "fork.knife" : "dollarsign.circle.fill", rgbColor: transactionType == .expense ? "#FF0000" : "#00FF00"))
-        let accModel = DefaultAccountMapper().toModel(Account(name: account))
+        let accModel = DefaultAccountMapper().toModel(Account(name: account, imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0"))
         
         return TransactionModel(id: id,
                                 date: date,

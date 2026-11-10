@@ -1,12 +1,12 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Import and export view model tests")
 struct DataTransferViewModelTests {
     private func summary() -> ImportSummary {
         let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
-        let account = Account(name: "Cash")
+        let account = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let transaction = Transaction(
             id: UUID(),
             date: 1,

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 actor StubDataTransferService: DataTransferService {
     let exportedCSV: String

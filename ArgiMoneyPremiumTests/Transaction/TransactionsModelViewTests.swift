@@ -6,7 +6,7 @@
 //
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("TransactionsViewModel") struct TransactionsViewModelTests {
     
@@ -15,7 +15,7 @@ import Testing
     func createTxBuilder() -> TransactionBuilder {
         
         return TransactionBuilder()
-            .setting(account: Account(name: "Acc"))
+            .setting(account: Account(name: "Acc", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0"))
             .setting(date: 111111.0)
             .setting(detail: "")
             .setting(category: Category(name: "mycat", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00"))

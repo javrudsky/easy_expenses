@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Import Log Builder Tests")
 struct ImportLogBuilderTests {

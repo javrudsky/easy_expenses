@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Account and category service tests")
 struct AccountCategoryServiceTests {
@@ -8,19 +8,21 @@ struct AccountCategoryServiceTests {
     @Test
     func accountsViewModelLoadsAddsSavesAndDeletes() async throws {
         let repository = FakeAccountRepository()
-        let existing = Account(name: "Cash")
+        let existing = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
+        let existing1 = Account(name: "Cash1", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         try await repository.insertOrUpdate(existing)
         let viewModel = DefaultAccountsViewModel(repo: repository)
 
         await viewModel.load()
         #expect(viewModel.accounts == [existing])
 
-        viewModel.add()
+        try await viewModel.save(existing1)
+        
+        let created = viewModel.accounts.first { $0.id == existing1.id }
         #expect(viewModel.accounts.count == 2)
-        let created = viewModel.accounts[1]
-        #expect(created.name == "New Account")
+        #expect(created?.name ?? "" == "Cash1")
 
-        let renamed = Account(id: created.id, name: "Savings")
+        let renamed = Account(id: created?.id ?? UUID(), name: "Savings", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         try await viewModel.save(renamed)
         #expect(viewModel.accounts.contains(renamed))
 
@@ -70,7 +72,7 @@ struct AccountCategoryServiceTests {
         let accountRepo = FakeAccountRepository()
         let transactionRepo = FakeTransactionRepository()
         let category = Category(name: "Food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
-        let account = Account(name: "Cash")
+        let account = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         try await categoryRepo.insertOrUpdate(category)
         try await accountRepo.insertOrUpdate(account)
         let service = DefaultTransactionFormViewService(dataStore: DataStore(

@@ -1,12 +1,12 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Account and category mapper tests")
 struct AccountCategoryMapperTests {
     @Test
     func accountMapperRoundTripPreservesValues() {
-        let account = Account(id: UUID(), name: "Savings")
+        let account = Account(id: UUID(), name: "Savings", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         let mapper = DefaultAccountMapper()
 
         let model = mapper.toModel(account)

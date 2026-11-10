@@ -1,12 +1,12 @@
 import Foundation
 import Testing
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 @Suite("Parser and schema tests")
 struct ParserAndSchemaTests {
     private let expenseCategory = Category(name: "food", transactionType: .expense, imageName: "fork.knife", rgbColor: "#FF0000")
     private let incomeCategory = Category(name: "salary", transactionType: .income, imageName: "dollarsign.circle.fill", rgbColor: "#00FF00")
-    private let account = Account(name: "Cash")
+    private let account = Account(name: "Cash", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
 
     private var defaults: TransactionDefaults {
         TransactionDefaults(

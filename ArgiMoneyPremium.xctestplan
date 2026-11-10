@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "2C0DCC7F-AA34-48D2-BE34-C180D02E40DB",
+      "name" : "Default",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:ArgiMoney.xcodeproj",
+        "identifier" : "DCFF5A2230A3C41400E0F0DE",
+        "name" : "ArgiMoneyPremiumTests"
+      }
+    }
+  ],
+  "version" : 1
+}

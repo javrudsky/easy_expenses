@@ -7,14 +7,14 @@
 
 import Foundation
 import SwiftData
-@testable import ArgiMoney
+@testable import ArgiMoneyPremium
 
 actor FakeCategoryRepository: CategoryRepository {
     
     let modelContainer: ModelContainer = try! DefaultAppFactory.createModelContainer(inMemory: true)
     nonisolated let modelExecutor: any ModelExecutor
 
-    var categoriesById: [UUID: ArgiMoney.Category] = [:]
+    var categoriesById: [UUID: ArgiMoneyPremium.Category] = [:]
 
     init() {
         let c = ModelContext(modelContainer)
@@ -26,25 +26,25 @@ actor FakeCategoryRepository: CategoryRepository {
     }
 
 
-    func fetchAll() async throws -> [ArgiMoney.Category] {
+    func fetchAll() async throws -> [ArgiMoneyPremium.Category] {
         return Array(categoriesById.values)
     }
     
-    func insertOrUpdate(_ category: ArgiMoney.Category) async throws {
+    func insertOrUpdate(_ category: ArgiMoneyPremium.Category) async throws {
         categoriesById[category.id] = category
     }
     
-    func insert(_ categories: [ArgiMoney.Category]) async {
+    func insert(_ categories: [ArgiMoneyPremium.Category]) async {
         for category in categories {
             categoriesById[category.id] = category
         }
     }
     
-    func delete(_ category: ArgiMoney.Category) async throws {
+    func delete(_ category: ArgiMoneyPremium.Category) async throws {
         categoriesById.removeValue(forKey: category.id)
     }
 
-    func fetchBy(id: UUID) async throws -> ArgiMoney.Category? {
+    func fetchBy(id: UUID) async throws -> ArgiMoneyPremium.Category? {
         return categoriesById[id]
     }
 
