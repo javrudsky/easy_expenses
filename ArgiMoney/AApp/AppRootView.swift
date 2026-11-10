@@ -22,13 +22,15 @@ struct AppRootView: View {
             try? createTransactionsView(dataStore: dataStore)
                 .tabItem { Label("Transactions", systemImage: "list.bullet.rectangle") }
             
-            ReportsView()
+            createReportsView()
                 .tabItem { Label("Reports", systemImage: "chart.bar") }
             
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gear") }
             
-            MoreView(appFactory: af, dataStore: dataStore)
+            MoreView(appFactory: af,
+                     viewFactory: DefaultViewFactory(),
+                     dataStore: dataStore)
                 .tabItem { Label("More", systemImage: "ellipsis.circle") }
         }
         .onAppear {
@@ -45,6 +47,7 @@ struct AppRootView: View {
             }
         }
     }
+    
     private func createAudioRecordingView(dataStore: DataStore) throws -> AudioRecordingView<DefaultAudioRecordingViewModel> {
         if let vm = af.audioRecordingViewModel(dataStore: dataStore) as? DefaultAudioRecordingViewModel {
             return AudioRecordingView<DefaultAudioRecordingViewModel>(viewModel: vm)
@@ -58,6 +61,10 @@ struct AppRootView: View {
         }
         // This should never happen
         throw ViewError.couldNotCreateView
+    }
+    
+    private func createReportsView() -> some View {
+        return ReportsView()
     }
 }
 
@@ -74,49 +81,3 @@ struct ReportsView: View {
     }
 }
 
-struct MoreView: View {
-    let af: AppFactory
-    let dataStore: DataStore
-    init(appFactory: AppFactory,
-         dataStore: DataStore) {
-        self.af = appFactory
-        self.dataStore = dataStore
-    }
-    var body: some View {
-        NavigationStack {
-            List {
-                Section("Management") {
-                    NavigationLink { createDataManagementView() } label: { Label("Import/Export", systemImage: "square.grid.2x2") }
-                    NavigationLink { try? createCategoriesView(transactionType: .expense) } label: { Label("Expense Categories", systemImage: "square.grid.2x2") }
-                    NavigationLink { try? createCategoriesView(transactionType: .income) } label: { Label("Income Categories", systemImage: "square.grid.2x2") }
-                    NavigationLink { try? createAccountsView() } label: { Label("Accounts", systemImage: "creditcard") }
-                }
-                Section("Insights") {
-                    NavigationLink { ReportsView() } label: { Label("Reports", systemImage: "chart.bar") }
-                }
-            }
-            .navigationTitle("More")
-        }
-    }
-    
-    private func createCategoriesView(transactionType: TransactionType) throws -> CategoriesView<DefaultCategoriesViewModel> {
-        if let vm = af.categoriesViewModel(transactionType: transactionType,
-                                            dataStore: dataStore) as? DefaultCategoriesViewModel {
-            return CategoriesView<DefaultCategoriesViewModel>(viewModel: vm)
-        }
-        // This should never happen
-        throw ViewError.couldNotCreateView
-        }
-    
-    private func createAccountsView() throws  -> AccountsView<DefaultAccountsViewModel> {
-        if let vm = af.accountsViewModel(dataStore: dataStore) as? DefaultAccountsViewModel {
-            return AccountsView<DefaultAccountsViewModel>(viewModel: vm)
-        }
-        // This should never happen
-        throw ViewError.couldNotCreateView
-    }
-    
-    private func createDataManagementView() -> DataManagementView {
-        return DataManagementView(factory: af, dataStore: dataStore)
-    }
-}

@@ -30,7 +30,9 @@ struct AppDefaults {
 
     static let account: Account = Account(
         id: UUID(),
-        name: "Cash"
+        name: "Cash",
+        imageName: "creditcard.fill",
+        rgbColor: "0.29, 0.52, 1.0, 1.0"
     )
     
     static let theme: ThemeName = ThemeName(rawValue: "default")!

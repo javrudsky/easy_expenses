@@ -25,9 +25,6 @@ protocol AppFactory {
     // MARK: - Main actor declarations
     @MainActor func audioRecordingViewModel(dataStore: DataStore) -> any AudioRecordingViewModel
     @MainActor func transactionsViewModel(dataStore: DataStore) -> any TransactionsViewModel
-    @MainActor func categoriesViewModel(transactionType: TransactionType,
-                                        dataStore: DataStore) -> any CategoriesViewModel
-    @MainActor func accountsViewModel(dataStore: DataStore) -> any AccountsViewModel
     
     @MainActor func exportTransactionsViewModel(dataStore: DataStore) -> any ExportTransactionsViewModel
     @MainActor func importTransactionsViewModel(dataStore: DataStore) -> any ImportTransactionsViewModel
@@ -113,18 +110,6 @@ struct DefaultAppFactory: AppFactory {
                                               formService: DefaultTransactionFormViewService(dataStore: dataStore),
                                               dataStore: dataStore,
                                               appValues: appValues())
-    }
-    
-    @MainActor
-    func categoriesViewModel(transactionType: TransactionType,
-                                   dataStore: DataStore) -> any CategoriesViewModel {
-        return DefaultCategoriesViewModel(transactionType: transactionType,
-                                          repo: dataStore.categoryRepo)
-    }
-    
-    @MainActor
-    func accountsViewModel(dataStore: DataStore) -> any AccountsViewModel {
-        return DefaultAccountsViewModel(repo: dataStore.accountRepo)
     }
     
     @MainActor

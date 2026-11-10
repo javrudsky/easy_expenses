@@ -23,7 +23,7 @@ struct DefaultTransactionMapper: TransactionMapper {
         let category = Category(id: model.category.id, name: model.category.name,
                                 transactionType: type, imageName: model.category.imageName,
                                 rgbColor: model.category.rgbColor)
-        let account = Account(id: model.account.id, name: model.account.name)
+        let account = Account(id: model.account.id, name: model.account.name, imageName: model.account.imageName, rgbColor: model.account.rgbColor)
         
         return Transaction(
             id: model.id,

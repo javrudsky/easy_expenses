@@ -54,7 +54,7 @@ struct TransactionFormView: View {
     
     @State private var detail: String = ""
     @State private var type: TransactionType = .expense
-    @State private var account: Account = Account(id: UUID(), name: "")
+    @State private var account: Account = Account(id: UUID(), name: "", imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
     @State private var amountText: String = ""
     
     @State private var showCatList: Bool = false
@@ -235,7 +235,7 @@ struct TransactionFormView: View {
 
 #Preview {
     let cf = try! DefaultAppFactory(inMemory: true)
-    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income, imageName: "fork.knife", rgbColor: "#FF0000"), Category(name: "Fuel", transactionType: .income, imageName: "fuelpump.fill", rgbColor: "#FFA500"), Category(name: "Rent", transactionType: .income, imageName: "house.fill", rgbColor: "#4A90E2")]
+    var cat = [AppDefaults.incomeCategory, Category(name: "Food", transactionType: .income, imageName: "fork.knife", rgbColor: "1.0, 0.0, 0.0, 1.0"), Category(name: "Fuel", transactionType: .income, imageName: "fuelpump.fill", rgbColor: "1.0, 0.65, 0.0, 1.0"), Category(name: "Rent", transactionType: .income, imageName: "house.fill", rgbColor: "0.29, 0.56, 0.89, 1.0")]
     let cfg = TransactionFormConfig(categories: [AppDefaults.incomeCategory], accounts: [])
     TransactionFormView(config: cfg, onComplete: { _ in })
 }

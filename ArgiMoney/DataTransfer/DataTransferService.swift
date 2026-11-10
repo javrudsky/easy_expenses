@@ -302,7 +302,7 @@ struct DefaultDataTransferService: DataTransferService {
     // MARK: - Persistence hooks (replace with real DB layer)
     private func buildAccount(id: String?, name: String?) -> Account? {
         if let id, let id = UUID(uuidString: id), let name, !name.isEmpty {
-            return Account(id: id, name: name)
+            return Account(id: id, name: name, imageName: "creditcard.fill", rgbColor: "0.29, 0.52, 1.0, 1.0")
         }
         return nil
     }
