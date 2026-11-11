@@ -83,23 +83,16 @@ struct TransactionFormView: View {
                     TransactionTypeToggle(type: $type)
                     VStack(alignment: .leading) {
                         Text("Amount")
-                        HStack(spacing: 4) {
-                            // Static currency code that cannot be deleted or selected
-                            Text("USD")
-                                .foregroundColor(.secondary)
-                                .font(.body)
-                                .bold()
-                            
-                            TextField("0.00", text: $amountText)
-                                .keyboardType(.decimalPad) // Shows numeric keyboard with decimal point
-                                .focused($focusedField, equals: .amount)
-                                .themedTextField()
-                                .accessibilityIdentifier("transaction-amount")
-                                .onChange(of: amountText) { oldValue, newValue in
-                                    amountText = filterInvalidCurrencyCharacters(newValue)
-                                }
-                        }
-                        .padding()
+                        
+                        TextField("0.00", text: $amountText)
+                            .keyboardType(.decimalPad) // Shows numeric keyboard with decimal point
+                            .focused($focusedField, equals: .amount)
+                            .safeAreaPadding(.all, 5.0)
+                            .themedTextField()
+                            .accessibilityIdentifier("transaction-amount")
+                            .onChange(of: amountText) { oldValue, newValue in
+                                amountText = filterInvalidCurrencyCharacters(newValue)
+                            }
                     }
                     
                     if type == .income {

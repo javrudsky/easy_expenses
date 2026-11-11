@@ -22,7 +22,7 @@ struct AppRootView: View {
             try? createTransactionsView(dataStore: dataStore)
                 .tabItem { Label("Transactions", systemImage: "list.bullet.rectangle") }
             
-            createReportsView()
+            createReportsView(dataStore: dataStore)
                 .tabItem { Label("Reports", systemImage: "chart.bar") }
             
             SettingsView()
@@ -63,21 +63,13 @@ struct AppRootView: View {
         throw ViewError.couldNotCreateView
     }
     
-    private func createReportsView() -> some View {
-        return ReportsView()
+    private func createReportsView(dataStore: DataStore) -> ReportsView<DefaultReportsViewModel> {
+        return ReportsView<DefaultReportsViewModel>(dataStore: dataStore, hasPremium: true)
     }
 }
 
 #Preview {
     let af = try! DefaultAppFactory(modelContainer: try! DefaultAppFactory.createModelContainer(inMemory: true))
     AppRootView(appFactory: af)
-}
-    
-struct ReportsView: View {
-    var body: some View {
-        Text("Reports")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
-    }
 }
 

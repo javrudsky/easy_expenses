@@ -29,7 +29,7 @@ struct MoreView: View {
                     NavigationLink { vf.createAccountsView(dataStore: dataStore) } label: { Label("Accounts", systemImage: "creditcard") }
                 }
                 Section("Insights") {
-                    NavigationLink { ReportsView() } label: { Label("Reports", systemImage: "chart.bar") }
+                    NavigationLink { createReportsView() } label: { Label("Reports", systemImage: "chart.bar") }
                 }
             }
             .navigationTitle("More")
@@ -38,5 +38,10 @@ struct MoreView: View {
     
     private func createDataManagementView() -> DataManagementView {
         return DataManagementView(factory: af, dataStore: dataStore)
+    }
+    
+    private func createReportsView() -> ReportsView<DefaultReportsViewModel> {
+        return ReportsView<DefaultReportsViewModel>(dataStore: dataStore,
+                                                    embedInNavigationStack: false)
     }
 }

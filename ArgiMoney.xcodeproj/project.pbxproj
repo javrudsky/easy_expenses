@@ -55,6 +55,7 @@
 				ZPremium/Category/View/CategoriesView.swift,
 				ZPremium/Category/View/CategoriesViewModel.swift,
 				ZPremium/Category/View/CategoryEditView.swift,
+				ZPremium/Report/View/AdvancedReportsView.swift,
 			);
 			target = DC6B43D430A27414007BFC8C /* ArgiMoneyCommunity */;
 		};
@@ -569,6 +570,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoney;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "PREMIUM DEBUG $(inherited)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -604,6 +606,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jla.ArgiMoney;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = PREMIUM;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
