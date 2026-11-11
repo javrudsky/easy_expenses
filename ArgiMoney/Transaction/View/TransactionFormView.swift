@@ -58,6 +58,7 @@ struct TransactionFormView: View {
     @State private var amountText: String = ""
     
     @State private var showCatList: Bool = false
+    @State private var isPresented: Bool
     
     enum Field {
         case amount
@@ -66,9 +67,11 @@ struct TransactionFormView: View {
     @FocusState private var focusedField: Field?
     
     init(config: TransactionFormConfig,
+         isPresented: Bool = false,
          onComplete: @escaping (TransactionFormResult) -> Void) {
         self.cfg = config
         self.onComplete = onComplete
+        self.isPresented = isPresented
     }
     
     var body: some View {
@@ -132,10 +135,12 @@ struct TransactionFormView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle(cfg.transaction == nil ? "New Transaction" : "Edit Transaction")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button{ dismissAndSend(.cancelled) }
-                    label: {
-                        Image(systemName: "xmark")
+                if isPresented {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button{ dismissAndSend(.cancelled) }
+                        label: {
+                            Image(systemName: "xmark")
+                        }
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {

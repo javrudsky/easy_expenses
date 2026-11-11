@@ -140,9 +140,16 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        viewModel.editingTransaction = nil
-                        viewModel.showingForm = true
+                    NavigationLink {
+                        let config = TransactionFormConfig(
+                            transaction: nil,
+                            crudOperation: .create,
+                            categories: viewModel.categories,
+                            accounts: viewModel.accounts
+                        )
+                        TransactionFormView(config: config) {
+                            handleResult(result: $0)
+                        }
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -167,20 +174,6 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(errorMessage)
-            }
-            .sheet(isPresented: $viewModel.showingForm) {
-                let tran = viewModel.editingTransaction
-                
-                let config = TransactionFormConfig(
-                    transaction: tran,
-                    crudOperation: tran == nil ? .create : .update,
-                    categories: viewModel.categories,
-                    accounts: viewModel.accounts
-                )
-                
-                TransactionFormView(config: config) {
-                    handleResult(result: $0)
-                }
             }
             .onAppear {
                 reloadViewModel()
@@ -412,9 +405,18 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
     }
     
     private func transactionRow(_ tx: Transaction) -> some View {
-        Button {
-            viewModel.editingTransaction = tx
-            viewModel.showingForm = true
+        NavigationLink {
+            
+            let config = TransactionFormConfig(
+                transaction: tx,
+                crudOperation: .update,
+                categories: viewModel.categories,
+                accounts: viewModel.accounts
+            )
+            
+            TransactionFormView(config: config) {
+                handleResult(result: $0)
+            }
         } label: {
             HStack(spacing: 12) {
                 
@@ -457,13 +459,6 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
         }
         .buttonStyle(.plain)
         .contextMenu {
-            Button {
-                viewModel.editingTransaction = tx
-                viewModel.showingForm = true
-            } label: {
-                Label("Edit", systemImage: "pencil")
-            }
-            
             Button(role: .destructive) {
                 deleteTransaction(tx)
             } label: {

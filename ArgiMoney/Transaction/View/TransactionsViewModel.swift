@@ -14,8 +14,6 @@ protocol TransactionsViewModel: ObservableObject {
     var transactions: [Transaction] { get }
     var categories: [Category] { get }
     var accounts: [Account] { get }
-    var showingForm: Bool { get set }
-    var editingTransaction: Transaction? { get set }
 
     func reload() async throws
     func addExpense(using builder: TransactionBuilder) async throws
