@@ -165,7 +165,7 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
                                            crudOperation: .create,
                                            categories: viewModel.categories,
                                            accounts: viewModel.accounts)
-        return TransactionFormView(config: config) { handleTransactionResult(result: $0)}
+        return TransactionFormView(config: config, isPresented: true) { handleTransactionResult(result: $0)}
     }
     
     private func handleTransactionResult(result: TransactionFormResult) {

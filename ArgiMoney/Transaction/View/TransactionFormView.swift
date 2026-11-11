@@ -58,7 +58,7 @@ struct TransactionFormView: View {
     @State private var amountText: String = ""
     
     @State private var showCatList: Bool = false
-    @State private var isPresented: Bool
+    private var isPresented: Bool
     
     enum Field {
         case amount
