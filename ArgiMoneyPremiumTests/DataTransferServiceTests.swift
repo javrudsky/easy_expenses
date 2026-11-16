@@ -96,7 +96,11 @@ import Testing
             "category_id",
             "category_name",
             "account_id",
-            "account_name"
+            "account_name",
+            "category_image_name",
+            "category_rgb_color",
+            "account_image_name",
+            "account_rgb_color"
         ].joined(separator: ",")
 
         #expect(lines.first == expectedHeader)
@@ -135,7 +139,7 @@ import Testing
         }
 
         let fields = splitCSVLine(firstDataLine)
-        #expect(fields.count == 9)
+        #expect(fields.count == 13)
 
         #expect(fields[0] == transactionId1.uuidString)
         #expect(fields[1] == ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: date1)))
@@ -146,6 +150,10 @@ import Testing
         #expect(fields[6] == "Cat1")
         #expect(fields[7] == accountId1.uuidString)
         #expect(fields[8] == "Main \"Acc1\"")
+        #expect(fields[9] == category1.imageName)
+        #expect(fields[10] == category1.rgbColor)
+        #expect(fields[11] == account1.imageName)
+        #expect(fields[12] == account1.rgbColor)
     }
 
     @Test
@@ -161,7 +169,11 @@ import Testing
             "category_id",
             "category_name",
             "account_id",
-            "account_name"
+            "account_name",
+            "category_image_name",
+            "category_rgb_color",
+            "account_image_name",
+            "account_rgb_color"
         ].joined(separator: ","))
     }
 
@@ -193,7 +205,6 @@ import Testing
         #expect(imported.detail == transaction.detail)
         #expect(imported.category.id == category.id)
         #expect(imported.category.name == category.name)
-        // The following two will fail until added to import process
         #expect(imported.category.imageName == category.imageName)
         #expect(imported.category.rgbColor == category.rgbColor)
         
@@ -692,5 +703,131 @@ import Testing
         let stored = try await transactionRepo.fetchBy(id: existing.id)
         #expect(stored?.amount == 10)
         #expect(stored?.detail == "Original")
+    }
+
+    // MARK: - Premium visuals
+
+    private var standardHeaderWithVisuals: String {
+        [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name",
+            "category_image_name", "category_rgb_color", "account_image_name", "account_rgb_color"
+        ].joined(separator: ",")
+    }
+
+    @Test
+    func exportToCsv_withoutPremium_omitsVisualColumns() async throws {
+        let service = DefaultDataTransferService(dataStore: dataStore, hasPremium: false)
+
+        let csv = try await service.exportToCsv()
+
+        #expect(csv == [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ","))
+    }
+
+    @Test
+    func importFrom_withPremium_importsCategoryAndAccountVisuals() async throws {
+        let service = DefaultDataTransferService(dataStore: dataStore, hasPremium: true)
+        let transactionID = UUID()
+        let categoryID = UUID()
+        let accountID = UUID()
+        let row = csvRow([
+            transactionID.uuidString, "2026-10-21T00:00:00Z", "expense", "10.00", "Lunch",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash",
+            "fork.knife", "1.0, 0.0, 0.0, 1.0",
+            "creditcard.fill", "0.29, 0.52, 1.0, 1.0"
+        ])
+
+        let summary = try await service.importFrom(csv: [standardHeaderWithVisuals, row].joined(separator: "\n"))
+
+        #expect(summary.logSummary.errorCount == 0)
+        let category = try #require(summary.categories.first)
+        let account = try #require(summary.accounts.first)
+        #expect(category.imageName == "fork.knife")
+        #expect(category.rgbColor == "1.0, 0.0, 0.0, 1.0")
+        #expect(account.imageName == "creditcard.fill")
+        #expect(account.rgbColor == "0.29, 0.52, 1.0, 1.0")
+    }
+
+    @Test
+    func importFrom_withoutPremium_ignoresVisualColumns() async throws {
+        let service = DefaultDataTransferService(dataStore: dataStore, hasPremium: false)
+        let row = csvRow([
+            UUID().uuidString, "2026-10-21T00:00:00Z", "expense", "10.00", "Lunch",
+            UUID().uuidString, "Food", UUID().uuidString, "Cash",
+            "fork.knife", "1.0, 0.0, 0.0, 1.0",
+            "creditcard.fill", "0.29, 0.52, 1.0, 1.0"
+        ])
+
+        let summary = try await service.importFrom(csv: [standardHeaderWithVisuals, row].joined(separator: "\n"))
+
+        let category = try #require(summary.categories.first)
+        let account = try #require(summary.accounts.first)
+        #expect(category.imageName == AppDefaults.defaultCategoryImage)
+        #expect(category.rgbColor == AppDefaults.defaultCategoryColor)
+        #expect(account.imageName == AppDefaults.defaultAccountImage)
+        #expect(account.rgbColor == AppDefaults.defaultAccountColor)
+    }
+
+    @Test
+    func importFrom_existingVisualsDiffer_logsConflictsAndKeepsStoredValues() async throws {
+        let categoryID = UUID()
+        let accountID = UUID()
+        let storedCategory = Category(id: categoryID, name: "Food", transactionType: .expense,
+                                      imageName: "stored.symbol", rgbColor: "0.1, 0.2, 0.3, 1.0")
+        let storedAccount = Account(id: accountID, name: "Cash",
+                                    imageName: "stored.account", rgbColor: "0.4, 0.5, 0.6, 1.0")
+        try await categoryRepo.insertOrUpdate(storedCategory)
+        try await accountRepo.insertOrUpdate(storedAccount)
+
+        let service = DefaultDataTransferService(dataStore: dataStore, hasPremium: true)
+        let row = csvRow([
+            UUID().uuidString, "2026-10-21T00:00:00Z", "expense", "10.00", "Lunch",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash",
+            "new.symbol", "1.0, 0.0, 0.0, 1.0",
+            "new.account", "0.0, 1.0, 0.0, 1.0"
+        ])
+
+        let summary = try await service.importFrom(csv: [standardHeaderWithVisuals, row].joined(separator: "\n"))
+
+        #expect(summary.logSummary.errorCount == 4)
+        #expect(summary.logSummary.log.contains("CONFLICT"))
+        #expect(summary.logSummary.log.contains("imageName"))
+        #expect(summary.logSummary.log.contains("rgbColor"))
+
+        try await service.executeImport(summary: summary)
+
+        let category = try await categoryRepo.fetchBy(id: categoryID)
+        let account = try await accountRepo.fetchBy(id: accountID)
+        #expect(category?.imageName == storedCategory.imageName)
+        #expect(category?.rgbColor == storedCategory.rgbColor)
+        #expect(account?.imageName == storedAccount.imageName)
+        #expect(account?.rgbColor == storedAccount.rgbColor)
+    }
+
+    @Test
+    func importFrom_zeroAmount_skipsRecordAndLogsError() async throws {
+        let header = [
+            "transaction_id", "date", "transaction_type", "amount", "detail",
+            "category_id", "category_name", "account_id", "account_name"
+        ].joined(separator: ",")
+        let categoryID = UUID()
+        let accountID = UUID()
+        let zeroRow = csvRow([
+            UUID().uuidString, "2026-10-21T00:00:00Z", "expense", "0.00", "Zero",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash"
+        ])
+        let validRow = csvRow([
+            UUID().uuidString, "2026-10-22T00:00:00Z", "expense", "10.00", "Lunch",
+            categoryID.uuidString, "Food", accountID.uuidString, "Cash"
+        ])
+
+        let summary = try await sut.importFrom(csv: [header, zeroRow, validRow].joined(separator: "\n"))
+
+        #expect(summary.transactions.count == 1)
+        #expect(summary.logSummary.errorCount == 1)
+        #expect(summary.logSummary.log.localizedCaseInsensitiveContains("zero"))
     }
 }

@@ -22,8 +22,15 @@ struct SettingsView: View {
                         }
                     }
                 }
+                Section("Premium") {
+                    NavigationLink {
+                        PremiumStoreView()
+                    } label: {
+                        Label("Premium & Purchases", systemImage: "crown.fill")
+                    }
+                }
             }
+            .navigationTitle("Settings")
         }
-        .navigationTitle("Settings")
     }
 }

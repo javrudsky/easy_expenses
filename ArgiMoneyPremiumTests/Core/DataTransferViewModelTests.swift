@@ -88,4 +88,49 @@ struct DataTransferViewModelTests {
         #expect(viewModel.lastError == nil)
         #expect(!viewModel.isImporting)
     }
+
+    @MainActor
+    @Test
+    func standardImportViewModelUsesStandardImportPath() async throws {
+        let expectedSummary = summary()
+        let service = StubDataTransferService(exportedCSV: "", importSummary: expectedSummary)
+        let fileURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("standard-import-view-model-\(UUID().uuidString).csv")
+        try "csv content".write(to: fileURL, atomically: true, encoding: .utf8)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+
+        let viewModel = DefaultImportTransactionsViewModel(dataTransferService: service,
+                                                          format: .standard,
+                                                          selectedFile: fileURL)
+        _ = try await viewModel.importCsv()
+
+        let standardCount = await service.standardImportCount
+        let genericCount = await service.genericImportCount
+        #expect(standardCount == 1)
+        #expect(genericCount == 0)
+        #expect(viewModel.format == .standard)
+    }
+
+    @MainActor
+    @Test
+    func genericImportViewModelUsesGenericImportPath() async throws {
+        let expectedSummary = summary()
+        let service = StubDataTransferService(exportedCSV: "", importSummary: expectedSummary)
+        let fileURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("generic-import-view-model-\(UUID().uuidString).csv")
+        try "csv content".write(to: fileURL, atomically: true, encoding: .utf8)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+
+        let viewModel = DefaultImportTransactionsViewModel(dataTransferService: service,
+                                                          format: .generic,
+                                                          selectedFile: fileURL)
+        _ = try await viewModel.importCsv()
+
+        let standardCount = await service.standardImportCount
+        let genericCount = await service.genericImportCount
+        #expect(standardCount == 0)
+        #expect(genericCount == 1)
+        #expect(viewModel.format == .generic)
+        #expect(viewModel.summary?.transactions.count == 1)
+    }
 }

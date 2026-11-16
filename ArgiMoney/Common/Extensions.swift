@@ -93,3 +93,10 @@ extension Array {
     
     
 }
+
+
+extension String {
+    static func currency(_ amount: Decimal, code: String = "USD") -> String {
+        amount.formatted(.currency(code: code))
+    }
+}

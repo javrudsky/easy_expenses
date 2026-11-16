@@ -13,19 +13,26 @@ struct ArgiMoneyApp: App {
 
     @StateObject private var themeManager = ThemeManager.shared
     private let factory: AppFactory? = try? DefaultAppFactory()
-    
-//    init() {
-//        
-//        if let factory = self.factory {
-//            themeManager.setTheme(factory.appValues().theme())
-//        }
-//    }
+    @State private var featureAccess: FeatureAccessManager
+
+    init() {
+        #if PREMIUM
+        let service = StoreKitPurchaseService()
+        #else
+        let service = MockPurchaseService()
+        #endif
+        _featureAccess = State(initialValue: FeatureAccessManager(service: service))
+    }
     
     var body: some Scene {
         WindowGroup {
             if let factory = self.factory {
                 AppRootView(appFactory: factory)
                     .environment(\.theme, themeManager.currentTheme)
+                    .environment(featureAccess)
+                    .task {
+                        await featureAccess.start()
+                    }
             } else {
                 // Fallback in case factory initialization fails
                 SomethingHappenView()

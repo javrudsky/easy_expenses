@@ -12,6 +12,8 @@ actor StubDataTransferService: DataTransferService {
     let exportedCSV: String
     let importSummary: ImportSummary
     private(set) var executionCount = 0
+    private(set) var standardImportCount = 0
+    private(set) var genericImportCount = 0
 
     init(exportedCSV: String, importSummary: ImportSummary) {
         self.exportedCSV = exportedCSV
@@ -23,7 +25,13 @@ actor StubDataTransferService: DataTransferService {
     }
 
     func importFrom(csv: String, logBuilder: ImportLogBuilder) async throws -> ImportSummary {
-        importSummary
+        standardImportCount += 1
+        return importSummary
+    }
+
+    func importGenericFrom(csv: String, logBuilder: ImportLogBuilder) async throws -> ImportSummary {
+        genericImportCount += 1
+        return importSummary
     }
 
     func executeImport(summary: ImportSummary) async throws {

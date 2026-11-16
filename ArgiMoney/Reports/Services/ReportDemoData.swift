@@ -61,5 +61,13 @@ enum ReportDemoData {
 
 #if DEBUG
 import SwiftUI
-#Preview { ReportMenuView(dataset: ReportDemoData.dataset, hasPremium: true) }
+#Preview {
+    #if PREMIUM
+    let purchaseService = StoreKitPurchaseService()
+    #else
+    let purchaseService = MockPurchaseService()
+    #endif
+    ReportMenuView(dataset: ReportDemoData.dataset)
+        .environment(FeatureAccessManager(service: purchaseService))
+}
 #endif

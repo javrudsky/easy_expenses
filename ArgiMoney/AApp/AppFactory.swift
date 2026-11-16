@@ -26,11 +26,12 @@ protocol AppFactory {
     @MainActor func audioRecordingViewModel(dataStore: DataStore) -> any AudioRecordingViewModel
     @MainActor func transactionsViewModel(dataStore: DataStore) -> any TransactionsViewModel
     
-    @MainActor func exportTransactionsViewModel(dataStore: DataStore) -> any ExportTransactionsViewModel
-    @MainActor func importTransactionsViewModel(dataStore: DataStore) -> any ImportTransactionsViewModel
+    @MainActor func exportTransactionsViewModel(dataStore: DataStore, hasPremium: Bool) -> any ExportTransactionsViewModel
+    @MainActor func importTransactionsViewModel(dataStore: DataStore, hasPremium: Bool) -> any ImportTransactionsViewModel
+    @MainActor func importGenericTransactionsViewModel(dataStore: DataStore, hasPremium: Bool) -> any ImportTransactionsViewModel
 
     @MainActor func transactionFormService(dataStore: DataStore) -> TransactionFormViewService
-    @MainActor func dataTransferService(dataStore: DataStore) -> DataTransferService
+    @MainActor func dataTransferService(dataStore: DataStore, hasPremium: Bool) -> DataTransferService
 }
 
 struct DefaultAppFactory: AppFactory {
@@ -113,15 +114,21 @@ struct DefaultAppFactory: AppFactory {
     }
     
     @MainActor
-    func exportTransactionsViewModel(dataStore: DataStore) -> any ExportTransactionsViewModel {
-        let ts = dataTransferService(dataStore: dataStore)
+    func exportTransactionsViewModel(dataStore: DataStore, hasPremium: Bool) -> any ExportTransactionsViewModel {
+        let ts = dataTransferService(dataStore: dataStore, hasPremium: hasPremium)
         return DefaultExportTransactionsViewModel(dataTransferService: ts)
     }
 
     @MainActor
-    func importTransactionsViewModel(dataStore: DataStore) -> any ImportTransactionsViewModel {
-        let ts = dataTransferService(dataStore: dataStore)
+    func importTransactionsViewModel(dataStore: DataStore, hasPremium: Bool) -> any ImportTransactionsViewModel {
+        let ts = dataTransferService(dataStore: dataStore, hasPremium: hasPremium)
         return DefaultImportTransactionsViewModel(dataTransferService: ts)
+    }
+
+    @MainActor
+    func importGenericTransactionsViewModel(dataStore: DataStore, hasPremium: Bool) -> any ImportTransactionsViewModel {
+        let ts = dataTransferService(dataStore: dataStore, hasPremium: hasPremium)
+        return DefaultImportTransactionsViewModel(dataTransferService: ts, format: .generic)
     }
 
     @MainActor
@@ -130,7 +137,7 @@ struct DefaultAppFactory: AppFactory {
     }
     
     @MainActor
-    func dataTransferService(dataStore: DataStore) -> DataTransferService {
-        return DefaultDataTransferService(dataStore: dataStore)
+    func dataTransferService(dataStore: DataStore, hasPremium: Bool) -> DataTransferService {
+        return DefaultDataTransferService(dataStore: dataStore, hasPremium: hasPremium)
     }
 }

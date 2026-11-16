@@ -35,6 +35,7 @@
 		DC8D18F130583C9800AF5582 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		DCFF5A1E30A3C20A00E0F0DE /* ArgiMoneyPremium.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArgiMoneyPremium.xctestplan; sourceTree = "<group>"; };
 		DCFF5A2330A3C41400E0F0DE /* ArgiMoneyPremiumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArgiMoneyPremiumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCFF5BFB30A8A5DC00E0F0DE /* ArgiMoney.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArgiMoney.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -42,6 +43,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AApp/AppViewFactoryCommunity.swift,
+				DataTransfer/TransactionService/AdvancedTransactionImportServiceStub.swift,
 			);
 			target = DC8D18563053257B00AF5582 /* ArgiMoneyPremium */;
 		};
@@ -49,12 +51,14 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AApp/AccountsViewPremium.swift,
+				Purchases/StoreKitPurchaseService.swift,
 				ZPremium/Account/View/AccountEditView.swift,
 				ZPremium/Account/View/AccountsView.swift,
 				ZPremium/Account/View/AccountsViewModel.swift,
 				ZPremium/Category/View/CategoriesView.swift,
 				ZPremium/Category/View/CategoriesViewModel.swift,
 				ZPremium/Category/View/CategoryEditView.swift,
+				ZPremium/DataTransfer/AdvancedTransactionImportService.swift,
 				ZPremium/Report/View/AdvancedReportsView.swift,
 			);
 			target = DC6B43D430A27414007BFC8C /* ArgiMoneyCommunity */;
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				DC8D18593053257B00AF5582 /* ArgiMoney */,
+				DCFF5BFB30A8A5DC00E0F0DE /* ArgiMoney.storekit */,
 				DCFF5A1E30A3C20A00E0F0DE /* ArgiMoneyPremium.xctestplan */,
 				DCFF5A2430A3C41400E0F0DE /* ArgiMoneyPremiumTests */,
 				DC8D18F030583C9800AF5582 /* Frameworks */,

@@ -12,6 +12,9 @@ struct AppDefaults {
     static let defaultCategoryColor = "0.0, 0.0, 0.0, 1.0"
     static let defaultCategoryImage = "wallet.bifold.fill"
 
+    static let defaultAccountColor = "0.29, 0.52, 1.0, 1.0"
+    static let defaultAccountImage = "creditcard.fill"
+
     // Provide sensible defaults for first run
     static let incomeCategory: Category = Category(
         id: UUID(),
@@ -31,8 +34,8 @@ struct AppDefaults {
     static let account: Account = Account(
         id: UUID(),
         name: "Cash",
-        imageName: "creditcard.fill",
-        rgbColor: "0.29, 0.52, 1.0, 1.0"
+        imageName: defaultAccountImage,
+        rgbColor: defaultAccountColor
     )
     
     static let theme: ThemeName = ThemeName(rawValue: "default")!

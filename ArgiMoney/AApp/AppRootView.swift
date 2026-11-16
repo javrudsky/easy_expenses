@@ -64,12 +64,18 @@ struct AppRootView: View {
     }
     
     private func createReportsView(dataStore: DataStore) -> ReportsView<DefaultReportsViewModel> {
-        return ReportsView<DefaultReportsViewModel>(dataStore: dataStore, hasPremium: true)
+        return ReportsView<DefaultReportsViewModel>(dataStore: dataStore)
     }
 }
 
 #Preview {
     let af = try! DefaultAppFactory(modelContainer: try! DefaultAppFactory.createModelContainer(inMemory: true))
+    #if PREMIUM
+    let purchaseService = StoreKitPurchaseService()
+    #else
+    let purchaseService = MockPurchaseService()
+    #endif
     AppRootView(appFactory: af)
+        .environment(FeatureAccessManager(service: purchaseService))
 }
 

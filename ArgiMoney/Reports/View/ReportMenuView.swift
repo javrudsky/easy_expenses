@@ -12,6 +12,18 @@ enum ReportType: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
     var premium: Bool { ![Self.income, .categories].contains(self) }
+    /// Product that unlocks this report. Reports without a dedicated product
+    /// are unlocked by the complete premium bundle.
+    var premiumProduct: PurchaseProduct? {
+        switch self {
+        case .income, .categories: nil
+        case .cashFlow: .cashFlow
+        case .spending: .spending
+        case .budgets: .premiumBundle
+        case .accounts: .accountsReport
+        case .insights: .insights
+        }
+    }
     var symbol: String {
         switch self {
         case .income: "chart.bar.fill"
@@ -27,9 +39,8 @@ enum ReportType: String, CaseIterable, Identifiable {
 
 struct ReportMenuView: View {
     let dataset: ReportDataset
-    // Connect this to your StoreKit entitlement state.
-    var hasPremium: Bool = false
     var embedInNavigationStack: Bool = true
+    @Environment(FeatureAccessManager.self) private var access
 
     @ViewBuilder
     var body: some View {
@@ -60,10 +71,10 @@ struct ReportMenuView: View {
 
     @ViewBuilder private func reportLink(_ report: ReportType) -> some View {
         NavigationLink {
-            if report.premium && !hasPremium {
-                PremiumReportsGate(report: report)
-            } else {
+            if isUnlocked(report) {
                 ReportMenuItemView(report: report, dataset: dataset)
+            } else {
+                PremiumReportsGate(report: report)
             }
         } label: {
             HStack(spacing: 14) {
@@ -85,15 +96,58 @@ struct ReportMenuView: View {
         }
         .buttonStyle(.plain)
     }
+
+    private func isUnlocked(_ report: ReportType) -> Bool {
+        guard let product = report.premiumProduct else { return true }
+        return access.owns(product) || access.owns(.premiumBundle)
+    }
 }
 
 struct PremiumReportsGate: View {
     let report: ReportType
+    @Environment(FeatureAccessManager.self) private var access
+
     var body: some View {
-        ContentUnavailableView("Premium Report", systemImage: "crown.fill",
-                               description: Text("Unlock \(report.rawValue) with Argi Premium."))
-            .navigationTitle(report.rawValue)
-        // Replace with your StoreKit purchase / paywall screen.
+        ScrollView {
+            VStack(spacing: 18) {
+                ContentUnavailableView("Premium Report", systemImage: "crown.fill",
+                                       description: Text("Unlock \(report.rawValue) with Argi Premium."))
+                if access.state == .loading {
+                    ProgressView("Checking purchases…")
+                } else {
+                    if let product = report.premiumProduct {
+                        Button {
+                            Task { _ = await access.purchase(product) }
+                        } label: {
+                            if access.busyProduct == product { ProgressView() }
+                            else {
+                                Text(access.metadata(for: product).map { "Unlock for \($0.displayPrice)" }
+                                     ?? "Currently unavailable")
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(access.busyProduct != nil || access.metadata(for: product) == nil)
+                    }
+                    NavigationLink {
+                        PremiumStoreView()
+                    } label: {
+                        Text("View all premium features").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+            .padding()
+        }
+        .navigationTitle(report.rawValue)
+        .alert("Purchase information", isPresented: Binding(
+            get: { access.lastError != nil },
+            set: { if !$0 { access.clearError() } }
+        )) {
+            Button("OK") { access.clearError() }
+        } message: {
+            Text(access.lastError ?? "")
+        }
     }
 }
 
@@ -181,7 +235,7 @@ struct ReportMenuItemView: View {
 #if PREMIUM
         SpendingReportView(analytics: analytics)
 #else
-        PremiumReportsGate(report: .insights)
+        PremiumReportsGate(report: .spending)
 #endif
     }
 
