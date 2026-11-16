@@ -2,10 +2,53 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum ImportFormat: String, CaseIterable, Identifiable {
+    case standard
+    case generic
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .standard: return "Standard Format"
+        case .generic: return "Generic Format"
+        }
+    }
+
+    var headerTitle: String {
+        switch self {
+        case .standard: return "Import Transactions"
+        case .generic: return "Import Generic Format"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .standard: return "Import transactions from a CSV file."
+        case .generic: return "Import transactions from a CSV without IDs."
+        }
+    }
+
+    var fileHint: String {
+        switch self {
+        case .standard: return "Choose a CSV file exported by Argi."
+        case .generic: return "Choose a CSV with columns: date, category, account, detail, amount."
+        }
+    }
+
+    var navigationTitle: String {
+        switch self {
+        case .standard: return "Import"
+        case .generic: return "Generic Import"
+        }
+    }
+}
+
 @MainActor
 protocol ImportTransactionsViewModel: ObservableObject {
     var selectedFile: URL? { get }
     var isImporting: Bool { get }
+    var format: ImportFormat { get }
 
     var summary: ImportSummary? { get }
     var areIssues: Bool { get }
@@ -27,6 +70,7 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
 
     @Published private(set) var summary: ImportSummary? = nil
 
+    let format: ImportFormat
     private let dataTransferService: DataTransferService
     private let fileUtil = FileUtil()
 
@@ -34,8 +78,9 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
         summary != nil && (summary?.logSummary.errorCount ?? 0) == 0
     }
 
-    init(dataTransferService: DataTransferService, selectedFile: URL? = nil) {
+    init(dataTransferService: DataTransferService, format: ImportFormat = .standard, selectedFile: URL? = nil) {
         self.dataTransferService = dataTransferService
+        self.format = format
         self.selectedFile = selectedFile
         self.isImporting = false
         self.lastError = nil
@@ -64,7 +109,13 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
 
         do {
             let content = try fileUtil.open(fileUrl)
-            let summary = try await dataTransferService.importFrom(csv: content, logBuilder: DefaultImportLogBuilder())
+            let summary: ImportSummary
+            switch format {
+            case .standard:
+                summary = try await dataTransferService.importFrom(csv: content, logBuilder: DefaultImportLogBuilder())
+            case .generic:
+                summary = try await dataTransferService.importGenericFrom(csv: content, logBuilder: DefaultImportLogBuilder())
+            }
             self.summary = summary
             print(summary.logSummary.log)
             return summary

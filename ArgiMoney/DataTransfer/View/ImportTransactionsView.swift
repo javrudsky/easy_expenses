@@ -31,10 +31,10 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
                         .clipShape(RoundedRectangle(cornerRadius: 22))
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Import Transactions")
+                        Text(viewModel.format.headerTitle)
                             .font(.title3.bold())
 
-                        Text("Import transactions from a CSV file.")
+                        Text(viewModel.format.subtitle)
                             .font(.subheadline)
                             .foregroundStyle(ArgiColors.secondaryText)
                     }
@@ -49,7 +49,7 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
                         .font(.headline)
                         .lineLimit(2)
 
-                    Text("Choose a CSV file from Files or iCloud Drive.")
+                    Text(viewModel.format.fileHint)
                         .font(.subheadline)
                         .foregroundStyle(ArgiColors.secondaryText)
                         .multilineTextAlignment(.center)
@@ -121,7 +121,7 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
             })
         }
         .background(ArgiColors.background)
-        .navigationTitle("Import")
+        .navigationTitle(viewModel.format.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .fileImporter(
             isPresented: $showingFileImporter,

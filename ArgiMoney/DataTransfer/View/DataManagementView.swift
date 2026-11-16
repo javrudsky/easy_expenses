@@ -9,6 +9,8 @@ import SwiftUI
 struct DataManagementView: View {
     let af: AppFactory
     let ds: DataStore
+    @Environment(FeatureAccessManager.self) private var access
+
     init(factory: AppFactory,
          dataStore: DataStore) {
         af = factory
@@ -53,6 +55,18 @@ struct DataManagementView: View {
                     }
                     .buttonStyle(.plain)
 
+                    NavigationLink {
+                        genericImportDestination
+                    } label: {
+                        DataFeatureCard(
+                            title: "Import Generic Format",
+                            subtitle: "Add transactions from a CSV with date, category, account, detail and amount columns.",
+                            icon: "tablecells",
+                            color: ArgiColors.green
+                        )
+                    }
+                    .buttonStyle(.plain)
+
                     DataInfoBox(
                         icon: "checkmark.shield",
                         title: "Your data stays on your device",
@@ -68,15 +82,45 @@ struct DataManagementView: View {
 //        }
     }
     
+    @ViewBuilder
+    private var genericImportDestination: some View {
+        if access.isUnlocked(.advancedImport) {
+            try? createGenericImportTransactionsView()
+        } else {
+            PremiumFeaturePreview(feature: .advancedImport,
+                                  title: "Advanced Import",
+                                  summary: "Import transactions from a flexible CSV without IDs, including category and account details.") {
+                DataFeatureCard(
+                    title: "Import Generic Format",
+                    subtitle: "date, category, account, detail, amount",
+                    icon: "tablecells",
+                    color: ArgiColors.green
+                )
+                .padding(.horizontal)
+            }
+        }
+    }
+
+    private var hasPremium: Bool {
+        access.isUnlocked(.advancedImport)
+    }
+
     private func createExportTransactionsView() throws -> ExportTransactionsView<DefaultExportTransactionsViewModel> {
-        if let vm = af.exportTransactionsViewModel(dataStore: ds) as? DefaultExportTransactionsViewModel {
+        if let vm = af.exportTransactionsViewModel(dataStore: ds, hasPremium: hasPremium) as? DefaultExportTransactionsViewModel {
             return ExportTransactionsView<DefaultExportTransactionsViewModel>(viewModel: vm)
         }
         throw ViewError.couldNotCreateView
     }
     
     private func createImportTransactionsView() throws -> ImportTransactionsView<DefaultImportTransactionsViewModel> {
-        if let vm = af.importTransactionsViewModel(dataStore: ds) as? DefaultImportTransactionsViewModel {
+        if let vm = af.importTransactionsViewModel(dataStore: ds, hasPremium: hasPremium) as? DefaultImportTransactionsViewModel {
+            return ImportTransactionsView<DefaultImportTransactionsViewModel>(viewModel: vm)
+        }
+        throw ViewError.couldNotCreateView
+    }
+
+    private func createGenericImportTransactionsView() throws -> ImportTransactionsView<DefaultImportTransactionsViewModel> {
+        if let vm = af.importGenericTransactionsViewModel(dataStore: ds, hasPremium: hasPremium) as? DefaultImportTransactionsViewModel {
             return ImportTransactionsView<DefaultImportTransactionsViewModel>(viewModel: vm)
         }
         throw ViewError.couldNotCreateView
