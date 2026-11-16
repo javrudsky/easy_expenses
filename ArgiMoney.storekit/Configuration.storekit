@@ -1,0 +1,176 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "ArgiMoneyLocalStoreKit",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "A1",
+      "localizations" : [
+        {
+          "description" : "Unlock detailed cash flow analysis.",
+          "displayName" : "Cash Flow Analysis Report",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.report.cashflow",
+      "promotionalImageID" : "D4A180D1",
+      "referenceName" : "Cash Flow Analysis Report",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "A2",
+      "localizations" : [
+        {
+          "description" : "Explore spending patterns and trends over time.",
+          "displayName" : "Spending Trends Report",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.report.spendingtrends",
+      "referenceName" : "Spending Trends Report",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "A3",
+      "localizations" : [
+        {
+          "description" : "Analyze balances and activity across accounts.",
+          "displayName" : "Account Analysis Report",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.report.accountanalysis",
+      "promotionalImageID" : "D4A180D1",
+      "referenceName" : "Account Analysis Report",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "A4",
+      "localizations" : [
+        {
+          "description" : "Get intelligent insights about your finances.",
+          "displayName" : "Smart Insights Report",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.report.smartinsights",
+      "referenceName" : "Smart Insights Report",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "A5",
+      "localizations" : [
+        {
+          "description" : "Customize accounts and transfer money between them.",
+          "displayName" : "Accounts Module",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.module.accounts",
+      "referenceName" : "Accounts Module",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "A6",
+      "localizations" : [
+        {
+          "description" : "Create and customize your own categories.",
+          "displayName" : "Categories Module",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.module.categories",
+      "referenceName" : "Categories Module",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "A7",
+      "localizations" : [
+        {
+          "description" : "Unlock additional app themes.",
+          "displayName" : "Themes",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.themes",
+      "referenceName" : "Themes",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "A8",
+      "localizations" : [
+        {
+          "description" : "Import data with flexible column mapping and no required IDs.",
+          "displayName" : "Advanced Data Transfer",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.import.advanced",
+      "referenceName" : "Advanced Data Transfer",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "D9190695",
+      "localizations" : [
+        {
+          "description" : "Unlock all Argi features",
+          "displayName" : "Full Premium",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.argimoney.premium.all",
+      "referenceName" : "Argi Money Premium",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}
