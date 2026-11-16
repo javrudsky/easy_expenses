@@ -19,6 +19,8 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
     @State private var showingError = false
     @State private var errorMessage = ""
     
+    @State private var showingMonthlySummary = true
+
     private let calendar = Calendar.current
     
     init(viewModel: VM) {
@@ -110,7 +112,10 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
     private var headerView: some View {
         VStack(spacing: 8) {
             totalBalanceCard
-            monthlySummaryCard
+            MonthlyBalanceView(incomeAmount: monthlyIncome,
+                              expensesAmount: monthlyExpenses,
+                              resultAmount: monthlyResult,
+                              showingDetail: true)
             searchAndFilter
         }
         .padding(.horizontal, 16)
@@ -184,22 +189,49 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
     
     // MARK: - Total Balance
     
+    private var collapsedMonthlyBalanceCard: some View {
+        
+        HStack {
+            HStack(alignment: .center, spacing: 10) {
+                Text("Nov 2026")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                
+                Spacer(minLength: 8)
+                
+                Text(currency(monthlyResult))
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(
+                        monthlyResult >= 0 ? .green : .red
+                    )
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
+                    .contentTransition(.numericText())
+                    .layoutPriority(1)
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+    
     private var totalBalanceCard: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Total balance")
+            HStack(alignment: .center, spacing: 10) {
+                Text("Total Balance")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 
+                Spacer(minLength: 8)
+                        
                 Text(currency(totalBalance))
-                    .font(.title3.bold())
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(
                         totalBalance >= 0 ? .green : .red
                     )
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
                     .contentTransition(.numericText())
+                    .layoutPriority(1)
             }
-            
-            Spacer()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
@@ -220,92 +252,6 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
             RoundedRectangle(cornerRadius: 18)
                 .strokeBorder(.white.opacity(0.8))
         }
-    }
-    
-    // MARK: - Monthly Summary
-    
-    private var monthlySummaryCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            
-            HStack {
-                Text(Date.now.formatted(.dateTime.month(.wide).year()))
-                    .font(.subheadline.weight(.semibold))
-                
-                Spacer()
-                
-                Image(systemName: "chevron.down")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-            }
-            
-            HStack(spacing: 0) {
-                
-                summaryItem(
-                    title: "Income",
-                    amount: monthlyIncome,
-                    symbol: "arrow.up.right",
-                    color: .green
-                )
-                
-                Divider()
-                
-                summaryItem(
-                    title: "Expenses",
-                    amount: monthlyExpenses,
-                    symbol: "arrow.down.right",
-                    color: .red
-                )
-                
-                Divider()
-                
-                summaryItem(
-                    title: "Result",
-                    amount: monthlyResult,
-                    symbol: "equal",
-                    color: monthlyResult >= 0 ? .green : .red
-                )
-            }
-            .frame(height: 46)
-        }
-        .padding(16)
-        .background(.white, in: RoundedRectangle(cornerRadius: 18))
-        .overlay {
-            RoundedRectangle(cornerRadius: 18)
-                .strokeBorder(Color.gray.opacity(0.08))
-        }
-    }
-    
-    private func summaryItem(
-        title: String,
-        amount: Decimal,
-        symbol: String,
-        color: Color
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            
-            HStack(spacing: 5) {
-                Image(systemName: symbol)
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(.white)
-                    .frame(width: 17, height: 17)
-                    .background(color, in: Circle())
-                
-                Text(title)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.75)
-            }
-            
-            Text(currency(amount))
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(
-                    title == "Result" ? color : .primary
-                )
-                .lineLimit(1)
-                .minimumScaleFactor(0.65)
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
     }
     
     // MARK: - Search & Filter

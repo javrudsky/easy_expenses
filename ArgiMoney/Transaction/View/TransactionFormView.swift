@@ -130,8 +130,9 @@ struct TransactionFormView: View {
             .toolbar {
                 if isPresented {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button{ dismissAndSend(.cancelled) }
-                        label: {
+                        Button {
+                            dismissAndSend(.cancelled)
+                        } label: {
                             Image(systemName: "xmark")
                         }
                     }
