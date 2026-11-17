@@ -6,9 +6,9 @@ enum ReportType: String, CaseIterable, Identifiable {
     case categories = "Expenses by Category"
     case cashFlow = "Cash Flow Analysis"
     case spending = "Spending Trends"
-    case budgets = "Budget Analysis"
+//    case budgets = "Budget Analysis"
     case accounts = "Account Analysis"
-    case insights = "Smart Insights"
+//    case insights = "Smart Insights"
 
     var id: String { rawValue }
     var premium: Bool { ![Self.income, .categories].contains(self) }
@@ -19,9 +19,9 @@ enum ReportType: String, CaseIterable, Identifiable {
         case .income, .categories: nil
         case .cashFlow: .cashFlow
         case .spending: .spending
-        case .budgets: .premiumBundle
+//        case .budgets: .premiumBundle
         case .accounts: .accountsReport
-        case .insights: .insights
+//        case .insights: .insights
         }
     }
     var symbol: String {
@@ -30,9 +30,9 @@ enum ReportType: String, CaseIterable, Identifiable {
         case .categories: "chart.pie.fill"
         case .cashFlow: "waveform.path.ecg"
         case .spending: "chart.line.uptrend.xyaxis"
-        case .budgets: "target"
+//        case .budgets: "target"
         case .accounts: "creditcard.fill"
-        case .insights: "sparkles"
+//        case .insights: "sparkles"
         }
     }
 }
@@ -174,9 +174,9 @@ struct ReportMenuItemView: View {
                 case .categories: categoriesView
                 case .cashFlow: cashFlowView
                 case .spending: spendingView
-                case .budgets: budgetsView
+//                case .budgets: budgetsView
                 case .accounts: accountsView
-                case .insights: insightsView
+//                case .insights: insightsView
                 }
             }
             .padding(16)
@@ -263,20 +263,6 @@ struct ReportMenuItemView: View {
 #else
         PremiumReportsGate(report: .insights)
 #endif
-        
-        
-        //        VStack(spacing: 14) {
-//            ReportCard {
-//                Label("Your Financial Insights", systemImage: "sparkles")
-//                    .font(.headline).foregroundStyle(.purple)
-//                Text("Insights are calculated on your device from your transactions.")
-//                    .font(.caption).foregroundStyle(.secondary)
-//            }
-//            ForEach(analytics.insights) { insight in
-//                ReportCard { ReportInsightRow(insight: insight) }
-//            }
-//        }
-//    }
     }
 }
 

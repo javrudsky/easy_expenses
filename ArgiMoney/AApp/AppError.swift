@@ -15,8 +15,14 @@ enum CommonError: Error {
     case unexpected(String)
 }
 
-enum ParserError: Error {
+enum ParserError: Error, LocalizedError {
     case onParsing(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .onParsing(let message): return message
+        }
+    }
 }
 
 enum TransactionError: Error {

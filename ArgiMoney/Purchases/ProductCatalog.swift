@@ -5,10 +5,10 @@ enum ProductCatalog {
         .cashFlow: [.cashFlowReport],
         .spending: [.spendingTrendsReport],
         .accountsReport: [.accountAnalysisReport],
-        .insights: [.smartInsightsReport],
+//        .insights: [.smartInsightsReport],
         .accountModule: [.accountCustomization, .accountTransfers],
         .categoryModule: [.categoryManagement],
-        .themes: [.themes],
+//        .themes: [.themes],
         .advancedImport: [.advancedImport],
         .premiumBundle: Set(PremiumFeature.allCases)
     ]
@@ -24,10 +24,10 @@ enum ProductCatalog {
         case .cashFlowReport: .cashFlow
         case .spendingTrendsReport: .spending
         case .accountAnalysisReport: .accountsReport
-        case .smartInsightsReport: .insights
+//        case .smartInsightsReport: .insights
         case .accountCustomization, .accountTransfers: .accountModule
         case .categoryManagement: .categoryModule
-        case .themes: .themes
+//        case .themes: .themes
         case .advancedImport: .advancedImport
         }
     }

@@ -8,38 +8,36 @@ import Foundation
 import FoundationModels
 
 struct LLMParser: InputParser {
-    
-    
+    private let support: FoundationModelSupport
+
+    init(model: SystemLanguageModel = .default) {
+        self.support = FoundationModelSupport(model: model)
+    }
+
     func buildTransactionFrom(text: String,
                               categories: [Category],
                               accounts: [Account],
                               defaults: TransactionDefaults) async throws -> Transaction {
-        
-        //let accounts = ["Cash", "Galicia", "Mercado Pago"]
-        
-        print("About to parse text \(text) in LLM parser")
-        
-        let session = LanguageModelSession(model: .default)
-        let txSchema = LLMTransactionSchema.transactionSchema(categories: categories.map { $0.name },
-//        let txSchema = LLMTransactionSchema.transactionSchema(categories: InputWordSet.creditCategoryWords,
-                                                              accounts: accounts.map {$0.name })
+        guard support.availability.isAvailable else {
+            let reason = support.availability.unavailableReason
+            throw ParserError.onParsing(reason?.message ?? "The on-device model is unavailable.")
+        }
+
+        let session = support.makeSession(instructions: instructions)
+        let categoryNames = categories.isEmpty ? ["Other"] : categories.map(\.name)
+        let txSchema = LLMTransactionSchema.transactionSchema(categories: categoryNames,
+                                                              accounts: accounts.map(\.name))
         let schema: GenerationSchema
         do {
             schema = try GenerationSchema(root: txSchema, dependencies: [])
         } catch {
             throw ParserError.onParsing("Error generating schema: \(error)")
         }
-        
-        // Generate a response and decode into our model
+
         do {
-            print("Previous model")
             let response = try await session.respond(to: text, schema: schema)
-            
-            print("response from model: \(response)")
             let data = Data(response.content.jsonString.utf8)
-            print("Data from model: \(data)")
-            let decoder = JSONDecoder()
-            let tx = try decoder.decode(GeneratedTransaction.self, from: data)
+            let tx = try JSONDecoder().decode(GeneratedTransaction.self, from: data)
             guard let txType = TransactionType(rawValue: tx.transactionType) else {
                 throw ParserError.onParsing("Could not get transaction type from LLM")
             }
@@ -51,11 +49,26 @@ struct LLMParser: InputParser {
                                transactionType: txType,
                                account: defaults.account,
                                amount: tx.amount)
-        } catch {
+        } catch let error as ParserError {
+            throw error
+        } catch let error as DecodingError {
             throw ParserError.onParsing("Couldn't decode data from LLM: \(error)")
+        } catch {
+            throw ParserError.onParsing(FoundationModelErrorDescription.message(for: error))
         }
     }
-    
+
+    private var instructions: String {
+        """
+        You extract one financial transaction from free-form text.
+        Choose exactly one of the provided categories and one of the provided accounts.
+        Use "expense" when money leaves the account and "income" when money is received.
+        Return the amount as a numeric value without currency symbols.
+        If the text doesn't clearly describe a transaction, make the most reasonable inference from the available values.
+        \(support.localeInstruction)
+        """
+    }
+
     private func getCategory(categories: [Category], name: String?, defaultValue: Category) -> Category {
         if let n = name, let c = categories.first(where: { $0.name == n }) {
             return c

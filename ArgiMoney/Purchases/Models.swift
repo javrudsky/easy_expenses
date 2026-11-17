@@ -1,8 +1,15 @@
 import Foundation
 
 enum PremiumFeature: String, CaseIterable, Hashable, Sendable, Identifiable {
-    case cashFlowReport, spendingTrendsReport, accountAnalysisReport, smartInsightsReport
-    case accountCustomization, accountTransfers, categoryManagement, themes, advancedImport
+    case cashFlowReport
+    case spendingTrendsReport
+    case accountAnalysisReport//
+    // case smartInsightsReport
+    case accountCustomization
+    case accountTransfers
+    case categoryManagement
+    case advancedImport
+    //case themes
     var id: String { rawValue }
 }
 
@@ -11,10 +18,10 @@ enum PurchaseProduct: String, CaseIterable, Hashable, Sendable, Identifiable {
     case cashFlow = "com.argimoney.report.cashflow"
     case spending = "com.argimoney.report.spendingtrends"
     case accountsReport = "com.argimoney.report.accountanalysis"
-    case insights = "com.argimoney.report.smartinsights"
+    // case insights = "com.argimoney.report.smartinsights"
     case accountModule = "com.argimoney.module.accounts"
     case categoryModule = "com.argimoney.module.categories"
-    case themes = "com.argimoney.themes"
+    // case themes = "com.argimoney.themes"
     case advancedImport = "com.argimoney.import.advanced"
     case premiumBundle = "com.argimoney.premium.all"
     var id: String { rawValue }
