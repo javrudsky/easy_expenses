@@ -42,7 +42,7 @@
 		DCFF5A1930A27F3100E0F0DE /* Exceptions for "ArgiMoney" folder in "ArgiMoneyPremium" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AApp/AppViewFactoryCommunity.swift,
+				AApp/View/AppViewFactoryCommunity.swift,
 				DataTransfer/TransactionService/AdvancedTransactionImportServiceStub.swift,
 			);
 			target = DC8D18563053257B00AF5582 /* ArgiMoneyPremium */;
@@ -50,7 +50,7 @@
 		DCFF5A1A30A27F3D00E0F0DE /* Exceptions for "ArgiMoney" folder in "ArgiMoneyCommunity" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AApp/AccountsViewPremium.swift,
+				AApp/View/AccountsViewPremium.swift,
 				Purchases/StoreKitPurchaseService.swift,
 				ZPremium/Account/View/AccountEditView.swift,
 				ZPremium/Account/View/AccountsView.swift,

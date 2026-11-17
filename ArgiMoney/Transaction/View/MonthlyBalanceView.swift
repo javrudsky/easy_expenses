@@ -87,7 +87,7 @@ struct MonthlyBalanceView: View {
         HStack {
             HStack(alignment: .center, spacing: 8) {
                 Text(headerTitle)
-                    .font(.system(size: 15))//, weight: .semibold))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(.secondary)
                 
                 Spacer(minLength: 8)

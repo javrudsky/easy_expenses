@@ -217,7 +217,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
         HStack {
             HStack(alignment: .center, spacing: 10) {
                 Text("Total Balance")
-                    .font(.subheadline)
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(.secondary)
                 
                 Spacer(minLength: 8)
