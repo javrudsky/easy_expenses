@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct PremiumProductRow: View {
@@ -26,22 +27,22 @@ struct PremiumProductRow: View {
                 .frame(width: 60, height: 60)
                 .background(.blue.opacity(0.10), in: RoundedRectangle(cornerRadius: 12))
             VStack(alignment: .leading, spacing: 4) {
-                Text(metadata?.title ?? product.rawValue).font(.headline)
-                Text(metadata?.detail ?? "One-time unlock")
+                Text(metadata?.title ?? product.localizedTitle).font(.headline)
+                Text(metadata?.detail ?? String(localized: "One-time unlock"))
                     .font(.caption).foregroundStyle(.secondary).lineLimit(2)
             }
             Spacer(minLength: 4)
             if owned {
-                Label("Owned", systemImage: "checkmark.circle.fill")
+                    Label("Owned", systemImage: "checkmark.circle.fill")
                     .font(.caption).foregroundStyle(.green)
             } else {
                 Button(action: action) {
                     if isBusy { ProgressView() }
-                    else { Text(metadata?.displayPrice ?? "Unavailable") }
+                    else { Text(metadata?.displayPrice ?? String(localized: "Unavailable")) }
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(isBusy || metadata == nil)
-                .accessibilityLabel("Buy \(product.rawValue)")
+                    .accessibilityLabel(Text("Buy \(product.localizedTitle)"))
             }
         }
         .padding(12)
@@ -99,7 +100,7 @@ struct PremiumStoreView: View {
         )) {
             Button("OK") { access.clearError(); showingRestoreResult = false }
         } message: {
-            Text(access.lastError ?? "Your purchases have been checked.")
+            Text(access.lastError ?? String(localized: "Your purchases have been checked."))
         }
     }
 
@@ -136,8 +137,8 @@ struct PremiumFeaturePreview<Preview: View>: View {
                             .font(.caption.bold()).padding(8)
                             .background(.regularMaterial, in: Capsule())
                     }
-                Text(title).font(.title2.bold())
-                Text(summary).multilineTextAlignment(.center).foregroundStyle(.secondary)
+                Text(LocalizedStringKey(title)).font(.title2.bold())
+                Text(LocalizedStringKey(summary)).multilineTextAlignment(.center).foregroundStyle(.secondary)
                 if access.isUnlocked(feature) {
                     Label("Unlocked", systemImage: "checkmark.seal.fill")
                         .foregroundStyle(.green)
@@ -147,8 +148,8 @@ struct PremiumFeaturePreview<Preview: View>: View {
                     } label: {
                         if access.busyProduct == product { ProgressView() }
                         else {
-                            Text(access.metadata(for: product).map { "Unlock for \($0.displayPrice)" }
-                                 ?? "Currently unavailable")
+                            Text(access.metadata(for: product).map { String(localized: "Unlock for \($0.displayPrice)") }
+                                 ?? String(localized: "Currently unavailable"))
                                 .frame(maxWidth: .infinity)
                         }
                     }
@@ -158,7 +159,7 @@ struct PremiumFeaturePreview<Preview: View>: View {
             }
             .padding()
         }
-        .navigationTitle(title)
+            .navigationTitle(LocalizedStringKey(title))
     }
 }
 

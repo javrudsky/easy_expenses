@@ -18,14 +18,14 @@ struct AppDefaults {
     // Provide sensible defaults for first run
     static let incomeCategory: Category = Category(
         id: UUID(),
-        name: "Salary", transactionType: .income,
+        name: String(localized: "Salary"), transactionType: .income,
         imageName: "dollarsign.circle.fill",
         rgbColor: defaultCategoryColor
     )
 
     static let expenseCategory: Category = Category(
         id: UUID(),
-        name: "General",
+        name: String(localized: "General"),
         transactionType: .expense,
         imageName: defaultCategoryImage,
         rgbColor: defaultCategoryColor,
@@ -33,7 +33,7 @@ struct AppDefaults {
 
     static let account: Account = Account(
         id: UUID(),
-        name: "Cash",
+        name: String(localized: "Cash"),
         imageName: defaultAccountImage,
         rgbColor: defaultAccountColor
     )
@@ -44,38 +44,37 @@ struct AppDefaults {
     static let defaultCategories = [
         // Expense categories
         
-        Category(name: "Groceries", transactionType: .expense,
+        Category(name: String(localized: "Groceries"), transactionType: .expense,
                  imageName: "cart.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Housing", transactionType: .expense,
+        Category(name: String(localized: "Housing"), transactionType: .expense,
                  imageName: "house.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Utilities", transactionType: .expense,
+        Category(name: String(localized: "Utilities"), transactionType: .expense,
                  imageName: "bolt.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Transportation", transactionType: .expense,
+        Category(name: String(localized: "Transportation"), transactionType: .expense,
                  imageName: "car.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Health", transactionType: .expense,
+        Category(name: String(localized: "Health"), transactionType: .expense,
                  imageName: "heart.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Dining & Entertainment", transactionType: .expense,
+        Category(name: String(localized: "Dining & Entertainment"), transactionType: .expense,
                  imageName: "fork.knife", rgbColor: defaultCategoryColor),
-        Category(name: "Shopping", transactionType: .expense,
+        Category(name: String(localized: "Shopping"), transactionType: .expense,
                  imageName: "bag.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Subscriptions", transactionType: .expense,
+        Category(name: String(localized: "Subscriptions"), transactionType: .expense,
                  imageName: "creditcard.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Education", transactionType: .expense,
+        Category(name: String(localized: "Education"), transactionType: .expense,
                  imageName: "graduationcap.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Travel", transactionType: .expense,
+        Category(name: String(localized: "Travel"), transactionType: .expense,
                  imageName: "airplane", rgbColor: defaultCategoryColor),
-        Category(name: "Taxes", transactionType: .expense,
+        Category(name: String(localized: "Taxes"), transactionType: .expense,
                  imageName: "doc.text.fill", rgbColor: defaultCategoryColor),
         Self.expenseCategory,
 
         // Income categories
-        Category(name: "Freelance", transactionType: .income,
+        Category(name: String(localized: "Freelance"), transactionType: .income,
                  imageName: "laptopcomputer", rgbColor: defaultCategoryColor),
-        Category(name: "Business Income", transactionType: .income,
+        Category(name: String(localized: "Business Income"), transactionType: .income,
                  imageName: "building.2.fill", rgbColor: defaultCategoryColor),
-        Category(name: "Investment Income", transactionType: .income,
+        Category(name: String(localized: "Investment Income"), transactionType: .income,
                  imageName: "chart.line.uptrend.xyaxis", rgbColor: defaultCategoryColor),
         Self.incomeCategory
     ]
 }
-

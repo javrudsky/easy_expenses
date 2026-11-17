@@ -60,7 +60,7 @@ struct DefaultAppValues: AppValues {
             if let json = String(data: data, encoding: .utf8) {
                 vs.setString(json, forKey: key)
             } else {
-                throw ParserError.onParsing("Could not parse default category")
+                throw ParserError.onParsing(String(localized: "Could not parse default category"))
             }
         } catch {
             print("Unknown error with category: \(error)")
@@ -92,7 +92,7 @@ struct DefaultAppValues: AppValues {
             if let json = String(data: data, encoding: .utf8) {
                 vs.setString(json, forKey: Key.account)
             } else {
-                throw ParserError.onParsing("Could not parse default account")
+                throw ParserError.onParsing(String(localized: "Could not parse default account"))
             }
         } catch {
             print("Unknown error: \(error)")

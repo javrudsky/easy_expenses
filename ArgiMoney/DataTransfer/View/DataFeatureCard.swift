@@ -23,11 +23,11 @@ struct DataFeatureCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 22))
 
             VStack(alignment: .leading, spacing: 6) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.headline)
                     .foregroundStyle(ArgiColors.primaryText)
 
-                Text(subtitle)
+                Text(LocalizedStringKey(subtitle))
                     .font(.subheadline)
                     .foregroundStyle(ArgiColors.secondaryText)
             }
@@ -57,10 +57,10 @@ struct DataInfoBox: View {
                 .foregroundStyle(ArgiColors.blue)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.subheadline.weight(.semibold))
 
-                Text(message)
+                Text(LocalizedStringKey(message))
                     .font(.subheadline)
                     .foregroundStyle(ArgiColors.secondaryText)
             }

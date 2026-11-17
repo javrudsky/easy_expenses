@@ -106,7 +106,7 @@ private struct StatColumn: View {
                 Image(systemName: icon)
                     .font(.system(size: iconFontSize, weight: .semibold))
                     .foregroundStyle(iconColor)
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.system(size: titleFontSize))
                     .foregroundStyle(.secondary)
             }

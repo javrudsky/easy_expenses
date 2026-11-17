@@ -16,8 +16,8 @@ enum TransactionGrouping: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .day: "By day"
-        case .month: "By month"
+        case .day: String(localized: "By day")
+        case .month: String(localized: "By month")
         }
     }
 }

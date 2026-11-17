@@ -10,36 +10,36 @@ enum ImportFormat: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .standard: return "Standard Format"
-        case .generic: return "Generic Format"
+        case .standard: return String(localized: "Standard Format")
+        case .generic: return String(localized: "Generic Format")
         }
     }
 
     var headerTitle: String {
         switch self {
-        case .standard: return "Import Transactions"
-        case .generic: return "Import Generic Format"
+        case .standard: return String(localized: "Import Transactions")
+        case .generic: return String(localized: "Import Generic Format")
         }
     }
 
     var subtitle: String {
         switch self {
-        case .standard: return "Import transactions from a CSV file."
-        case .generic: return "Import transactions from a CSV without IDs."
+        case .standard: return String(localized: "Import transactions from a CSV file.")
+        case .generic: return String(localized: "Import transactions from a CSV without IDs.")
         }
     }
 
     var fileHint: String {
         switch self {
-        case .standard: return "Choose a CSV file exported by Argi."
-        case .generic: return "Choose a CSV with columns: date, category, account, detail, amount."
+        case .standard: return String(localized: "Choose a CSV file exported by Argi.")
+        case .generic: return String(localized: "Choose a CSV with columns: date, category, account, detail, amount.")
         }
     }
 
     var navigationTitle: String {
         switch self {
-        case .standard: return "Import"
-        case .generic: return "Generic Import"
+        case .standard: return String(localized: "Import")
+        case .generic: return String(localized: "Generic Import")
         }
     }
 }
@@ -93,8 +93,8 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
 
     func importCsv() async throws -> ImportSummary {
         guard let fileUrl = selectedFile else {
-            lastError = "Invalid file URL"
-            throw DataTransferError.wrongFile("Could not open file")
+            lastError = String(localized: "Invalid file URL")
+            throw DataTransferError.wrongFile(String(localized: "Could not open file"))
         }
         
         let isAccessingSecurityScopedResource = fileUrl.startAccessingSecurityScopedResource()
@@ -134,7 +134,7 @@ final class DefaultImportTransactionsViewModel: ImportTransactionsViewModel {
             try await dataTransferService.executeImport(summary: summary)
             resetProcess()
         } catch {
-            throw DataTransferError.importFail("Something when wrong importing")
+            throw DataTransferError.importFail(String(localized: "Something went wrong while importing."))
         }
     }
 
@@ -156,12 +156,12 @@ struct FileUtil {
         do {
             let data = try Data(contentsOf: url)
             guard let content = String(data: data, encoding: .utf8) else {
-                throw DataTransferError.wrongFile("Could not get content from file \(url.absoluteString)")
+                throw DataTransferError.wrongFile(String(localized: "Could not get content from file \(url.absoluteString)"))
             }
             return content
         } catch {
             
-            throw DataTransferError.wrongFile("Could not open file \(url.absoluteString)")
+            throw DataTransferError.wrongFile(String(localized: "Could not open file \(url.absoluteString)"))
         }
     }
 }

@@ -126,7 +126,9 @@ struct TransactionFormView: View {
                 .listRowSeparator(.hidden)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationTitle(cfg.transaction == nil ? "New Transaction" : "Edit Transaction")
+            .navigationTitle(cfg.transaction == nil
+                             ? String(localized: "New Transaction")
+                             : String(localized: "Edit Transaction"))
             .toolbar {
                 if isPresented {
                     ToolbarItem(placement: .topBarLeading) {

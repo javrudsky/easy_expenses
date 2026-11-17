@@ -67,7 +67,7 @@ struct DummyInputParser: InputParser {
         }
        
         if hasDebit == hasCredit {
-            throw ParserError.onParsing("Could not recognize transaction type")
+            throw ParserError.onParsing(String(localized: "Could not recognize transaction type"))
         }
         
         let type: TransactionType = hasDebit ? .expense : .income

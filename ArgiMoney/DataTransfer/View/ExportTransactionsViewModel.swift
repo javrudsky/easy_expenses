@@ -61,7 +61,7 @@ final class DefaultExportTransactionsViewModel: ExportTransactionsViewModel {
             let fileURL = try writeCSVToTemporaryFile(named: fileName, contents: csv)
             self.exportURL = fileURL
         } catch {
-            errorMessage = "Error exporting transactions"
+            errorMessage = String(localized: "Error exporting transactions")
         }
     }
 

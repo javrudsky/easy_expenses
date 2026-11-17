@@ -65,7 +65,7 @@ enum CsvParser {
         }
 
         guard !inQuotes else {
-            throw DataTransferError.invalidData("Unterminated quoted CSV field")
+            throw DataTransferError.invalidData(String(localized: "Unterminated quoted CSV field"))
         }
 
         // A trailing newline is common in spreadsheet exports. It should not
@@ -279,7 +279,7 @@ enum ImportLogFactory {
             } catch {
                 lines.append(entityErrorLog(transactionId: "", transactionType: "", id: item.id.uuidString,
                                             name: item.name, isCat: false,
-                                            message: "Error retrieving from DB", csvLine: 0))
+                                             message: String(localized: "Error retrieving from DB"), csvLine: 0))
             }
         }
         return lines
@@ -317,7 +317,7 @@ enum ImportLogFactory {
             } catch {
                 lines.append(entityErrorLog(transactionId: "", transactionType: "", id: item.id.uuidString,
                                             name: item.name, isCat: true,
-                                            message: "Error retrieving from DB", csvLine: 0))
+                                             message: String(localized: "Error retrieving from DB"), csvLine: 0))
             }
         }
         return lines

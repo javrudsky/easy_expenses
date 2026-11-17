@@ -10,10 +10,12 @@ import SwiftUI
 
 struct MonthlyBalanceView: View {
     
+    var inAudioRecordig = true
     var incomeAmount: Decimal
     var expensesAmount: Decimal
     var resultAmount: Decimal
     @State var showingDetail = false
+    
     
     var body: some View {
         VStack {
@@ -46,7 +48,7 @@ struct MonthlyBalanceView: View {
                     VStack(spacing: 0) {
                         
                         summaryItem(
-                            title: "Income",
+                            title: String(localized: "Income"),
                             amount: incomeAmount,
                             symbol: "arrow.up",
                             color: .green
@@ -55,7 +57,7 @@ struct MonthlyBalanceView: View {
                         Divider()
                         
                         summaryItem(
-                            title: "Expenses",
+                            title: String(localized: "Expenses"),
                             amount: expensesAmount,
                             symbol: "arrow.down",
                             color: .red
@@ -146,7 +148,7 @@ struct MonthlyBalanceView: View {
     }
     
     private var month: String {
-        return Date.now.formatted(.dateTime.month(.abbreviated))
+        return Date.now.formatted(.dateTime.month(.abbreviated)).capitalized
     }
     
     private var year: String {
@@ -154,6 +156,9 @@ struct MonthlyBalanceView: View {
     }
 
     private var headerTitle: String {
+        if inAudioRecordig {
+            return String(localized: "This Month")
+        }
         return "\(month) \(year)"
     }
 

@@ -17,7 +17,7 @@ actor MockPurchaseService: PurchaseService {
         PurchaseProduct.allCases.map {
             StoreProduct(product: $0,
                          title: $0.fallbackTitle,
-                         detail: "One-time unlock",
+                         detail: String(localized: "One-time unlock"),
                          symbolName: $0.symbolName,
                          displayPrice: "Preview")
         }
@@ -53,17 +53,7 @@ actor MockPurchaseService: PurchaseService {
 
 extension PurchaseProduct {
     var fallbackTitle: String {
-        switch self {
-        case .cashFlow: "Cash Flow Analysis"
-        case .spending: "Spending Trends"
-        case .accountsReport: "Account Analysis"
-//        case .insights: "Smart Insights"
-        case .accountModule: "Accounts & Transfers"
-        case .categoryModule: "Custom Categories"
-//        case .themes: "Themes"
-        case .advancedImport: "Advanced Data Transfer"
-        case .premiumBundle: "Argi Premium Bundle"
-        }
+        localizedTitle
     }
 
     var symbolName: String {

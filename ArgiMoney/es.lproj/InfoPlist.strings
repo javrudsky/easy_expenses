@@ -1,0 +1,2 @@
+"NSMicrophoneUsageDescription" = "Argi necesita acceso al micrófono para que puedas agregar ingresos y gastos con tu voz.";
+"NSSpeechRecognitionUsageDescription" = "Argi usa el reconocimiento de voz para convertir tus indicaciones habladas en detalles de transacciones.";

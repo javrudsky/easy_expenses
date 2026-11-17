@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import Combine
 
@@ -144,7 +145,7 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
                 .foregroundStyle(color)
                 .gridColumnAlignment(.leading)
 //                .gridCellAnchor(UnitPoint(x: 0.1, y: 0.5))
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .foregroundStyle(ArgiColors.secondaryText)
                 .gridColumnAlignment(.leading)
             Text(value)
@@ -158,7 +159,7 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
                 .font(.headline)
 
             ScrollView([.vertical, .horizontal]) {
-                Text(currentLog())
+            Text(currentLog())
                     .font(.system(size: 12, weight: .regular, design: .monospaced))
                     .lineSpacing(2)
                     .foregroundStyle(ArgiColors.secondaryText)
@@ -175,13 +176,12 @@ struct ImportPreviewView<VM: ImportTransactionsViewModel>: View {
     
     func currentLog() -> String {
         guard let log = viewModel.summary?.logSummary.log else {
-            return "No log available"
+            return String(localized: "No log available")
         }
         
         if log.isEmpty {
-            return "The log is empty"
+            return String(localized: "The log is empty")
         }
         return log
     }
 }
-

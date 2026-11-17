@@ -43,6 +43,14 @@ struct ReportRange: Equatable {
 enum ReportPeriod: String, CaseIterable, Identifiable {
     case month = "This Month", year = "This Year", custom = "Custom"
     var id: Self { self }
+
+    var localizedTitle: String {
+        switch self {
+        case .month: String(localized: "This Month")
+        case .year: String(localized: "This Year")
+        case .custom: String(localized: "Custom")
+        }
+    }
 }
 
 struct ReportDateSelection {

@@ -49,11 +49,11 @@ struct TransactionBuilder {
 
         var errorDescription: String? {
             switch self {
-            case .missingDate: return "Date is required."
-            case .missingCategory: return "Category is required."
-            case .missingType: return "Transaction type is required."
-            case .missingAccount: return "Account is required."
-            case .missingAmount: return "Amount is required."
+            case .missingDate: return String(localized: "Date is required.")
+            case .missingCategory: return String(localized: "Category is required.")
+            case .missingType: return String(localized: "Transaction type is required.")
+            case .missingAccount: return String(localized: "Account is required.")
+            case .missingAmount: return String(localized: "Amount is required.")
             }
         }
     }

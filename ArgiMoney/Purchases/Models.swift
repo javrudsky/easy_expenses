@@ -25,6 +25,18 @@ enum PurchaseProduct: String, CaseIterable, Hashable, Sendable, Identifiable {
     case advancedImport = "com.argimoney.import.advanced"
     case premiumBundle = "com.argimoney.premium.all"
     var id: String { rawValue }
+
+    var localizedTitle: String {
+        switch self {
+        case .cashFlow: String(localized: "Cash Flow Analysis")
+        case .spending: String(localized: "Spending Trends")
+        case .accountsReport: String(localized: "Account Analysis")
+        case .accountModule: String(localized: "Accounts & Transfers")
+        case .categoryModule: String(localized: "Custom Categories")
+        case .advancedImport: String(localized: "Advanced Data Transfer")
+        case .premiumBundle: String(localized: "Argi Premium Bundle")
+        }
+    }
 }
 
 struct StoreProduct: Identifiable, Hashable, Sendable {
@@ -55,10 +67,10 @@ enum PurchaseError: Error, LocalizedError, Sendable {
     case unavailable, unverified, missingProduct, notAllowed
     var errorDescription: String? {
         switch self {
-        case .unavailable: "Purchases are unavailable right now. Please try again later."
-        case .unverified: "The App Store could not verify this purchase."
-        case .missingProduct: "This product is not currently available."
-        case .notAllowed: "This purchase is not available in this build."
+        case .unavailable: String(localized: "Purchases are unavailable right now. Please try again later.")
+        case .unverified: String(localized: "The App Store could not verify this purchase.")
+        case .missingProduct: String(localized: "This product is not currently available.")
+        case .notAllowed: String(localized: "This purchase is not available in this build.")
         }
     }
 }

@@ -1,0 +1,3276 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ · Generated on this device from your summarized report data." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · Generado en este dispositivo a partir de los datos resumidos de tu informe."
+          }
+        }
+      }
+    },
+    "%@ accounts for %@ of expenses." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ representa el %@ de los gastos."
+          }
+        }
+      }
+    },
+    "%lld category budgets exceeded their limits." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se superaron los límites de presupuesto de %lld categorías."
+          }
+        }
+      }
+    },
+    "♛ Premium" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "♛ Premium"
+          }
+        }
+      }
+    },
+    "0.00" : {
+
+    },
+    "Account Activity" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actividad de la cuenta"
+          }
+        }
+      }
+    },
+    "Account Analysis" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis de cuentas"
+          }
+        }
+      }
+    },
+    "Account is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La cuenta es obligatoria."
+          }
+        }
+      }
+    },
+    "Account name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la cuenta"
+          }
+        }
+      }
+    },
+    "Account preview" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa de la cuenta"
+          }
+        }
+      }
+    },
+    "Accounts" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuentas"
+          }
+        }
+      }
+    },
+    "Accounts & Transfers" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuentas y transferencias"
+          }
+        }
+      }
+    },
+    "Activity" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actividad"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar"
+          }
+        }
+      }
+    },
+    "Add Account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar cuenta"
+          }
+        }
+      }
+    },
+    "Add Category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar categoría"
+          }
+        }
+      }
+    },
+    "Add transactions from a CSV file to your account." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrega transacciones a tu cuenta desde un archivo CSV."
+          }
+        }
+      }
+    },
+    "Add transactions from a CSV with date, category, account, detail and amount columns." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrega transacciones desde un CSV con columnas de fecha, categoría, cuenta, descripción e importe."
+          }
+        }
+      }
+    },
+    "Add transactions to see reports." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrega transacciones para ver los informes."
+          }
+        }
+      }
+    },
+    "Add transactions to see spending insights." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrega transacciones para ver información sobre tus gastos."
+          }
+        }
+      }
+    },
+    "Advanced Data Transfer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferencia avanzada de datos"
+          }
+        }
+      }
+    },
+    "Advanced Import" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importación avanzada"
+          }
+        }
+      }
+    },
+    "All configured category budgets are within their limits." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los presupuestos de categoría configurados están dentro de sus límites."
+          }
+        }
+      }
+    },
+    "All expenses" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los gastos"
+          }
+        }
+      }
+    },
+    "All time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todo el período"
+          }
+        }
+      }
+    },
+    "All transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las transacciones"
+          }
+        }
+      }
+    },
+    "Amount" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importe"
+          }
+        }
+      }
+    },
+    "Amount cannot be zero" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El importe no puede ser cero"
+          }
+        }
+      }
+    },
+    "Amount is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El importe es obligatorio."
+          }
+        }
+      }
+    },
+    "An error occurred." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error."
+          }
+        }
+      }
+    },
+    "An unknown error occurred." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error desconocido."
+          }
+        }
+      }
+    },
+    "Analyzing your expenses…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizando tus gastos…"
+          }
+        }
+      }
+    },
+    "Apple Intelligence is reviewing this period on your device." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence está analizando este período en tu dispositivo."
+          }
+        }
+      }
+    },
+    "Apple Intelligence is turned off" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence está desactivado"
+          }
+        }
+      }
+    },
+    "Argi Premium" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Argi Premium"
+          }
+        }
+      }
+    },
+    "Argi Premium Bundle" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paquete Argi Premium"
+          }
+        }
+      }
+    },
+    "Audio recording is already running." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La grabación de audio ya está en curso."
+          }
+        }
+      }
+    },
+    "Average Spending per Period" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasto promedio por período"
+          }
+        }
+      }
+    },
+    "Balances include all transactions before the selected end date, plus any opening balances." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los saldos incluyen todas las transacciones anteriores a la fecha final seleccionada y cualquier saldo inicial."
+          }
+        }
+      }
+    },
+    "Before importing" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antes de importar"
+          }
+        }
+      }
+    },
+    "Budget alert" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alerta de presupuesto"
+          }
+        }
+      }
+    },
+    "Budget Analysis" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis de presupuesto"
+          }
+        }
+      }
+    },
+    "Budget: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presupuesto: %@"
+          }
+        }
+      }
+    },
+    "Budgets" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presupuestos"
+          }
+        }
+      }
+    },
+    "Budgets are compared with spending in the selected period. Supply budgets for the same period length." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los presupuestos se comparan con los gastos del período seleccionado. Configura presupuestos para un período de la misma duración."
+          }
+        }
+      }
+    },
+    "Budgets on track" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presupuestos bajo control"
+          }
+        }
+      }
+    },
+    "Business Income" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresos comerciales"
+          }
+        }
+      }
+    },
+    "Buy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprar"
+          }
+        }
+      }
+    },
+    "Buy %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprar %@"
+          }
+        }
+      }
+    },
+    "By Account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por cuenta"
+          }
+        }
+      }
+    },
+    "By Category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por categoría"
+          }
+        }
+      }
+    },
+    "By day" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por día"
+          }
+        }
+      }
+    },
+    "By month" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por mes"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Cash" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Efectivo"
+          }
+        }
+      }
+    },
+    "Cash Flow Analysis" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis del flujo de efectivo"
+          }
+        }
+      }
+    },
+    "Cash Flow Over Time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flujo de efectivo a lo largo del tiempo"
+          }
+        }
+      }
+    },
+    "Categories" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorías"
+          }
+        }
+      }
+    },
+    "Category is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La categoría es obligatoria."
+          }
+        }
+      }
+    },
+    "Category name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la categoría"
+          }
+        }
+      }
+    },
+    "Category preview" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa de la categoría"
+          }
+        }
+      }
+    },
+    "Check again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a comprobar"
+          }
+        }
+      }
+    },
+    "Check counts, issues and the log before proceeding." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisa las cantidades, los problemas y el registro antes de continuar."
+          }
+        }
+      }
+    },
+    "Check Settings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisa Configuración"
+          }
+        }
+      }
+    },
+    "Checking purchases…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando compras…"
+          }
+        }
+      }
+    },
+    "Choose a CSV file" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir archivo CSV"
+          }
+        }
+      }
+    },
+    "Choose a CSV file exported by Argi." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un archivo CSV exportado desde Argi."
+          }
+        }
+      }
+    },
+    "Choose a CSV with columns: date, category, account, detail, amount." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un CSV con las columnas: fecha, categoría, cuenta, descripción e importe."
+          }
+        }
+      }
+    },
+    "Choose color" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir color"
+          }
+        }
+      }
+    },
+    "Choose Color" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir color"
+          }
+        }
+      }
+    },
+    "Choose File" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir archivo"
+          }
+        }
+      }
+    },
+    "Choose icon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir ícono"
+          }
+        }
+      }
+    },
+    "Choose Symbol" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir símbolo"
+          }
+        }
+      }
+    },
+    "Choose where to save or share your file, including Files, Mail, AirDrop and more." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige dónde guardar o compartir el archivo: Archivos, Mail, AirDrop y más."
+          }
+        }
+      }
+    },
+    "Clear search" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar búsqueda"
+          }
+        }
+      }
+    },
+    "Color" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color"
+          }
+        }
+      }
+    },
+    "Community view" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista de la comunidad"
+          }
+        }
+      }
+    },
+    "Continue to Preview" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar a la vista previa"
+          }
+        }
+      }
+    },
+    "Could not create ModelContainer: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo crear el contenedor del modelo: %@"
+          }
+        }
+      }
+    },
+    "Could not create the requested screen." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo crear la pantalla solicitada."
+          }
+        }
+      }
+    },
+    "Could not get content from file %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo obtener el contenido del archivo %@"
+          }
+        }
+      }
+    },
+    "Could not get default account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo obtener la cuenta predeterminada."
+          }
+        }
+      }
+    },
+    "Could not get transaction type from LLM" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo obtener el tipo de transacción del modelo."
+          }
+        }
+      }
+    },
+    "Could not open file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo abrir el archivo."
+          }
+        }
+      }
+    },
+    "Could not open file %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo abrir el archivo %@"
+          }
+        }
+      }
+    },
+    "Could not parse default account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo interpretar la cuenta predeterminada."
+          }
+        }
+      }
+    },
+    "Could not parse default category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo interpretar la categoría predeterminada."
+          }
+        }
+      }
+    },
+    "Could not process the audio buffer." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo procesar el búfer de audio."
+          }
+        }
+      }
+    },
+    "Could not recognize transaction type" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo reconocer el tipo de transacción."
+          }
+        }
+      }
+    },
+    "Couldn't decode data from LLM: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron interpretar los datos del modelo: %@"
+          }
+        }
+      }
+    },
+    "Couldn't generate insights" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo generar el análisis"
+          }
+        }
+      }
+    },
+    "Create a backup of your data or import transactions from a CSV file." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea una copia de seguridad de tus datos o importa transacciones desde un archivo CSV."
+          }
+        }
+      }
+    },
+    "Create a CSV file with your transactions to save or share." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea un archivo CSV con tus transacciones para guardarlo o compartirlo."
+          }
+        }
+      }
+    },
+    "CSV is missing required column: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta una columna obligatoria en el CSV: %@"
+          }
+        }
+      }
+    },
+    "Currently unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No disponible en este momento"
+          }
+        }
+      }
+    },
+    "Custom" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizado"
+          }
+        }
+      }
+    },
+    "Custom Categories" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorías personalizadas"
+          }
+        }
+      }
+    },
+    "Custom Color" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color personalizado"
+          }
+        }
+      }
+    },
+    "Custom Range" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intervalo personalizado"
+          }
+        }
+      }
+    },
+    "Customize expense categories with your own names, symbols and colors." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personaliza las categorías de gastos con tus propios nombres, símbolos y colores."
+          }
+        }
+      }
+    },
+    "Customize income categories with your own names, symbols and colors." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personaliza las categorías de ingresos con tus propios nombres, símbolos y colores."
+          }
+        }
+      }
+    },
+    "Data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos"
+          }
+        }
+      }
+    },
+    "Data Management" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administración de datos"
+          }
+        }
+      }
+    },
+    "Date" : {
+
+    },
+    "Date is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La fecha es obligatoria."
+          }
+        }
+      }
+    },
+    "Date range" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Período"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
+    "Delete selected transactions?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar las transacciones seleccionadas?"
+          }
+        }
+      }
+    },
+    "Description" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descripción"
+          }
+        }
+      }
+    },
+    "Device not supported" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivo no compatible"
+          }
+        }
+      }
+    },
+    "Dining & Entertainment" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurantes y entretenimiento"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        }
+      }
+    },
+    "Drag left / right to cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desliza a la izquierda o derecha para cancelar"
+          }
+        }
+      }
+    },
+    "Duplicate transaction ID in CSV" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identificador de transacción duplicado en el CSV"
+          }
+        }
+      }
+    },
+    "Duplicates" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicados"
+          }
+        }
+      }
+    },
+    "Edit Account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar cuenta"
+          }
+        }
+      }
+    },
+    "Edit Category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar categoría"
+          }
+        }
+      }
+    },
+    "Edit Transaction" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar transacción"
+          }
+        }
+      }
+    },
+    "Education" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Educación"
+          }
+        }
+      }
+    },
+    "English" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inglés"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "Error exporting transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al exportar las transacciones"
+          }
+        }
+      }
+    },
+    "Error generating schema: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al generar el esquema: %@"
+          }
+        }
+      }
+    },
+    "Error retrieving from DB" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al recuperar datos de la base de datos"
+          }
+        }
+      }
+    },
+    "Error validation duplicate for transaction id: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al validar el duplicado de la transacción con identificador: %@"
+          }
+        }
+      }
+    },
+    "Errors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Errores"
+          }
+        }
+      }
+    },
+    "Everything looks good! You're ready to import." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Todo se ve bien! Ya puedes importar."
+          }
+        }
+      }
+    },
+    "Expense" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasto"
+          }
+        }
+      }
+    },
+    "Expense Categories" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorías de gastos"
+          }
+        }
+      }
+    },
+    "Expense Distribution" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distribución de gastos"
+          }
+        }
+      }
+    },
+    "Expenses" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gastos"
+          }
+        }
+      }
+    },
+    "Expenses by Category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gastos por categoría"
+          }
+        }
+      }
+    },
+    "Expenses distribution" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distribución de gastos"
+          }
+        }
+      }
+    },
+    "Export" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar"
+          }
+        }
+      }
+    },
+    "Export & Share" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar y compartir"
+          }
+        }
+      }
+    },
+    "Export Failed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al exportar"
+          }
+        }
+      }
+    },
+    "Export Transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar transacciones"
+          }
+        }
+      }
+    },
+    "File name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del archivo"
+          }
+        }
+      }
+    },
+    "Filter" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrar"
+          }
+        }
+      }
+    },
+    "Filter transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrar transacciones"
+          }
+        }
+      }
+    },
+    "Free" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratis"
+          }
+        }
+      }
+    },
+    "Free Reports" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informes gratuitos"
+          }
+        }
+      }
+    },
+    "Freelance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabajo independiente"
+          }
+        }
+      }
+    },
+    "From" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desde"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "Generated on this device from your summarized report data." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generado en este dispositivo a partir de los datos resumidos de tu informe."
+          }
+        }
+      }
+    },
+    "Generic Format" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato genérico"
+          }
+        }
+      }
+    },
+    "Generic Import" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importación genérica"
+          }
+        }
+      }
+    },
+    "Groceries" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supermercado"
+          }
+        }
+      }
+    },
+    "Group transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agrupar transacciones"
+          }
+        }
+      }
+    },
+    "Health" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salud"
+          }
+        }
+      }
+    },
+    "Hold to record" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén pulsado para grabar"
+          }
+        }
+      }
+    },
+    "Housing" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vivienda"
+          }
+        }
+      }
+    },
+    "I'm listening" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te estoy escuchando"
+          }
+        }
+      }
+    },
+    "Icon" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono"
+          }
+        }
+      }
+    },
+    "Import" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar"
+          }
+        }
+      }
+    },
+    "Import & Export" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar y exportar"
+          }
+        }
+      }
+    },
+    "Import and export files are created and processed locally. We never send your financial data to our servers." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los archivos de importación y exportación se crean y procesan localmente. Nunca enviamos tus datos financieros a nuestros servidores."
+          }
+        }
+      }
+    },
+    "Import Generic Format" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar formato genérico"
+          }
+        }
+      }
+    },
+    "Import Success" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importación exitosa"
+          }
+        }
+      }
+    },
+    "Import Transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar transacciones"
+          }
+        }
+      }
+    },
+    "Import transactions from a CSV file." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa transacciones desde un archivo CSV."
+          }
+        }
+      }
+    },
+    "Import transactions from a CSV without IDs." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa transacciones desde un CSV sin identificadores."
+          }
+        }
+      }
+    },
+    "Import transactions from a flexible CSV without IDs, including category and account details." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa transacciones desde un CSV flexible sin identificadores, con detalles de categorías y cuentas."
+          }
+        }
+      }
+    },
+    "Importing" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importando"
+          }
+        }
+      }
+    },
+    "Improve your savings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejora tus ahorros"
+          }
+        }
+      }
+    },
+    "Income" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingreso"
+          }
+        }
+      }
+    },
+    "Income & Expenses" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresos y gastos"
+          }
+        }
+      }
+    },
+    "Income Categories" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categorías de ingresos"
+          }
+        }
+      }
+    },
+    "Income vs. Expenses" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresos y gastos"
+          }
+        }
+      }
+    },
+    "Individual upgrades" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejoras individuales"
+          }
+        }
+      }
+    },
+    "Insights" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis"
+          }
+        }
+      }
+    },
+    "Invalid account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta no válida"
+          }
+        }
+      }
+    },
+    "Invalid amount" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importe no válido"
+          }
+        }
+      }
+    },
+    "Invalid category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoría no válida"
+          }
+        }
+      }
+    },
+    "Invalid date" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha no válida"
+          }
+        }
+      }
+    },
+    "Invalid file header" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encabezado de archivo no válido"
+          }
+        }
+      }
+    },
+    "Invalid file URL" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La dirección del archivo no es válida."
+          }
+        }
+      }
+    },
+    "Invalid transaction ID" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identificador de transacción no válido"
+          }
+        }
+      }
+    },
+    "Investment Income" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresos por inversiones"
+          }
+        }
+      }
+    },
+    "Loading reports…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando informes…"
+          }
+        }
+      }
+    },
+    "Log" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro"
+          }
+        }
+      }
+    },
+    "Manage multiple accounts with custom names, symbols and colors." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administra varias cuentas con nombres, símbolos y colores personalizados."
+          }
+        }
+      }
+    },
+    "Management" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administración"
+          }
+        }
+      }
+    },
+    "Microphone permission is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se necesita permiso para usar el micrófono."
+          }
+        }
+      }
+    },
+    "Missing account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta la cuenta"
+          }
+        }
+      }
+    },
+    "Missing category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta la categoría"
+          }
+        }
+      }
+    },
+    "Missing transaction type" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta el tipo de transacción"
+          }
+        }
+      }
+    },
+    "More" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más"
+          }
+        }
+      }
+    },
+    "Motivation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Motivación"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "Net cash flow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flujo de efectivo neto"
+          }
+        }
+      }
+    },
+    "Net Cash Flow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flujo de efectivo neto"
+          }
+        }
+      }
+    },
+    "Net Flow" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flujo neto"
+          }
+        }
+      }
+    },
+    "New Account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva cuenta"
+          }
+        }
+      }
+    },
+    "New Category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva categoría"
+          }
+        }
+      }
+    },
+    "New Transaction" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva transacción"
+          }
+        }
+      }
+    },
+    "No budgets configured." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay presupuestos configurados."
+          }
+        }
+      }
+    },
+    "No expense recorded in this period." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se registraron gastos en este período."
+          }
+        }
+      }
+    },
+    "No expenses" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay gastos"
+          }
+        }
+      }
+    },
+    "No expenses recorded in this period." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se registraron gastos en este período."
+          }
+        }
+      }
+    },
+    "No income recorded in this period" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se registraron ingresos en este período"
+          }
+        }
+      }
+    },
+    "No insights yet" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay información"
+          }
+        }
+      }
+    },
+    "No log available" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay un registro disponible"
+          }
+        }
+      }
+    },
+    "No parsed text" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se reconoció ningún texto."
+          }
+        }
+      }
+    },
+    "Not recording" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No está grabando"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar"
+          }
+        }
+      }
+    },
+    "On-device model not ready" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local aún no está listo"
+          }
+        }
+      }
+    },
+    "One category budget exceeded its limit." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se superó el límite del presupuesto de una categoría."
+          }
+        }
+      }
+    },
+    "One-time unlock" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueo con un solo pago"
+          }
+        }
+      }
+    },
+    "Open in Numbers" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en Numbers"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Configuración"
+          }
+        }
+      }
+    },
+    "Owned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adquirido"
+          }
+        }
+      }
+    },
+    "Period Breakdown" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desglose del período"
+          }
+        }
+      }
+    },
+    "Period Summary" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen del período"
+          }
+        }
+      }
+    },
+    "Please try again in a moment." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve a intentarlo en unos instantes."
+          }
+        }
+      }
+    },
+    "Please try again later." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve a intentarlo más tarde."
+          }
+        }
+      }
+    },
+    "Premium" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium"
+          }
+        }
+      }
+    },
+    "Premium & Purchases" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium y compras"
+          }
+        }
+      }
+    },
+    "Premium Report" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informe Premium"
+          }
+        }
+      }
+    },
+    "Premium Reports" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informes Premium"
+          }
+        }
+      }
+    },
+    "Preparing..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparando…"
+          }
+        }
+      }
+    },
+    "Press and hold to start recording. Slide left or right to cancel. Release to stop." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén pulsado para empezar a grabar. Desliza a la izquierda o derecha para cancelar. Suelta para detener."
+          }
+        }
+      }
+    },
+    "Preview" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa"
+          }
+        }
+      }
+    },
+    "Proceed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        }
+      }
+    },
+    "Proceed Anyway" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar de todos modos"
+          }
+        }
+      }
+    },
+    "Purchase information" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Información de compra"
+          }
+        }
+      }
+    },
+    "Purchases are linked to your App Store account. Previous individual purchases are not automatically credited toward the complete bundle." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las compras están vinculadas a tu cuenta del App Store. Las compras individuales anteriores no se descuentan automáticamente del paquete completo."
+          }
+        }
+      }
+    },
+    "Purchases are unavailable right now. Please try again later." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las compras no están disponibles en este momento. Vuelve a intentarlo más tarde."
+          }
+        }
+      }
+    },
+    "Recognition already running" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El reconocimiento ya está en curso"
+          }
+        }
+      }
+    },
+    "Recognition request couldn't be created" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo crear la solicitud de reconocimiento"
+          }
+        }
+      }
+    },
+    "Record" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grabar"
+          }
+        }
+      }
+    },
+    "Recording in progress" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grabación en curso"
+          }
+        }
+      }
+    },
+    "Regenerate insights" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a generar análisis"
+          }
+        }
+      }
+    },
+    "Reports" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informes"
+          }
+        }
+      }
+    },
+    "Restore Purchases" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar compras"
+          }
+        }
+      }
+    },
+    "Result" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resultado"
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
+    "Review Import" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisar importación"
+          }
+        }
+      }
+    },
+    "Review your transactions before adding them. Argi will check the file for errors and possible duplicates." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisa las transacciones antes de agregarlas. Argi comprobará si el archivo contiene errores o duplicados."
+          }
+        }
+      }
+    },
+    "Salary" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sueldo"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        }
+      }
+    },
+    "Save or share" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar o compartir"
+          }
+        }
+      }
+    },
+    "Savings rate" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tasa de ahorro"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar"
+          }
+        }
+      }
+    },
+    "Search symbols" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar símbolos"
+          }
+        }
+      }
+    },
+    "Search transactions..." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar transacciones..."
+          }
+        }
+      }
+    },
+    "Select a CSV file" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un archivo CSV"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración"
+          }
+        }
+      }
+    },
+    "Shopping" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compras"
+          }
+        }
+      }
+    },
+    "Smart Insights" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis inteligente"
+          }
+        }
+      }
+    },
+    "Smart Insights unavailable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis inteligente no disponible"
+          }
+        }
+      }
+    },
+    "Something went wrong while importing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error durante la importación."
+          }
+        }
+      }
+    },
+    "Sorry, something happened" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo sentimos, ocurrió un problema"
+          }
+        }
+      }
+    },
+    "Spanish" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "español"
+          }
+        }
+      }
+    },
+    "Speech recognition permission is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se necesita permiso para usar el reconocimiento de voz."
+          }
+        }
+      }
+    },
+    "Speech recognizer not available" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El reconocedor de voz no está disponible"
+          }
+        }
+      }
+    },
+    "Spending Over Time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gastos a lo largo del tiempo"
+          }
+        }
+      }
+    },
+    "Spending Trends" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendencias de gastos"
+          }
+        }
+      }
+    },
+    "Spendings Trends" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendencias de gastos"
+          }
+        }
+      }
+    },
+    "Standard Format" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formato estándar"
+          }
+        }
+      }
+    },
+    "Subscriptions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suscripciones"
+          }
+        }
+      }
+    },
+    "Suggested colors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colores sugeridos"
+          }
+        }
+      }
+    },
+    "Taxes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impuestos"
+          }
+        }
+      }
+    },
+    "Tell me about your transaction" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuéntame sobre tu transacción"
+          }
+        }
+      }
+    },
+    "The App Store could not verify this purchase." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El App Store no pudo verificar esta compra."
+          }
+        }
+      }
+    },
+    "The exported CSV file can be opened in Numbers, Excel and Google Sheets." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo CSV exportado se puede abrir en Numbers, Excel y Google Sheets."
+          }
+        }
+      }
+    },
+    "The log is empty" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El registro está vacío"
+          }
+        }
+      }
+    },
+    "The model can be downloaded by the system after Apple Intelligence is enabled." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El sistema podrá descargar el modelo cuando se active Apple Intelligence."
+          }
+        }
+      }
+    },
+    "The model cannot be downloaded because this device doesn't support Apple Intelligence." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede descargar el modelo porque este dispositivo no es compatible con Apple Intelligence."
+          }
+        }
+      }
+    },
+    "The model is being downloaded or prepared by the system. No download is needed from this app." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El sistema está descargando o preparando el modelo. No es necesario descargarlo desde esta app."
+          }
+        }
+      }
+    },
+    "The on-device model couldn't generate a response for this content." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local no pudo generar una respuesta para este contenido."
+          }
+        }
+      }
+    },
+    "The on-device model doesn't support the current language. Try a supported language." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local no es compatible con el idioma actual. Prueba con un idioma compatible."
+          }
+        }
+      }
+    },
+    "The on-device model is busy. Wait a moment and try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local está ocupado. Espera un momento y vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "The on-device model is unavailable." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local no está disponible."
+          }
+        }
+      }
+    },
+    "The on-device model returned an unexpected response. Try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local devolvió una respuesta inesperada. Vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "The requested audio format is unavailable." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El formato de audio solicitado no está disponible."
+          }
+        }
+      }
+    },
+    "The requested response format isn't supported by the on-device model." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local no admite el formato de respuesta solicitado."
+          }
+        }
+      }
+    },
+    "The selected period contains too much data for the on-device model. Try a shorter period." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El período seleccionado contiene demasiados datos para el modelo local. Prueba con un período más corto."
+          }
+        }
+      }
+    },
+    "The system is downloading or preparing the on-device model. Try again in a few minutes." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El sistema está descargando o preparando el modelo local. Vuelve a intentarlo en unos minutos."
+          }
+        }
+      }
+    },
+    "There were issues found in your file. You can proceed, but some items may be skipped or need attention." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se encontraron problemas en el archivo. Puedes continuar, pero algunos elementos podrían omitirse o requerir atención."
+          }
+        }
+      }
+    },
+    "This device doesn't support Apple Intelligence, so the on-device model can't run here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este dispositivo no es compatible con Apple Intelligence, por lo que no puede ejecutar el modelo local."
+          }
+        }
+      }
+    },
+    "This locale is completely unsupported by the Dictation hardware profile." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este idioma no es compatible con el perfil de dictado del dispositivo."
+          }
+        }
+      }
+    },
+    "This month" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este mes"
+          }
+        }
+      }
+    },
+    "This Month" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este mes"
+          }
+        }
+      }
+    },
+    "This product is not currently available." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este producto no está disponible en este momento."
+          }
+        }
+      }
+    },
+    "This purchase is not available in this build." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta compra no está disponible en esta versión de la app."
+          }
+        }
+      }
+    },
+    "This Year" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este año"
+          }
+        }
+      }
+    },
+    "To" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasta"
+          }
+        }
+      }
+    },
+    "Top spending category" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categoría de mayor gasto"
+          }
+        }
+      }
+    },
+    "Total Balance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saldo total"
+          }
+        }
+      }
+    },
+    "Total Expenses" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gastos totales"
+          }
+        }
+      }
+    },
+    "Transaction type" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de transacción"
+          }
+        }
+      }
+    },
+    "Transaction type is required." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El tipo de transacción es obligatorio."
+          }
+        }
+      }
+    },
+    "Transactions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transacciones"
+          }
+        }
+      }
+    },
+    "Transactions imported" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transacciones importadas"
+          }
+        }
+      }
+    },
+    "Transactions in period: %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transacciones en el período: %@"
+          }
+        }
+      }
+    },
+    "transactions.cvs" : {
+
+    },
+    "Transportation" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transporte"
+          }
+        }
+      }
+    },
+    "Travel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viajes"
+          }
+        }
+      }
+    },
+    "Try again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intentar de nuevo"
+          }
+        }
+      }
+    },
+    "Turn on Apple Intelligence in Settings to let the on-device model run on this device." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa Apple Intelligence en Configuración para ejecutar el modelo local en este dispositivo."
+          }
+        }
+      }
+    },
+    "Type" : {
+
+    },
+    "Unable to complete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo completar"
+          }
+        }
+      }
+    },
+    "Unable to load reports" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los informes"
+          }
+        }
+      }
+    },
+    "Unable to Open File" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo abrir el archivo"
+          }
+        }
+      }
+    },
+    "Unable to refresh purchases. Showing last known status." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron actualizar las compras. Se muestra el último estado conocido."
+          }
+        }
+      }
+    },
+    "Unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No disponible"
+          }
+        }
+      }
+    },
+    "Unknown error with category: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error desconocido en la categoría: %@"
+          }
+        }
+      }
+    },
+    "Unknown error: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error desconocido: %@"
+          }
+        }
+      }
+    },
+    "Unlock %@ with Argi Premium." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquea %@ con Argi Premium."
+          }
+        }
+      }
+    },
+    "Unlock for %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear por %@"
+          }
+        }
+      }
+    },
+    "Unlock the features you need. Pay once, no subscription." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquea las funciones que necesitas. Paga una sola vez, sin suscripción."
+          }
+        }
+      }
+    },
+    "Unlocked" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueado"
+          }
+        }
+      }
+    },
+    "Unterminated quoted CSV field" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campo CSV entre comillas sin cerrar"
+          }
+        }
+      }
+    },
+    "Used colors" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colores usados"
+          }
+        }
+      }
+    },
+    "Utilities" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servicios"
+          }
+        }
+      }
+    },
+    "View all premium features" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver todas las funciones Premium"
+          }
+        }
+      }
+    },
+    "Warnings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advertencias"
+          }
+        }
+      }
+    },
+    "We couldn’t save your changes. Please try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron guardar los cambios. Vuelve a intentarlo."
+          }
+        }
+      }
+    },
+    "You can’t delete this account while it has associated transactions. Remove or move those transactions first." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No puedes eliminar esta cuenta mientras tenga transacciones asociadas. Primero elimina o mueve esas transacciones."
+          }
+        }
+      }
+    },
+    "You can’t delete this category while it has associated transactions. Remove or move those transactions first." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No puedes eliminar esta categoría mientras tenga transacciones asociadas. Primero elimina o mueve esas transacciones."
+          }
+        }
+      }
+    },
+    "You MUST respond in Spanish. Responde siempre en español, usando un español neutro y claro." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Responde siempre en español, usando un español neutro y claro."
+          }
+        }
+      }
+    },
+    "You retained %@ of your income in this period." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservaste el %@ de tus ingresos en este período."
+          }
+        }
+      }
+    },
+    "Your data stays on your device" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus datos permanecen en tu dispositivo"
+          }
+        }
+      }
+    },
+    "Your device language isn't supported by the on-device model, so insights are generated in %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El modelo local no es compatible con el idioma de tu dispositivo, por lo que el análisis se genera en %@."
+          }
+        }
+      }
+    },
+    "Your purchases have been checked." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se comprobaron tus compras."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

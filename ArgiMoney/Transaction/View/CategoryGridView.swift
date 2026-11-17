@@ -68,7 +68,7 @@ struct CategoryGridView: View {
                                     showCatList = true
                                 } label: {
                                     
-                                    ButtonGridLabel(label: "More", imageName: "ellipsis.circle", rgbColor: "0.0, 0.0, 0.0, 1.0")
+                                    ButtonGridLabel(label: String(localized: "More"), imageName: "ellipsis.circle", rgbColor: "0.0, 0.0, 0.0, 1.0")
                                     .popover(isPresented: $showCatList) {
                                         
                                         ListOfValuesView(values: moreItems.map { LovValue(id: $0.id, name: $0.name)},

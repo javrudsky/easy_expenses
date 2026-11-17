@@ -5,6 +5,7 @@
 //  Created by Javier Avrudsky on 20/10/2026.
 //
 
+import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -45,7 +46,7 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
                         .font(.system(size: 42))
                         .foregroundStyle(ArgiColors.green)
 
-                    Text(viewModel.selectedFile?.lastPathComponent ?? "Select a CSV file")
+                    Text(viewModel.selectedFile?.lastPathComponent ?? String(localized: "Select a CSV file"))
                         .font(.headline)
                         .lineLimit(2)
 
@@ -138,7 +139,7 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
         .alert("Unable to Open File", isPresented: $showingError) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(viewModel.lastError ?? "An unknown error occurred.")
+            Text(viewModel.lastError ?? String(localized: "An unknown error occurred."))
         }
         .confirmationDialog("Import Success", isPresented: $showSuccess) {
             Button("OK", role: .cancel) {}
@@ -147,4 +148,3 @@ struct ImportTransactionsView<VM: ImportTransactionsViewModel>: View {
         }
     }
 }
-

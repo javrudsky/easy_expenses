@@ -35,22 +35,22 @@ extension FoundationModelAvailability.UnavailabilityReason {
     var title: String {
         switch self {
         case .deviceNotEligible:
-            return "Device not supported"
+            return String(localized: "Device not supported")
         case .appleIntelligenceNotEnabled:
-            return "Apple Intelligence is turned off"
+            return String(localized: "Apple Intelligence is turned off")
         case .modelNotReady:
-            return "On-device model not ready"
+            return String(localized: "On-device model not ready")
         }
     }
 
     var message: String {
         switch self {
         case .deviceNotEligible:
-            return "This device doesn't support Apple Intelligence, so the on-device model can't run here."
+            return String(localized: "This device doesn't support Apple Intelligence, so the on-device model can't run here.")
         case .appleIntelligenceNotEnabled:
-            return "Turn on Apple Intelligence in Settings to let the on-device model run on this device."
+            return String(localized: "Turn on Apple Intelligence in Settings to let the on-device model run on this device.")
         case .modelNotReady:
-            return "The system is downloading or preparing the on-device model. Try again in a few minutes."
+            return String(localized: "The system is downloading or preparing the on-device model. Try again in a few minutes.")
         }
     }
 
@@ -58,11 +58,11 @@ extension FoundationModelAvailability.UnavailabilityReason {
     var downloadExplanation: String {
         switch self {
         case .deviceNotEligible:
-            return "The model cannot be downloaded because this device doesn't support Apple Intelligence."
+            return String(localized: "The model cannot be downloaded because this device doesn't support Apple Intelligence.")
         case .appleIntelligenceNotEnabled:
-            return "The model can be downloaded by the system after Apple Intelligence is enabled."
+            return String(localized: "The model can be downloaded by the system after Apple Intelligence is enabled.")
         case .modelNotReady:
-            return "The model is being downloaded or prepared by the system. No download is needed from this app."
+            return String(localized: "The model is being downloaded or prepared by the system. No download is needed from this app.")
         }
     }
 
@@ -162,7 +162,7 @@ struct FoundationModelSupport: Sendable {
 
     var fallbackLanguageNotice: String? {
         guard usesFallbackLanguage else { return nil }
-        return "Your device language isn't supported by the on-device model, so insights are generated in \(responseLanguage.displayName)."
+        return String(localized: "Your device language isn't supported by the on-device model, so insights are generated in \(responseLanguage.displayName).")
     }
 
     var localeInstruction: String {
@@ -217,19 +217,19 @@ enum FoundationModelErrorDescription {
         if let generationError = error as? LanguageModelSession.GenerationError {
             switch generationError {
             case .unsupportedLanguageOrLocale(_):
-                return "The on-device model doesn't support the current language. Try a supported language."
+                return String(localized: "The on-device model doesn't support the current language. Try a supported language.")
             case .assetsUnavailable(_):
                 return FoundationModelAvailability.UnavailabilityReason.modelNotReady.message
             case .exceededContextWindowSize(_):
-                return "The selected period contains too much data for the on-device model. Try a shorter period."
+                return String(localized: "The selected period contains too much data for the on-device model. Try a shorter period.")
             case .rateLimited(_), .concurrentRequests(_):
-                return "The on-device model is busy. Wait a moment and try again."
+                return String(localized: "The on-device model is busy. Wait a moment and try again.")
             case .guardrailViolation(_), .refusal(_, _):
-                return "The on-device model couldn't generate a response for this content."
+                return String(localized: "The on-device model couldn't generate a response for this content.")
             case .decodingFailure(_):
-                return "The on-device model returned an unexpected response. Try again."
+                return String(localized: "The on-device model returned an unexpected response. Try again.")
             case .unsupportedGuide(_):
-                return "The requested response format isn't supported by the on-device model."
+                return String(localized: "The requested response format isn't supported by the on-device model.")
             @unknown default:
                 return generationError.localizedDescription
             }

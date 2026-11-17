@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import Charts
 
@@ -30,7 +31,7 @@ struct ReportPeriodPicker: View {
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) { selection.period = period }
                     } label: {
-                        Text(period.rawValue)
+                        Text(period.localizedTitle)
                             .font(.system(size: 12, weight: .semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
@@ -45,7 +46,7 @@ struct ReportPeriodPicker: View {
             if selection.period == .custom {
                 VStack(spacing: 8) {
                     DatePicker("From", selection: $selection.from, displayedComponents: .date)
-                    DatePicker("To", selection: $selection.to, in: selection.from..., displayedComponents: .date)
+            DatePicker("To", selection: $selection.to, in: selection.from..., displayedComponents: .date)
                 }
                 .font(.subheadline)
                 .padding(12)
@@ -63,7 +64,7 @@ struct ReportMetric: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: symbol).foregroundStyle(tint).font(.title3)
-            Text(title).font(.caption2).foregroundStyle(.secondary)
+            Text(LocalizedStringKey(title)).font(.caption2).foregroundStyle(.secondary)
             Text(amount.reportCurrency).font(.system(size: 14, weight: .bold)).minimumScaleFactor(0.6).lineLimit(1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,9 +79,9 @@ struct ReportMetricStrip: View {
     let balance: Decimal
     var body: some View {
         HStack(spacing: 7) {
-            ReportMetric(title: "Income", amount: income, symbol: "arrow.up.right", tint: ReportStyle.green)
-            ReportMetric(title: "Expenses", amount: expenses, symbol: "arrow.down.right", tint: ReportStyle.red)
-            ReportMetric(title: "Net Flow", amount: balance, symbol: "equal", tint: ReportStyle.blue)
+            ReportMetric(title: String(localized: "Income"), amount: income, symbol: "arrow.up.right", tint: ReportStyle.green)
+            ReportMetric(title: String(localized: "Expenses"), amount: expenses, symbol: "arrow.down.right", tint: ReportStyle.red)
+            ReportMetric(title: String(localized: "Net Flow"), amount: balance, symbol: "equal", tint: ReportStyle.blue)
         }
     }
 }
@@ -112,10 +113,9 @@ struct ReportProgressRow: View {
     let budget: Decimal
     var body: some View {
         VStack(spacing: 8) {
-            ReportItemRow(item: item, amount: spent, detail: "Budget: \(budget.reportCurrency)")
+            ReportItemRow(item: item, amount: spent, detail: String(localized: "Budget: \(budget.reportCurrency)"))
             ProgressView(value: max(0, spent.reportDouble), total: max(1, budget.reportDouble))
                 .tint(spent > budget ? ReportStyle.red : ReportStyle.blue)
         }
     }
 }
-

@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
@@ -125,11 +126,11 @@ struct AudioRecordingView<VM: AudioRecordingViewModel>: View {
     // MARK: - Helpers (unchanged)
 
     private func assistentMsg(isRec: Bool) -> String {
-        isRec ? "I'm listening" : "Tell me about your transaction"
+        isRec ? String(localized: "I'm listening") : String(localized: "Tell me about your transaction")
     }
 
     private func recBottonMsg(isRec: Bool) -> String {
-        isRec ? "Drag left / right to cancel" : "Hold to record"
+        isRec ? String(localized: "Drag left / right to cancel") : String(localized: "Hold to record")
     }
 
     private func reloadTotals() {

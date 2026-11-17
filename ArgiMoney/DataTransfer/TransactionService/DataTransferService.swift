@@ -188,7 +188,7 @@ struct DefaultDataTransferService: DataTransferService {
     // MARK: - Import
     func importFrom(csv: String, logBuilder: ImportLogBuilder = DefaultImportLogBuilder()) async throws -> ImportSummary {
         if csv.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            throw DataTransferError.invalidData("Invalid file header")
+            throw DataTransferError.invalidData(String(localized: "Invalid file header"))
         }
         
         var log = logBuilder
@@ -197,11 +197,11 @@ struct DefaultDataTransferService: DataTransferService {
         // of the field rather than becoming separate, invalid records.
         let rows = try Self.parseCsvRecords(csv)
 
-        guard let headerRow = rows.first else { throw DataTransferError.invalidData("Invalid file header")}
+        guard let headerRow = rows.first else { throw DataTransferError.invalidData(String(localized: "Invalid file header"))}
         // Check if header is effectively empty
         let headerTrimmed = headerRow.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         if headerTrimmed.isEmpty || (headerTrimmed.count == 1 && headerTrimmed[0].isEmpty) {
-            throw DataTransferError.invalidData("Invalid file header")
+            throw DataTransferError.invalidData(String(localized: "Invalid file header"))
         }
         var headers = headerRow
         if let firstHeader = headers.first {
@@ -256,14 +256,14 @@ struct DefaultDataTransferService: DataTransferService {
             let tranIdStr = val("transaction_id") ?? ""
             guard let tranId = UUID(uuidString: tranIdStr) else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: "",
-                                            message: "Invalid transaction ID", csvLine: lineNumber))
+                                            message: String(localized: "Invalid transaction ID"), csvLine: lineNumber))
                 continue
             }
 
             let tranTypeStr = val("transaction_type") ?? ""
             guard let tranType = TransactionType(rawValue: tranTypeStr) else {
                 log.add(transactionErrorLog(transactionId: tranId.uuidString, transactionType: tranTypeStr.isEmpty ? "" : tranTypeStr,
-                                            message: tranTypeStr.isEmpty ? "Missing transaction type" : "Missing transaction type", csvLine: lineNumber))
+                                            message: String(localized: "Missing transaction type"), csvLine: lineNumber))
                 continue
             }
             
@@ -273,7 +273,7 @@ struct DefaultDataTransferService: DataTransferService {
                                                rgbColor: categoryRGBColor ?? AppDefaults.defaultCategoryColor) else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             amount: "", categoryName: val("category_name") ?? "", accountName: "", detail: "",
-                                            message: "Invalid category", csvLine: lineNumber))
+                                            message: String(localized: "Invalid category"), csvLine: lineNumber))
                 continue
             }
             guard let account = buildAccount(id: val("account_id"), name: val("account_name"),
@@ -281,14 +281,14 @@ struct DefaultDataTransferService: DataTransferService {
                                              rgbColor: accountRGBColor ?? AppDefaults.defaultAccountColor) else  {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             categoryName: category.name, accountName: val("account_name") ?? "",
-                                            message: "Invalid account", csvLine: lineNumber))
+                                            message: String(localized: "Invalid account"), csvLine: lineNumber))
                 continue
             }
             let dateStr = val("date") ?? ""
             guard let date = Self.parseISO8601Date(dateStr)?.timeIntervalSince1970 else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             categoryName: category.name, accountName: account.name, date: dateStr, 
-                                            message: "Invalid date", csvLine: lineNumber))
+                                            message: String(localized: "Invalid date"), csvLine: lineNumber))
                 continue
             }
             
@@ -296,14 +296,14 @@ struct DefaultDataTransferService: DataTransferService {
             guard let amount = Decimal(string: amountStr) else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             amount: amountStr, categoryName: category.name, accountName: account.name, detail: "",
-                                            message: "Invalid amount", csvLine: lineNumber))
+                                            message: String(localized: "Invalid amount"), csvLine: lineNumber))
                 continue
             }
 
             guard amount != 0 else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                             amount: amountStr, categoryName: category.name, accountName: account.name,
-                                            detail: val("detail") ?? "", message: "Amount cannot be zero",
+                                            detail: val("detail") ?? "", message: String(localized: "Amount cannot be zero"),
                                             csvLine: lineNumber))
                 continue
             }
@@ -311,7 +311,7 @@ struct DefaultDataTransferService: DataTransferService {
             guard transactionIDs.insert(tranId).inserted else {
                 log.add(transactionErrorLog(transactionId: tranIdStr, transactionType: tranTypeStr,
                                              amount: amountStr, categoryName: category.name, accountName: account.name,
-                                             detail: val("detail") ?? "", message: "Duplicate transaction ID in CSV",
+                                              detail: val("detail") ?? "", message: String(localized: "Duplicate transaction ID in CSV"),
                                              csvLine: lineNumber))
                 continue
             }
@@ -489,7 +489,7 @@ struct DefaultDataTransferService: DataTransferService {
         var errorDescription: String? {
             switch self {
             case .missingColumn(let name):
-                return "CSV is missing required column: \(name)"
+                return String(localized: "CSV is missing required column: \(name)")
             }
         }
     }

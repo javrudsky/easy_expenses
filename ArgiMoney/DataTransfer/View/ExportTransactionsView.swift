@@ -5,6 +5,7 @@
 //  Created by Javier Avrudsky on 20/10/2026.
 //
 
+import Foundation
 import SwiftUI
 
 enum DateRange {
@@ -16,13 +17,13 @@ enum DateRange {
     var description: String {
         switch self {
         case .currentMonth:
-            return "This Month"
+            return String(localized: "This Month")
         case .currentYear:
-            return "This Year"
+            return String(localized: "This Year")
         case .custom:
-            return "Custom Range"
+            return String(localized: "Custom Range")
         case .all:
-            return "All time"
+            return String(localized: "All time")
         }
     }
 }
@@ -173,7 +174,7 @@ struct ExportTransactionsView<VM: ExportTransactionsViewModel>: View {
     
     private func selectionRow(_ title: String, value: DateRange) -> some View {
         HStack {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .foregroundStyle(ArgiColors.primaryText)
             
             Spacer()
@@ -194,9 +195,9 @@ struct ExportTransactionsView<VM: ExportTransactionsViewModel>: View {
             summaryRow("Transactions", value: "248", icon: "doc")
             if viewModel.selectedRange == .custom {
                 let summaryText = "\(viewModel.fromDate.uiFormat) to \(viewModel.toDate.uiFormat)"
-                summaryRow("Date range", value: summaryText, icon: "calendar")
+            summaryRow(String(localized: "Date range"), value: summaryText, icon: "calendar")
             } else {
-                summaryRow("Date range", value: viewModel.selectedRange.description, icon: "calendar")
+                summaryRow(String(localized: "Date range"), value: viewModel.selectedRange.description, icon: "calendar")
             }
             summaryRow("File name", value: "argi-transactions.csv", icon: "tag")
         }
@@ -211,7 +212,7 @@ struct ExportTransactionsView<VM: ExportTransactionsViewModel>: View {
                 .frame(width: 22)
                 .foregroundStyle(ArgiColors.secondaryText)
             
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .foregroundStyle(ArgiColors.secondaryText)
             
             Spacer()

@@ -1,4 +1,5 @@
 
+import Foundation
 import SwiftUI
 import SwiftData
 import Combine
@@ -193,7 +194,7 @@ struct TransactionsView<VM: TransactionsViewModel>: View {
         
         HStack {
             HStack(alignment: .center, spacing: 10) {
-                Text("Nov 2026")
+                Text(Date.now.formatted(.dateTime.month(.abbreviated).year()))
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.secondary)
                 
@@ -518,9 +519,9 @@ private enum TransactionFilter: String, CaseIterable, Identifiable {
     
     var title: String {
         switch self {
-        case .all: "All transactions"
-        case .income: "Income"
-        case .expenses: "Expenses"
+        case .all: String(localized: "All transactions")
+        case .income: String(localized: "Income")
+        case .expenses: String(localized: "Expenses")
         }
     }
 }
@@ -546,4 +547,3 @@ private struct TransactionGroup: Identifiable {
     
     TransactionsView<DefaultTransactionsViewModel>(viewModel: vm)
 }
-

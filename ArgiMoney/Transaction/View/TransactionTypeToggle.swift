@@ -61,7 +61,7 @@ struct TransactionTypeToggle: View {
         .animation(.easeInOut(duration: 0.15), value: type)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Transaction type")
-        .accessibilityValue(type == .expense ? "Expense" : "Income")
+        .accessibilityValue(type == .expense ? String(localized: "Expense") : String(localized: "Income"))
     }
 }
 
@@ -72,4 +72,3 @@ struct TransactionTypeToggle: View {
             .padding()
     }
 }
-

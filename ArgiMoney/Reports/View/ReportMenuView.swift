@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import Charts
 
@@ -11,6 +12,15 @@ enum ReportType: String, CaseIterable, Identifiable {
 //    case insights = "Smart Insights"
 
     var id: String { rawValue }
+    var localizedTitle: String {
+        switch self {
+        case .income: String(localized: "Income & Expenses")
+        case .categories: String(localized: "Expenses by Category")
+        case .cashFlow: String(localized: "Cash Flow Analysis")
+        case .spending: String(localized: "Spending Trends")
+        case .accounts: String(localized: "Account Analysis")
+        }
+    }
     var premium: Bool { ![Self.income, .categories].contains(self) }
     /// Product that unlocks this report. Reports without a dedicated product
     /// are unlocked by the complete premium bundle.
@@ -82,7 +92,7 @@ struct ReportMenuView: View {
                     .foregroundStyle(ReportStyle.blue)
                     .frame(width: 42, height: 42)
                     .background(ReportStyle.blue.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
-                Text(report.rawValue).font(.subheadline.weight(.semibold))
+                Text(report.localizedTitle).font(.subheadline.weight(.semibold))
                 Spacer()
                 if report.premium {
                     Label("Premium", systemImage: "crown.fill")
@@ -111,7 +121,7 @@ struct PremiumReportsGate: View {
         ScrollView {
             VStack(spacing: 18) {
                 ContentUnavailableView("Premium Report", systemImage: "crown.fill",
-                                       description: Text("Unlock \(report.rawValue) with Argi Premium."))
+                                       description: Text("Unlock \(report.localizedTitle) with Argi Premium."))
                 if access.state == .loading {
                     ProgressView("Checking purchases…")
                 } else {
@@ -121,8 +131,8 @@ struct PremiumReportsGate: View {
                         } label: {
                             if access.busyProduct == product { ProgressView() }
                             else {
-                                Text(access.metadata(for: product).map { "Unlock for \($0.displayPrice)" }
-                                     ?? "Currently unavailable")
+                                Text(access.metadata(for: product).map { String(localized: "Unlock for \($0.displayPrice)") }
+                                     ?? String(localized: "Currently unavailable"))
                                     .frame(maxWidth: .infinity)
                             }
                         }
@@ -139,14 +149,14 @@ struct PremiumReportsGate: View {
             }
             .padding()
         }
-        .navigationTitle(report.rawValue)
+        .navigationTitle(report.localizedTitle)
         .alert("Purchase information", isPresented: Binding(
             get: { access.lastError != nil },
             set: { if !$0 { access.clearError() } }
         )) {
             Button("OK") { access.clearError() }
         } message: {
-            Text(access.lastError ?? "")
+                    Text(access.lastError ?? "")
         }
     }
 }
@@ -162,9 +172,9 @@ struct ReportMenuItemView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 HStack {
-                    Text(report.rawValue).font(.title2.bold())
+                    Text(report.localizedTitle).font(.title2.bold())
                     Spacer()
-                    Text(report.premium ? "♛ Premium" : "Free")
+                    Text(LocalizedStringKey(report.premium ? "♛ Premium" : "Free"))
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(report.premium ? .orange : ReportStyle.blue)
                 }
@@ -311,4 +321,3 @@ struct ReportTrendChart: View {
         .frame(height: 210)
     }
 }
-

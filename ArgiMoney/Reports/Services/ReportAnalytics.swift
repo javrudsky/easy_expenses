@@ -86,17 +86,37 @@ struct ReportAnalytics {
     var insights: [ReportInsight] {
         var results: [ReportInsight] = []
         if let biggest = categories.first {
-            results.append(.init(title: "Top spending category", detail: "\(biggest.item.name) accounts for \(biggest.fraction.formatted(.percent.precision(.fractionLength(0)))) of expenses.", symbol: "chart.pie.fill"))
+            let share = biggest.fraction.formatted(.percent.precision(.fractionLength(0)))
+            results.append(.init(title: String(localized: "Top spending category"),
+                                 detail: String(localized: "\(biggest.item.name) accounts for \(share) of expenses."),
+                                 symbol: "chart.pie.fill"))
         }
         if income > 0 {
             let rate = net.reportDouble / income.reportDouble
-            results.append(.init(title: "Savings rate", detail: "You retained \(rate.formatted(.percent.precision(.fractionLength(1)))) of your income in this period.", symbol: "sparkles"))
+            let formattedRate = rate.formatted(.percent.precision(.fractionLength(1)))
+            results.append(.init(title: String(localized: "Savings rate"),
+                                 detail: String(localized: "You retained \(formattedRate) of your income in this period."),
+                                 symbol: "sparkles"))
         }
         let exceeded = dataset.budgets.filter { spent(for: $0.categoryID) > $0.amount }
         if !dataset.budgets.isEmpty {
-            results.append(.init(title: exceeded.isEmpty ? "Budgets on track" : "Budget alert", detail: exceeded.isEmpty ? "All configured category budgets are within their limits." : "\(exceeded.count) category budget(s) exceeded their limits.", symbol: exceeded.isEmpty ? "checkmark.circle.fill" : "exclamationmark.triangle.fill"))
+            let title = exceeded.isEmpty ? String(localized: "Budgets on track") : String(localized: "Budget alert")
+            let detail: String
+            if exceeded.isEmpty {
+                detail = String(localized: "All configured category budgets are within their limits.")
+            } else if exceeded.count == 1 {
+                detail = String(localized: "One category budget exceeded its limit.")
+            } else {
+                detail = String(localized: "\(exceeded.count) category budgets exceeded their limits.")
+            }
+            results.append(.init(title: title, detail: detail,
+                                 symbol: exceeded.isEmpty ? "checkmark.circle.fill" : "exclamationmark.triangle.fill"))
         }
-        if results.isEmpty { results.append(.init(title: "No insights yet", detail: "Add transactions to see spending insights.", symbol: "lightbulb")) }
+        if results.isEmpty {
+            results.append(.init(title: String(localized: "No insights yet"),
+                                 detail: String(localized: "Add transactions to see spending insights."),
+                                 symbol: "lightbulb"))
+        }
         return results
     }
 }

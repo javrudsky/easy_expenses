@@ -76,7 +76,7 @@ final class DefaultAudioRecordingViewModel: AudioRecordingViewModel {
                 }
                 // result.isFinal could never be true
                 if latestText == "" {
-                    throw AudioError.unexpected("No parsed text")
+                    throw AudioError.unexpected(String(localized: "No parsed text"))
                 }
                 let tx = try await self.inputParser.buildTransactionFrom(text: latestText,
                                                                          categories: categories,

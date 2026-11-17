@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct ReportsView<VM: ReportsViewModel>: View {
@@ -21,7 +22,7 @@ struct ReportsView<VM: ReportsViewModel>: View {
             } else {
                 ContentUnavailableView("Unable to load reports",
                                        systemImage: "exclamationmark.triangle",
-                                       description: Text(viewModel.errorMessage ?? "Add transactions to see reports."))
+                                        description: Text(viewModel.errorMessage ?? String(localized: "Add transactions to see reports.")))
             }
         }
         .onAppear {
