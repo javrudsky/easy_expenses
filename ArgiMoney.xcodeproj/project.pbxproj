@@ -59,7 +59,9 @@
 				ZPremium/Category/View/CategoriesViewModel.swift,
 				ZPremium/Category/View/CategoryEditView.swift,
 				ZPremium/DataTransfer/AdvancedTransactionImportService.swift,
-				ZPremium/Report/View/AdvancedReportsView.swift,
+				ZPremium/Reports/SmartInsightsService.swift,
+				ZPremium/Reports/SmartInsightsViewModel.swift,
+				ZPremium/Reports/View/AdvancedReportsView.swift,
 			);
 			target = DC6B43D430A27414007BFC8C /* ArgiMoneyCommunity */;
 		};
