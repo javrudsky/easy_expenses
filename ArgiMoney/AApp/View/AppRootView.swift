@@ -16,22 +16,27 @@ struct AppRootView: View {
     
     var body: some View {
         TabView {
-            try? createAudioRecordingView(dataStore: dataStore)
-                .tabItem { Label("Record", systemImage: "mic") }
+            Tab("Record", systemImage: "mic") {
+                try? createAudioRecordingView(dataStore: dataStore)
+            }
             
-            try? createTransactionsView(dataStore: dataStore)
-                .tabItem { Label("Transactions", systemImage: "list.bullet.rectangle") }
+            Tab("Transactions", systemImage: "list.bullet.rectangle")  {
+                try? createTransactionsView(dataStore: dataStore)
+            }
             
-            createReportsView(dataStore: dataStore)
-                .tabItem { Label("Reports", systemImage: "chart.bar") }
+            Tab("Reports", systemImage: "chart.bar") {
+                createReportsView(dataStore: dataStore)
+            }
             
-            SettingsView()
-                .tabItem { Label("Settings", systemImage: "gear") }
+            Tab("Settings", systemImage: "gear") {
+                SettingsView()
+            }
             
-            MoreView(appFactory: af,
-                     viewFactory: DefaultViewFactory(),
-                     dataStore: dataStore)
-                .tabItem { Label("More", systemImage: "ellipsis.circle") }
+            Tab("More", systemImage: "ellipsis.circle") {
+                MoreView(appFactory: af,
+                         viewFactory: DefaultViewFactory(),
+                         dataStore: dataStore)
+            }
         }
         .onAppear {
             ThemeManager.shared.setTheme(af.appValues().theme())
